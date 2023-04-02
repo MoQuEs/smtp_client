@@ -1,0 +1,121 @@
+<script context="module" lang="ts">
+	export enum InputType {
+		Text = 'text',
+		Hidden = 'hidden',
+		Password = 'password',
+		Email = 'email',
+		Number = 'number',
+		Tel = 'tel',
+		Url = 'url'
+	}
+</script>
+
+<script lang="ts">
+	import { createEventDispatcher } from 'svelte';
+	import Icon from 'svelte-icons-pack/Icon.svelte';
+	import AiOutlineEyeInvisible from 'svelte-icons-pack/ai/AiOutlineEyeInvisible';
+	import AiOutlineEye from 'svelte-icons-pack/ai/AiOutlineEye';
+	import { RandomId } from '$src/lib/components/Random';
+
+	export let name: string;
+
+	export let type: InputType = InputType.Text;
+	export let value: string | number = '';
+	export let placeholder: string = '';
+	export let disabled: boolean = false;
+	export let readonly: boolean = false;
+	export let className: string = '';
+
+	export let iconBefore: any = undefined;
+	export let iconBeforeColor: string = 'white';
+	export let iconBeforeInteractive: boolean = false;
+
+	export let iconAfter: any = undefined;
+	export let iconAfterColor: string = 'white';
+	export let iconAfterInteractive: boolean = false;
+
+	let passwordShowed: boolean = false;
+	let isPasswordinput = () =>
+		type === InputType.Password || (type === InputType.Text && passwordShowed == true);
+
+	const dispatch = createEventDispatcher();
+	const id = RandomId();
+
+	const handleInput = (e: Event & { currentTarget: EventTarget & HTMLInputElement }) => {
+		value = type === InputType.Number ? Number(e.currentTarget.value) : e.currentTarget.value;
+		dispatch('input');
+	};
+
+	const handleClickBefore = (e: Event) => {
+		dispatch('click_before');
+	};
+
+	const handleClickAfter = (e: Event) => {
+		if (isPasswordinput()) {
+			passwordShowed != passwordShowed;
+		}
+
+		dispatch('click_after');
+	};
+
+	const handleDummy = (e: Event) => {};
+</script>
+
+<div class="flex flex-col {className}">
+	{#if $$slots.label}
+		<label for="input-group-1" class="flex flex-grow mb-2 text-sm font-medium text-white">
+			<slot name="label" />
+		</label>
+	{/if}
+	<div class="flex flex-grow relative">
+		{#if iconBefore}
+			<div
+				class="absolute inset-y-0 left-0 flex items-center pl-3
+				pointer-events-none {iconBeforeInteractive ? 'cursor-pointer' : ''}"
+				on:click={handleClickBefore}
+				on:keydown={handleDummy}
+				on:keyup={handleDummy}
+				on:keypress={handleDummy}
+			>
+				<Icon src={iconBefore} size="22" color={iconAfterColor} />
+			</div>
+		{/if}
+		<input
+			type={isPasswordinput() ? (passwordShowed ? InputType.Text : InputType.Password) : type}
+			{name}
+			{id}
+			{value}
+			on:input={handleInput}
+			on:change={handleInput}
+			{placeholder}
+			autocomplete="off"
+			class="border text-sm rounded-lg block w-full
+			{iconBefore ? 'pl-10' : ''}
+			{iconAfter ? 'pr-10' : ''}
+			{disabled ? 'cursor-not-allowed' : ''}
+			p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
+			{disabled}
+			{readonly}
+		/>
+		{#if iconAfter || isPasswordinput()}
+			<div
+				class="absolute inset-y-0 right-0 flex items-center pr-3
+				pointer-events-none {iconAfterInteractive || isPasswordinput() ? 'cursor-pointer' : ''}"
+				on:click={handleClickAfter}
+				on:keydown={handleDummy}
+				on:keyup={handleDummy}
+				on:keypress={handleDummy}
+			>
+				{#if isPasswordinput()}
+					<Icon
+						src={passwordShowed ? AiOutlineEye : AiOutlineEyeInvisible}
+						size="22"
+						color={iconBeforeColor}
+					/>
+				{:else}
+					<Icon src={iconAfter} size="22" color={iconBeforeColor} />
+				{/if}
+			</div>
+		{/if}
+	</div>
+</div>
