@@ -1,7 +1,7 @@
 [package]
 name = "smtp_client"
-version = "0.1.0"
-description = "A Tauri App"
+version = "0.2.1"
+description = "Simple SMTP Client"
 authors = ["Sebastian Kaźmierczak <moques93@gmail.com>"]
 license = ""
 repository = ""
@@ -9,24 +9,21 @@ edition = "2021"
 rust-version = "1.66.0"
 
 [build-dependencies]
-tauri-build = { version = "2.0.0-alpha.4", features = [] }
+tauri-build = { version = "2.0.0-alpha.4", default-features = false, features = [] }
 
 [dependencies]
-serde_json = "1.0.96"
-serde = { version = "1.0.160", features = ["derive"] }
-tauri = { version = "2.0.0-alpha.8", features = ["devtools", "shell-open"] }
-anyhow = "1.0.70"
-async-trait = "0.1.68"
-thiserror = "1.0.40"
-tauri-runtime = "0.13.0-alpha.4"
-orion = { version = "0.17.4", features = ["safe_api", "serde", "alloc"] }
-typeshare = "1.0.1"
-mail-send = "0.3.3"
-mail-builder = "0.2.5"
-sled = "0.34.7"
-bincode = { version = "2.0.0-rc.3", features = ["serde", "alloc"] }
+serde_json = { version = "1.0.96", default-features = false, features = [] }
+serde = { version = "1.0.160", default-features = false, features = ["derive"] }
+tauri = { version = "2.0.0-alpha.8", default-features = false, features = ["compression", "shell-open", "wry"] }
+anyhow = { version = "1.0.70", default-features = false, features = [] }
+tauri-runtime = { version = "0.13.0-alpha.4", default-features = false, features = [] }
+orion = { version = "0.17.4", default-features = false, features = ["serde", "safe_api"] }
+typeshare = { version = "1.0.1", default-features = false, features = [] }
+mail-send = { version = "0.3.3", default-features = false, features = ["builder"] }
+sled = { version = "0.34.7", default-features = false, features = [] }
+bincode = { version = "2.0.0-rc.3", default-features = false, features = ["serde", "alloc"] }
 
-rust_utils = { git = "https://github.com/MoQuEs/rust_utils" }
+rust_utils = { git = "https://github.com/MoQuEs/rust_utils", default-features = false, features = [] }
 
 [features]
 default = ["custom-protocol"]
