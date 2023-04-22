@@ -1,10 +1,35 @@
 export default {
 	ERROR: 'ERROR',
-	'homepage.title': 'SMTP Client',
-	'form.email': 'Email',
-	'form.password': 'Password',
-	'form.remember_me': 'Remember me',
-	'form.login': 'Login',
-	'form.reset': 'Reset',
-	'toats.close_all': 'Close all'
+	SUCCESS: 'SUCCESS',
+	title: 'SMTP Client',
+	custom: 'Custom',
+
+	'smtp.configuration.title': 'Configuration',
+	'smtp.configuration.address': 'Address',
+	'smtp.configuration.port': 'Port',
+	'smtp.configuration.use_auth': 'Use auth',
+	'smtp.configuration.user': 'User',
+	'smtp.configuration.password': 'Password',
+	'smtp.configuration.require_ssl': 'Require SSL',
+	'smtp.configuration.verify_certificates': 'Verify Certificates',
+
+	'smtp.message.title': 'Message',
+	'smtp.message.to.name': 'To name',
+	'smtp.message.to.email': 'To email',
+	'smtp.message.from.name': 'From name',
+	'smtp.message.from.email': 'From email',
+	'smtp.message.reply_to.name': 'Replay to name',
+	'smtp.message.reply_to.email': 'Replay to email',
+	'smtp.message.header.add': 'Add custom header',
+	'smtp.message.header.name': 'Name',
+	'smtp.message.header.value': 'Value',
+	'smtp.message.subject': 'Subject',
+	'smtp.message.body.html': 'HTML',
+	'smtp.message.body.convert_html_to_text': 'Get TEXT version from HTML',
+	'smtp.message.body.text': 'TEXT',
+
+	'api.error': 'Error while calling api',
+	'api.data.error': 'Error while calling api',
+	'api.send_mail.success': 'Email was sent',
+	'api.send_mail.error': 'Cant sent email'
 };

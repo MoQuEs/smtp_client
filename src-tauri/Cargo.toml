@@ -9,21 +9,22 @@ edition = "2021"
 rust-version = "1.66.0"
 
 [build-dependencies]
-tauri-build = { version = "^2.0.0-alpha.2", features = [] }
+tauri-build = { version = "2.0.0-alpha.4", features = [] }
 
 [dependencies]
-serde_json = "^1.0.94"
-serde = { version = "^1.0.152", features = ["derive"] }
-tauri = { version = "^2.0.0-alpha.4", features = ["devtools", "shell-open"] }
-tokio = { version = "^1.26.0", features = ["macros", "rt-multi-thread"] }
-anyhow = "^1.0.69"
-async-trait = "^0.1.66"
-thiserror = "^1.0.39"
-tauri-runtime = "^0.13.0-alpha.2"
-orion = { version = "^0.17.4", features = ["safe_api", "serde", "alloc"] }
-lettre = "^0.10.3"
-typeshare = "^1.0.1"
-darkbird = { git = "https://github.com/Rustixir/darkbird", rev = "9b62318" }
+serde_json = "1.0.96"
+serde = { version = "1.0.160", features = ["derive"] }
+tauri = { version = "2.0.0-alpha.8", features = ["devtools", "shell-open"] }
+anyhow = "1.0.70"
+async-trait = "0.1.68"
+thiserror = "1.0.40"
+tauri-runtime = "0.13.0-alpha.4"
+orion = { version = "0.17.4", features = ["safe_api", "serde", "alloc"] }
+typeshare = "1.0.1"
+mail-send = "0.3.3"
+mail-builder = "0.2.5"
+sled = "0.34.7"
+bincode = { version = "2.0.0-rc.3", features = ["serde", "alloc"] }
 
 rust_utils = { git = "https://github.com/MoQuEs/rust_utils" }
 

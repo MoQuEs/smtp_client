@@ -1,155 +1,185 @@
 import { invoke, type InvokeArgs } from '@tauri-apps/api/tauri';
-import v8n from 'v8n';
-import { validate, validateOrReject } from 'class-validator';
 import t from '$i18n/t';
 import { addToast } from '$stores/toasts';
 import { ToastType } from '$components/Toast.svelte';
-import type {
-	TauriResponse,
-	ServerRequest as SR,
-	MessageRequest as MR,
-	MessageHeaderRequest as MHR
-} from '$generated/tauri';
+import type * as tauri from '$generated/tauri';
 
-export interface ChechParams {
-	//chechParams(): boolean;
+export class NamedSMTPConfiguration implements tauri.NamedSMTPConfiguration {
+	public name: string;
+	public configuration: SMTPConfiguration;
+
+	constructor(name: string, configuration: SMTPConfiguration = new SMTPConfiguration()) {
+		this.name = name;
+		this.configuration = configuration;
+	}
 }
 
-class ServerRequest implements SR {
-	address: string;
-	port: number;
-	use_auth: boolean = false;
-	auth_user: string = '';
-	auth_password: string = '';
-	use_ssl: boolean = false;
-	ssl_verify: boolean = true;
+export class SMTPConfiguration implements tauri.SMTPConfiguration {
+	public address: SMTPConfigurationAddress;
+	public auth: SMTPConfigurationAuth;
+	public require_ssl: boolean;
+	public verify_certificates: boolean;
 
 	constructor(
-		address: string,
-		port: number,
-		use_auth: boolean = false,
-		auth_user: string = '',
-		auth_password: string = '',
-		use_ssl: boolean = false,
-		ssl_verify: boolean = true
+		address: SMTPConfigurationAddress = new SMTPConfigurationAddress(),
+		auth: SMTPConfigurationAuth = new SMTPConfigurationAuth(),
+		require_ssl: boolean = false,
+		verify_certificates: boolean = false
 	) {
 		this.address = address;
-		this.port = port;
-		this.use_auth = use_auth;
-		this.auth_user = auth_user;
-		this.auth_password = auth_password;
-		this.use_ssl = use_ssl;
-		this.ssl_verify = ssl_verify;
-	}
-
-	setAuth(use_auth: boolean = false, auth_user: string = '', auth_password: string = '') {
-		this.use_auth = use_auth;
-		this.auth_user = auth_user;
-		this.auth_password = auth_password;
-	}
-
-	setSSL(use_ssl: boolean = false, ssl_verify: boolean = true) {
-		this.use_ssl = use_ssl;
-		this.ssl_verify = ssl_verify;
+		this.auth = auth;
+		this.require_ssl = require_ssl;
+		this.verify_certificates = verify_certificates;
 	}
 }
 
-class MessageRequest implements MR {
-	to_name: string;
-	to_email: string;
-	from_name: string;
-	from_email: string;
-	replay_to_name: string = '';
-	replay_to_email: string = '';
-	headers: MessageHeaderRequest[] = [];
-	subject: string = '';
-	body: string = '';
+export class SMTPConfigurationAddress implements tauri.SMTPConfigurationAddress {
+	public address: string;
+	public port: number;
+
+	constructor(address: string = '', port: number = 25) {
+		this.address = address;
+		this.port = port;
+	}
+}
+
+export class SMTPConfigurationAuth implements tauri.SMTPConfigurationAuth {
+	public use_auth: boolean;
+	public user: string;
+	public password: string;
+
+	constructor(use_auth: boolean = false, user: string = '', password: string = '') {
+		this.use_auth = use_auth;
+		this.user = user;
+		this.password = password;
+	}
+}
+
+export class NamedSMTPMessage implements tauri.NamedSMTPMessage {
+	public name: string;
+	public message: SMTPMessage;
+
+	constructor(name: string, message: SMTPMessage = new SMTPMessage()) {
+		this.name = name;
+		this.message = message;
+	}
+}
+
+export class SMTPMessage implements tauri.SMTPMessage {
+	public to: SMTPMessageAddress;
+	public from: SMTPMessageAddress;
+	public reply_to: SMTPMessageAddress;
+	public cc: SMTPMessageAddress;
+	public bcc: SMTPMessageAddress;
+	public headers: SMTPMessageHeader[];
+	public subject: string;
+	public body: SMTPMessageBody;
 
 	constructor(
-		to_name: string,
-		to_email: string,
-		from_name: string,
-		from_email: string,
-		replay_to_name: string = '',
-		replay_to_email: string = '',
-		headers: MessageHeaderRequest[] = [],
+		to: SMTPMessageAddress = new SMTPMessageAddress(),
+		from: SMTPMessageAddress = new SMTPMessageAddress(),
+		reply_to: SMTPMessageAddress = new SMTPMessageAddress(),
+		cc: SMTPMessageAddress = new SMTPMessageAddress(),
+		bcc: SMTPMessageAddress = new SMTPMessageAddress(),
+		headers: SMTPMessageHeader[] = [],
 		subject: string = '',
-		body: string = ''
+		body: SMTPMessageBody = new SMTPMessageBody()
 	) {
-		this.to_name = to_name;
-		this.to_email = to_email;
-		this.from_name = from_name;
-		this.from_email = from_email;
-		this.replay_to_name = replay_to_name;
-		this.replay_to_email = replay_to_email;
+		this.to = to;
+		this.from = from;
+		this.reply_to = reply_to;
+		this.cc = cc;
+		this.bcc = bcc;
 		this.headers = headers;
 		this.subject = subject;
-		this.body = body;
-	}
-
-	setReplayTo(replay_to_name: string = '', replay_to_email: string = '') {
-		this.replay_to_name = replay_to_name;
-		this.replay_to_email = replay_to_email;
-	}
-
-	setHeaders(headers: MessageHeaderRequest[] = []) {
-		this.headers = headers;
-	}
-
-	addHeader(header: MessageHeaderRequest) {
-		this.headers.push(header);
-	}
-
-	addHeaderRaw(header_name: string, header_value: string) {
-		this.addHeader(new MessageHeaderRequest(header_name, header_value));
-	}
-
-	setSubject(subject: string = '') {
-		this.subject = subject;
-	}
-
-	setBody(body: string = '') {
 		this.body = body;
 	}
 }
 
-class MessageHeaderRequest implements MHR {
-	header: string;
-	value: string;
+export class SMTPMessageAddress implements tauri.SMTPMessageAddress {
+	public name: string | undefined;
+	public email: string;
 
-	constructor(header: string, value: string) {
-		this.header = header;
+	constructor(name: string | undefined = '', email: string = '') {
+		this.name = name;
+		this.email = email;
+	}
+}
+
+export class SMTPMessageHeader implements tauri.SMTPMessageHeader {
+	public name: string;
+	public value: string;
+
+	constructor(name: string, value: string) {
+		this.name = name;
 		this.value = value;
 	}
 }
 
-function isTauriResponse<T>(res: unknown): res is TauriResponse<T> {
-	return (res as TauriResponse<T>) !== undefined;
+export class SMTPMessageBody implements tauri.SMTPMessageBody {
+	public html: string;
+	public text: string;
+
+	constructor(html: string = '', text: string = '') {
+		this.html = html;
+		this.text = text;
+	}
 }
 
-export const sendMail = (server: ServerRequest, message: MessageRequest) => {
-	invoke('send_mail', { server: server, message: message })
-		.then((res) => {
-			if (isTauriResponse(res)) {
+export type Callback<T> = (response_data: tauri.TauriResponse<T>) => Promise<void>;
+
+export const sendMail = async (
+	server: SMTPConfiguration,
+	message: SMTPMessage,
+	callback: Callback<null> | undefined = undefined
+) => {
+	callTauri<null>(
+		'send_mail_command',
+		{ server: server, message: message },
+		async (response_data) => {
+			if (response_data.success) {
 				addToast({
-					type: res.success ? ToastType.Success : ToastType.Error,
-					title: t('ERROR'),
-					text: res.message
+					type: ToastType.Success,
+					title: t('api.send_mail.success')
 				});
+			} else {
+				addToast({
+					type: ToastType.Error,
+					title: t('api.send_mail.error')
+				});
+			}
+		}
+	);
+};
+
+async function callTauri<T>(
+	function_name: string,
+	data: InvokeArgs,
+	callback: Callback<T> | undefined = undefined
+) {
+	invoke<tauri.TauriResponse<T>>(function_name, data)
+		.then(async (res) => {
+			if (isTauriResponse(res)) {
+				if (callback !== undefined) {
+					callback(res);
+				}
 				return;
 			}
 			addToast({
 				type: ToastType.Error,
-				title: t('ERROR')
+				title: t('api.data.error'),
+				text: typeof res
 			});
 		})
 		.catch((e) =>
 			addToast({
 				type: ToastType.Error,
-				title: t('ERROR'),
+				title: t('api.error'),
 				text: e
 			})
 		);
-};
+}
 
-export { ServerRequest, MessageRequest, MessageHeaderRequest };
+function isTauriResponse<T>(res: unknown): res is tauri.TauriResponse<T> {
+	return (res as tauri.TauriResponse<T>) !== undefined;
+}

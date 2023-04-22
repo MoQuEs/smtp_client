@@ -22,6 +22,7 @@
 	export let type: InputType = InputType.Text;
 	export let value: string | number = '';
 	export let placeholder: string = '';
+	export let autocomplete: string = 'off';
 	export let disabled: boolean = false;
 	export let readonly: boolean = false;
 	export let className: string = '';
@@ -88,7 +89,6 @@
 			on:input={handleInput}
 			on:change={handleInput}
 			{placeholder}
-			autocomplete="off"
 			class="border text-sm rounded-lg block w-full
 			{iconBefore ? 'pl-10' : ''}
 			{iconAfter ? 'pr-10' : ''}
@@ -96,6 +96,7 @@
 			p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
 			{disabled}
 			{readonly}
+			{autocomplete}
 		/>
 		{#if iconAfter || isPasswordinput()}
 			<div

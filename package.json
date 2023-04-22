@@ -12,9 +12,7 @@
     "tauri": "tauri"
   },
   "dependencies": {
-    "@tauri-apps/api": "^1.2.0",
-    "class-validator": "^0.14.0",
-    "v8n": "^1.5.1"
+    "@tauri-apps/api": "^1.2.0"
   },
   "devDependencies": {
     "@fortawesome/free-brands-svg-icons": "^6.4.0",
@@ -23,10 +21,13 @@
     "@sveltejs/adapter-static": "^2.0.1",
     "@sveltejs/kit": "^1.14.0",
     "@tauri-apps/cli": "^1.2.3",
+    "@types/html-to-text": "^9.0.0",
     "autoprefixer": "^10.4.14",
+    "class-validator": "^0.14.0",
     "css.gg": "^2.0.0",
     "cssnano": "^6.0.0",
     "flowbite-svelte": "^0.34.2",
+    "html-to-text": "^9.0.5",
     "marked": "^4.3.0",
     "postcss": "^8.4.21",
     "postcss-import": "^15.1.0",
@@ -43,6 +44,7 @@
     "tailwindcss": "=3.2.7",
     "tslib": "^2.5.0",
     "typescript": "^5.0.2",
+    "v8n": "^1.5.1",
     "vite": "^4.2.1"
   }
 }

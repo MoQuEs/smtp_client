@@ -32,3 +32,5 @@ dist-ssr
 
 /target
 /src-tauri/target
+
+data.sled

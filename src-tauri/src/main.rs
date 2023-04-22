@@ -5,15 +5,12 @@
 
 extern crate core;
 
-use std::sync::Arc;
-use tauri::Manager;
-
 mod commands;
+mod crypt;
+mod database;
+mod response;
 
-pub struct AppState {}
-
-#[tokio::main]
-async fn main() {
+fn main() {
     tauri::Builder::default()
         .setup(|app| {
             #[cfg(debug_assertions)]
@@ -24,8 +21,14 @@ async fn main() {
             }
             Ok(())
         })
-        .manage(Arc::new(AppState {}))
-        .invoke_handler(tauri::generate_handler![commands::send_mail])
+        //.manage(database::connect())
+        .invoke_handler(tauri::generate_handler![
+            commands::send_mail_command,
+            commands::save_configuration_command,
+            commands::get_configurations_command,
+            commands::save_message_command,
+            commands::get_messages_command,
+        ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }

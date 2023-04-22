@@ -8,30 +8,57 @@ export interface TauriResponse<T> {
 	data?: T;
 }
 
-export interface ServerRequest {
+export interface NamedSMTPConfiguration {
+	name: string;
+	configuration: SMTPConfiguration;
+}
+
+export interface SMTPConfiguration {
+	address: SMTPConfigurationAddress;
+	auth: SMTPConfigurationAuth;
+	require_ssl: boolean;
+	verify_certificates: boolean;
+}
+
+export interface SMTPConfigurationAddress {
 	address: string;
 	port: number;
+}
+
+export interface SMTPConfigurationAuth {
 	use_auth: boolean;
-	auth_user: string;
-	auth_password: string;
-	use_ssl: boolean;
-	ssl_verify: boolean;
+	user: string;
+	password: string;
 }
 
-export interface MessageRequest {
-	to_name: string;
-	to_email: string;
-	from_name: string;
-	from_email: string;
-	replay_to_name: string;
-	replay_to_email: string;
-	headers: MessageHeaderRequest[];
+export interface NamedSMTPMessage {
+	name: string;
+	message: SMTPMessage;
+}
+
+export interface SMTPMessage {
+	to: SMTPMessageAddress;
+	from: SMTPMessageAddress;
+	reply_to: SMTPMessageAddress;
+	cc: SMTPMessageAddress;
+	bcc: SMTPMessageAddress;
+	headers: SMTPMessageHeader[];
 	subject: string;
-	body: string;
+	body: SMTPMessageBody;
 }
 
-export interface MessageHeaderRequest {
-	header: string;
+export interface SMTPMessageAddress {
+	name?: string;
+	email: string;
+}
+
+export interface SMTPMessageHeader {
+	name: string;
 	value: string;
+}
+
+export interface SMTPMessageBody {
+	html: string;
+	text: string;
 }
 

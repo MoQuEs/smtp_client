@@ -1,11 +1,12 @@
-import { derived, writable, type Writable, get } from 'svelte/store';
+import { writable, type Writable, get } from 'svelte/store';
+import type translate_arr from './translations/en';
 
 export const locale: Writable<string> = writable('en');
 
 export let locales: Array<string> = [];
 let translations: Map<string, Map<string, string>> = new Map();
 
-function loadFilesFrompath(globPath: string) {
+export function loadFilesFrompath(globPath: string) {
 	const languagesModules: any = import.meta.glob('./translations/*.(js|ts)', {
 		import: 'default',
 		eager: true
@@ -41,4 +42,7 @@ loadFilesFrompath('./translations/*.(js|ts)');
 
 export const currentLocale = () => get(locale);
 export const allowedLocales = () => locales;
-export default (key: string, vars: object = {}) => translate(get(locale), key, vars);
+export const changeLocale = (localeToSet: (typeof locales)[number]) => locale.set(localeToSet);
+
+type TranslateKeys = keyof typeof translate_arr;
+export default (key: TranslateKeys, vars: object = {}) => translate(get(locale), key, vars);
