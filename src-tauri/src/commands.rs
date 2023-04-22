@@ -4,9 +4,9 @@ use crate::response::{
     NamedSMTPMessage, SMTPConfiguration, SMTPConfigurations, SMTPMessage, SMTPMessages,
     TauriResponse,
 };
-use mail_builder::headers::address::Address;
-use mail_builder::headers::HeaderType;
-use mail_builder::MessageBuilder;
+use mail_send::mail_builder::headers::address::Address;
+use mail_send::mail_builder::headers::HeaderType;
+use mail_send::mail_builder::MessageBuilder;
 use mail_send::SmtpClientBuilder;
 
 #[tauri::command]
