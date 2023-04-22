@@ -8,15 +8,11 @@
   },
   "package": {
     "productName": "smtp_client",
-    "version": "0.1.0"
+    "version": "0.2.3"
   },
   "tauri": {
     "allowlist": {
-      "all": false,
-      "shell": {
-        "all": false,
-        "open": true
-      }
+      "all": false
     },
     "bundle": {
       "active": true,
