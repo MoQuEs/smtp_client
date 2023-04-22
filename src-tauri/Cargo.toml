@@ -1,6 +1,6 @@
 [package]
 name = "smtp_client"
-version = "0.2.3"
+version = "0.2.4"
 description = "Simple SMTP Client"
 authors = ["Sebastian Kaźmierczak <moques93@gmail.com>"]
 license = ""
