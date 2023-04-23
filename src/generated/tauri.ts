@@ -61,4 +61,3 @@ export interface SMTPMessageBody {
 	html: string;
 	text: string;
 }
-

@@ -1,12 +1,15 @@
 [package]
 name = "smtp_client"
-version = "0.2.4"
-description = "Simple SMTP Client"
+version = "0.2.5"
+description = "SMTP Client"
+keywords = ["aplication", "smtp", "client", "devtools"]
 authors = ["Sebastian Kaźmierczak <moques93@gmail.com>"]
-license = ""
-repository = ""
+license = "MIT"
+homepage = "https://github.com/MoQuEs/smtp_client"
+repository = "https://github.com/MoQuEs/smtp_client"
 edition = "2021"
 rust-version = "1.66.0"
+readme = "README.md"
 
 [build-dependencies]
 tauri-build = { version = "2.0.0-alpha.4", default-features = false, features = [] }

@@ -1,74 +1,68 @@
 import fs from 'fs';
 import { exec } from './exec.js';
 
-exec('git rev-parse --abbrev-ref HEAD')
-	.then(async (stdout) => {
-		let matches = RegExp('^release/v([0-9]+.[0-9]+.[0-9]+)$', 'i').exec(stdout.trim());
-		if (matches === null) {
-			return;
+exec('git rev-parse --abbrev-ref HEAD').then(async (stdout) => {
+	// get version
+	let matches = RegExp('^release/v([0-9]+.[0-9]+.[0-9]+)$', 'gi').exec(stdout.trim());
+	if (matches === null) {
+		console.log("Can't find version from branch");
+		process.exit(0);
+	}
+
+	let version = matches[1];
+
+	// stash data
+	await exec(`git stash -u -m "release_v${version}"`);
+
+	// change version in tauri.conf.json
+	let file = './src-tauri/tauri.conf.json';
+	fs.readFile(file, 'utf8', function (err, data) {
+		if (err) {
+			console.error(`Error while loading file: ${file}`);
+			console.error(err);
+			process.exit(1);
 		}
 
-		let version = matches[1];
-		version = '9.9.9';
-		return version;
-	})
-	.then(async (version) => {
-		await exec(`git stash -u`);
-		return version;
-	})
-	.then((version) => {
-		return new Promise((resolve, reject) => {
-			let file = './src-tauri/tauri.conf.json';
-			fs.readFile(file, 'utf8', function (err, data) {
-				if (err) {
-					console.error(`Error while loading file: ${file}`);
-					console.error(err);
-					reject(error, stderr);
-					process.exit(1);
-				}
-
-				var result = data.replace(/"version": "[0-9]+.[0-9]+.[0-9]+"/g, `"version": "${version}"`);
-				fs.writeFile(file, result, 'utf8', function (err) {
-					if (err) {
-						console.error(`Error while write file: ${file}`);
-						console.error(err);
-						reject(error, stderr);
-						process.exit(1);
-					}
-
-					resolve(version);
-				});
-			});
+		var result = data.replace(/"version": "[0-9]+.[0-9]+.[0-9]+"/g, `"version": "${version}"`);
+		fs.writeFile(file, result, 'utf8', function (err) {
+			if (err) {
+				console.error(`Error while write file: ${file}`);
+				console.error(err);
+				process.exit(1);
+			}
 		});
-	})
-	.then(async (version) => {
-		await exec(`cargo bump ${version}`);
-		return version;
-	})
-	.then(async (version) => {
-		await exec(`npm version --commit-hooks false --git-tag-version false ${version}`);
-		return version;
-	})
-	.then(async (version) => {
-		await exec(`git add package.json`);
-		return version;
-	})
-	.then(async (version) => {
-		await exec(`git add package-lock.json`);
-		return version;
-	})
-	.then(async (version) => {
-		await exec(`git add ./src-tauri/Cargo.toml`);
-		return version;
-	})
-	.then(async (version) => {
-		await exec(`git add Cargo.lock`);
-		return version;
-	})
-	.then(async (version) => {
-		await exec(`git add ./src-tauri/tauri.conf.json`);
-		return version;
-	})
-	.catch((a, b, c) => {
-		console.error(a, b, c);
 	});
+
+	// change version in cargo
+	await exec(`cargo bump ${version}`);
+
+	// change version in npm
+	await exec(
+		`npm version --allow-same-version --commit-hooks false --git-tag-version false ${version}`
+	);
+
+	// add files to commit
+	await exec(`git add package.json`);
+	await exec(`git add package-lock.json`);
+	await exec(`git add src-tauri/Cargo.toml`);
+	await exec(`git add Cargo.lock`);
+	await exec(`git add src-tauri/tauri.conf.json`);
+
+	// check if needs to make commit
+	await exec(`git status`).then(async (stdout) => {
+		let matches = RegExp('modified:', 'gi').exec(stdout.trim());
+		if (matches !== null) {
+			// if needs to make commit make commit
+			await exec(`git commit -m "auto commit release/v${version}"`);
+		}
+	});
+
+	// check if stashed anny files
+	await exec(`git stash list`).then(async (stdout) => {
+		let matches = RegExp(`stash@{([0-9]+)}: On .*: release_v${version}`, 'gi').exec(stdout.trim());
+		if (matches !== null) {
+			// if found stash from this release pop it
+			await exec(`git stash pop stash@{${matches[1]}}`);
+		}
+	});
+});
