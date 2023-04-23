@@ -1,6 +1,6 @@
 [package]
 name = "smtp_client"
-version = "0.2.8"
+version = "0.2.9"
 description = "SMTP Client"
 keywords = ["aplication", "smtp", "client", "devtools"]
 authors = ["Sebastian Kaźmierczak <moques93@gmail.com>"]
