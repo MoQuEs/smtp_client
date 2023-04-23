@@ -1,4 +1,4 @@
-import { exec_and_forget } from './exec.js';
+import { exec } from './exec.js';
 
-exec_and_forget('cargo fmt');
-exec_and_forget('npx prettier --write src');
+exec('cargo fmt');
+exec('npx prettier --write src');
