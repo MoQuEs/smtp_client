@@ -1,4 +1,7 @@
 import { exec } from './exec.js';
 
-exec('cargo fmt');
-exec('npx prettier --write src');
+new Promise((resolve, reject) => {}).then(async () => {
+	await exec('cargo fmt');
+	await exec('npx prettier --ignore-unknown --write src');
+	await exec('npx prettier --ignore-unknown --write scripts');
+});
