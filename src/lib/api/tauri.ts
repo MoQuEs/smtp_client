@@ -1,7 +1,7 @@
 import { invoke, type InvokeArgs } from '@tauri-apps/api/tauri';
-import t from '$i18n/t';
+import t from '$i18n/translate';
 import { addToast } from '$stores/toasts';
-import { ToastType } from '$components/Toast.svelte';
+import { ToastType } from '$components/toast/Toast.svelte';
 import type * as tauri from '$generated/tauri';
 
 export class NamedSMTPConfiguration implements tauri.NamedSMTPConfiguration {

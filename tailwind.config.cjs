@@ -7,7 +7,23 @@ module.exports = {
 		'./node_modules/flowbite-svelte/**/*.{html,js,svelte,ts}'
 	],
 	theme: {
-		extend: {},
+		extend: {
+			zIndex: {
+				100: '100',
+				999: '999',
+				9999: '9999',
+				99999: '99999'
+			},
+			maxWidth: {
+				25: '25%',
+				50: '50%',
+				75: '75%'
+			},
+			lineHeight: {
+				11: '2.75rem',
+				12: '3rem'
+			}
+		},
 		colors: {
 			inherit: colors.inherit,
 			current: colors.current,

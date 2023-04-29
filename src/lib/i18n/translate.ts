@@ -30,7 +30,7 @@ function translate(locale: string, key: string, vars: object): string {
 	}
 
 	Object.entries(vars).forEach(([key, value], _) => {
-		const regex = new RegExp(`{{${key}}}`, 'g');
+		const regex = new RegExp(`{{[ \t]*${key}[ \t]*}}`, 'g');
 
 		text = text.replace(regex, value);
 	});

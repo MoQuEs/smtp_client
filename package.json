@@ -4,14 +4,17 @@
 	"version": "0.2.9",
 	"type": "module",
 	"scripts": {
-		"dev": "vite dev",
-		"build": "vite build",
+		"dev": "npm run generate && vite dev",
+		"build": "npm run generate && npm run images && vite build",
 		"preview": "vite preview",
 		"check": "svelte-kit sync && svelte-check --tsconfig ./jsconfig.json",
 		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./jsconfig.json --watch",
 		"tauri": "tauri",
+		"generate": "npm run generate:typeshare",
+		"generate:typeshare": "typeshare --lang=typescript --output-file=./src/generated/tauri.ts .",
 		"bump": "node ./scripts/bump",
-		"format": "node ./scripts/format"
+		"format": "node ./scripts/format",
+		"images": "node ./scripts/images"
 	},
 	"dependencies": {
 		"@tauri-apps/api": "^1.2.0"

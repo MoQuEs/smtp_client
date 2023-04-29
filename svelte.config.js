@@ -8,22 +8,24 @@ const config = {
 		alias: {
 			$src: 'src',
 			'$src/*': 'src/*',
-			$lib: 'src/lib',
-			'$lib/*': 'src/lib/*',
+			$assets: 'src/assets',
+			'$assets/*': 'src/assets/*',
+			$generated: 'src/generated',
+			'$generated/*': 'src/generated/*',
+			$lib: 'lib',
+			'$lib/*': 'lib/*',
+			$api: 'src/lib/api',
+			'$api/*': 'src/lib/api/*',
 			$components: 'src/lib/components',
 			'$components/*': 'src/lib/components/*',
 			$i18n: 'src/lib/i18n',
 			'$i18n/*': 'src/lib/i18n/*',
 			$stores: 'src/lib/stores',
 			'$stores/*': 'src/lib/stores/*',
-			$elements: 'src/lib/elements',
-			'$elements/*': 'src/lib/elements/*',
-			$api: 'src/lib/api',
-			'$api/*': 'src/lib/api/*',
+			$types: 'src/lib/types',
+			'$types/*': 'src/lib/types/*',
 			$routes: 'src/routes',
-			'$routes/*': 'src/routes/*',
-			$generated: 'src/generated',
-			'$generated/*': 'src/generated/*'
+			'$routes/*': 'src/routes/*'
 		}
 	},
 	preprocess: [vitePreprocess()]
