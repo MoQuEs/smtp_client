@@ -15,7 +15,7 @@
 	import Icon from 'svelte-icons-pack/Icon.svelte';
 	import AiOutlineEyeInvisible from 'svelte-icons-pack/ai/AiOutlineEyeInvisible';
 	import AiOutlineEye from 'svelte-icons-pack/ai/AiOutlineEye';
-	import { RandomId } from '$src/lib/components/Random';
+	import { RandomId } from '$components/Random';
 
 	export let name: string;
 

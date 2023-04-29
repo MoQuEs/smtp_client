@@ -1,5 +1,5 @@
 import { get, writable, type Writable } from 'svelte/store';
-import { NamedSMTPConfiguration } from '$api/tauri';
+import { NamedSMTPConfiguration } from '$src/lib/api/tauri';
 
 const empty = new NamedSMTPConfiguration('Empty');
 

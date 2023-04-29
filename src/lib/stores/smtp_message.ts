@@ -1,5 +1,5 @@
 import { get, writable, type Writable } from 'svelte/store';
-import { NamedSMTPMessage } from '$api/tauri';
+import { NamedSMTPMessage } from '$src/lib/api/tauri';
 
 const empty = new NamedSMTPMessage('Empty');
 

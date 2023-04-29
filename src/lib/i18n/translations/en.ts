@@ -1,8 +1,19 @@
 export default {
 	ERROR: 'ERROR',
 	SUCCESS: 'SUCCESS',
-	title: 'SMTP Client',
+	title: 'SMTPclient',
+	'title-1': 'SMTP',
+	'title-2': 'client',
 	custom: 'Custom',
+	logo: 'Logo',
+
+	'toast.close_all': 'Close all',
+	'toast.close_in': 'Close in {{seconds}}s',
+
+	'menu.send': 'Send',
+	'menu.configurations': 'Configurations',
+	'menu.messages': 'Messages',
+	'menu.settings': 'Settings',
 
 	'smtp.configuration.title': 'Configuration',
 	'smtp.configuration.address': 'Address',
