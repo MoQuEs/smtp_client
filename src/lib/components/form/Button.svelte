@@ -37,9 +37,10 @@
 	import { createEventDispatcher } from 'svelte';
 	import Icon from 'svelte-icons-pack';
 	import CgSpinnerTwoAlt from 'svelte-icons-pack/cg/CgSpinnerTwoAlt';
+	import { RandomId } from '$components/Random';
 
-	export let name: string;
 	export let text: string;
+	export let name: string = RandomId();
 
 	export let type: ButtonType = ButtonType.Button;
 	export let theme: ButtonTheme = ButtonTheme.Primary;

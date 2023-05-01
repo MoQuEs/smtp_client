@@ -3,6 +3,7 @@
 	import type { CEvent } from '$types/Event';
 
 	export let title: string = '';
+	export let className: string = '';
 
 	function mouseOver(event: CEvent<MouseEvent, HTMLDivElement>) {
 		titleTooltip(title);
@@ -21,6 +22,12 @@
 	function focus(_: CEvent<FocusEvent, HTMLDivElement>) {}
 </script>
 
-<div on:mouseover={mouseOver} on:focus={focus} on:mouseleave={mouseLeave} on:mousemove={mouseMove}>
+<div
+	class="inline-flex {className}"
+	on:mouseover={mouseOver}
+	on:focus={focus}
+	on:mouseleave={mouseLeave}
+	on:mousemove={mouseMove}
+>
 	<slot />
 </div>

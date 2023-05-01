@@ -17,7 +17,7 @@
 	import AiOutlineEye from 'svelte-icons-pack/ai/AiOutlineEye';
 	import { RandomId } from '$components/Random';
 
-	export let name: string;
+	export let name: string = RandomId();
 
 	export let type: InputType = InputType.Text;
 	export let value: string | number = '';

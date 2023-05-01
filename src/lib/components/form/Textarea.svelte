@@ -2,7 +2,7 @@
 	import { createEventDispatcher } from 'svelte';
 	import { RandomId } from '$components/Random';
 
-	export let name: string;
+	export let name: string = RandomId();
 
 	export let rows: number = 4;
 	export let value: string = '';

@@ -1,9 +1,8 @@
 <script lang="ts">
-	import { sendMail } from '$src/lib/api/tauri';
+	import { sendMail } from '$api/tauri';
 	import Icon from 'svelte-icons-pack';
 
-	import { smtp_configuration } from '$src/lib/stores/smtp_configuration';
-	import { smtp_message } from '$src/lib/stores/smtp_message';
+	import { smtp_message } from '$stores/smtp_message';
 	import t from '$i18n/translate';
 
 	import RiBusinessMailSendLine from 'svelte-icons-pack/ri/RiBusinessMailSendLine';
@@ -17,14 +16,10 @@
 	import Tab from '$components/tab/Tab.svelte';
 	import TabPanel from '$components/tab/TabPanel.svelte';
 	import Separator from '$components/Separator.svelte';
-	import SMTPConfiguration from '$components/smtp/SMTPConfiguration.svelte';
+	import SMTPConfigurationPanel from '$components/smtp/SMTPConfigurationPanel.svelte';
 	import SMTPMessage from '$components/smtp/SMTPMessage.svelte';
 	import Tooltip from '$components/tooltip/Tooltip.svelte';
 	import LogoWithText from '$components/logo/LogoWithText.svelte';
-
-	const sendMailHandle = () => {
-		sendMail($smtp_configuration.configuration, $smtp_message.message);
-	};
 </script>
 
 <Tabs>
@@ -62,14 +57,14 @@
 
 	<TabPanel>
 		<div class="flex flex-col">
-			<Button name="sendMail" text="Send Mail" className="mb-5" on:click={sendMailHandle} />
+			<Button name="sendMail" text="Send Mail" className="mb-5" />
 
 			<SMTPMessage bind:message={$smtp_message} />
 		</div>
 	</TabPanel>
 
 	<TabPanel>
-		<SMTPConfiguration bind:configuration={$smtp_configuration} />
+		<SMTPConfigurationPanel />
 	</TabPanel>
 
 	<!-- <TabPanel>

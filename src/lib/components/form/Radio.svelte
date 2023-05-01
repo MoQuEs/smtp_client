@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { RandomId } from '$components/Random';
 
-	export let name: string;
+	export let name: string = RandomId();
 
 	export let checked: boolean = false;
 	export let value: string = '';

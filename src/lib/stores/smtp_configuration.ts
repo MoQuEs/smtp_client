@@ -1,27 +1,40 @@
 import { get, writable, type Writable } from 'svelte/store';
-import { NamedSMTPConfiguration } from '$src/lib/api/tauri';
+import { NamedSMTPConfiguration } from '$api/tauri';
 
-const empty = new NamedSMTPConfiguration('Empty');
+export const customConfiguration: Writable<NamedSMTPConfiguration> = writable(
+	new NamedSMTPConfiguration('Custom')
+);
+export const allConfigurations: Writable<NamedSMTPConfiguration[]> = writable([
+	get(customConfiguration)
+]);
 
-export const smtp_configuration: Writable<NamedSMTPConfiguration> = writable(empty);
-export const smtp_configurations: Writable<NamedSMTPConfiguration[]> = writable([empty]);
-
-export const addSMTPConfiguration = (configuration: NamedSMTPConfiguration) => {
-	smtp_configurations.update((all) => [...all, configuration]);
+export const addConfiguration = (configuration: NamedSMTPConfiguration) => {
+	allConfigurations.update((all) => [...all, configuration]);
 };
 
-export const setSMTPConfigurations = (configurations: NamedSMTPConfiguration[]) => {
-	smtp_configurations.set([empty, ...configurations]);
+export const setConfigurations = (configurations: NamedSMTPConfiguration[]) => {
+	allConfigurations.set([get(customConfiguration), ...configurations]);
 };
 
-export const setSMTPConfigurationByName = (name: string) => {
-	get(smtp_configurations).forEach((configuration) => {
+export const selectCustomConfigurationByName = (name: string) => {
+	get(allConfigurations).forEach((configuration) => {
 		if (configuration.name === name) {
-			smtp_configuration.set(configuration);
+			customConfiguration.set(configuration);
 		}
 	});
 };
 
-export const setSMTPConfiguration = (configuration: NamedSMTPConfiguration) => {
-	smtp_configuration.set(configuration);
+export const setCustomConfiguration = (configuration: NamedSMTPConfiguration) => {
+	customConfiguration.set(configuration);
+};
+
+export const getConfigurationByName = (name: string): NamedSMTPConfiguration => {
+	let all = get(allConfigurations);
+	for (let index = 0; index < all.length; index++) {
+		if (all[index].name === name) {
+			return all[index];
+		}
+	}
+
+	return get(customConfiguration);
 };
