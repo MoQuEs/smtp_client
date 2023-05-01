@@ -13,6 +13,14 @@
 		XL
 	}
 
+	export enum ButtonPaddingSize {
+		XS,
+		SM,
+		MD,
+		LG,
+		XL
+	}
+
 	export enum ButtonMode {
 		Normal,
 		Disabled,
@@ -37,7 +45,7 @@
 	import { createEventDispatcher } from 'svelte';
 	import Icon from 'svelte-icons-pack';
 	import CgSpinnerTwoAlt from 'svelte-icons-pack/cg/CgSpinnerTwoAlt';
-	import { RandomId } from '$components/Random';
+	import { RandomId } from '$utils/random';
 
 	export let text: string;
 	export let name: string = RandomId();
@@ -45,6 +53,7 @@
 	export let type: ButtonType = ButtonType.Button;
 	export let theme: ButtonTheme = ButtonTheme.Primary;
 	export let size: ButtonSize = ButtonSize.MD;
+	export let padding: ButtonPaddingSize = ButtonPaddingSize.LG;
 	export let mode: ButtonMode = ButtonMode.Normal;
 	export let className: string = '';
 
@@ -74,6 +83,29 @@
 		case ButtonSize.XL:
 			textSizeClass = 'text-xl';
 			iconSizeClass = 'text-xl';
+			break;
+	}
+
+	let paddingSize = 'mx-5 my-3';
+	switch (padding) {
+		case ButtonPaddingSize.XS:
+			paddingSize = 'mx-2 my-1';
+			break;
+
+		case ButtonPaddingSize.SM:
+			paddingSize = 'mx-3 my-2';
+			break;
+
+		case ButtonPaddingSize.MD:
+			paddingSize = 'mx-4 my-2';
+			break;
+
+		case ButtonPaddingSize.LG:
+			paddingSize = 'mx-5 my-3';
+			break;
+
+		case ButtonPaddingSize.XL:
+			paddingSize = 'mx-6 my-4';
 			break;
 	}
 
@@ -154,7 +186,7 @@
 			{/if}
 		</div>
 	{/if}
-	<div class="flex flex-row flex-grow place-content-center align-middle mx-5 my-3">
+	<div class="flex flex-row flex-grow place-content-center align-middle {paddingSize}">
 		{#if $$slots.icon}
 			<div class="{text != '' ? 'mr-2' : ''} {iconSizeClass}">
 				<slot name="icon" />

@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte';
-	import { RandomId } from '$components/Random';
+	import { RandomId } from '$utils/random';
 
 	export let name: string = RandomId();
 

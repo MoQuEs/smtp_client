@@ -1,3 +1,5 @@
+#![allow(dead_code)]
+
 use crate::response::{
     AnyResult, MaybeSMTPConfiguration, MaybeSMTPMessage, NamedSMTPConfiguration, NamedSMTPMessage,
     SMTPConfigurations, SMTPMessages,

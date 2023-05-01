@@ -1,11 +1,21 @@
 export default {
-	ERROR: 'ERROR',
-	SUCCESS: 'SUCCESS',
 	title: 'SMTPclient',
 	'title-1': 'SMTP',
 	'title-2': 'client',
+	ERROR: 'ERROR',
+	SUCCESS: 'SUCCESS',
 	custom: 'Custom',
 	logo: 'Logo',
+	show: 'Show',
+	hide: 'Hide',
+	save: 'Save',
+	load: 'Load',
+	repleace: 'Repleace',
+	delete: 'Delete',
+	remove: 'Remove',
+
+	'components.form.input.show.password': 'Show password',
+	'components.form.input.hide.password': 'Hide password',
 
 	'toast.close_all': 'Close all',
 	'toast.close_in': 'Close in {{seconds}}s',
@@ -23,6 +33,7 @@ export default {
 	'smtp.configuration.password': 'Password',
 	'smtp.configuration.require_ssl': 'Require SSL',
 	'smtp.configuration.verify_certificates': 'Verify Certificates',
+	'smtp.configuration.configuration_name': 'Configuration name',
 
 	'smtp.message.title': 'Message',
 	'smtp.message.to.name': 'To name',

@@ -15,7 +15,9 @@
 	import Icon from 'svelte-icons-pack/Icon.svelte';
 	import AiOutlineEyeInvisible from 'svelte-icons-pack/ai/AiOutlineEyeInvisible';
 	import AiOutlineEye from 'svelte-icons-pack/ai/AiOutlineEye';
-	import { RandomId } from '$components/Random';
+	import t from '$i18n/translate';
+	import { RandomId } from '$utils/random';
+	import Tooltip from '$components/tooltip/Tooltip.svelte';
 
 	export let name: string = RandomId();
 
@@ -53,7 +55,7 @@
 
 	const handleClickAfter = (e: Event) => {
 		if (isPasswordinput()) {
-			passwordShowed != passwordShowed;
+			passwordShowed = !passwordShowed;
 		}
 
 		dispatch('click_after');
@@ -101,18 +103,24 @@
 		{#if iconAfter || isPasswordinput()}
 			<div
 				class="absolute inset-y-0 right-0 flex items-center pr-3
-				pointer-events-none {iconAfterInteractive || isPasswordinput() ? 'cursor-pointer' : ''}"
+				 {iconAfterInteractive || isPasswordinput() ? 'cursor-pointer' : ''}"
 				on:click={handleClickAfter}
 				on:keydown={handleDummy}
 				on:keyup={handleDummy}
 				on:keypress={handleDummy}
 			>
 				{#if isPasswordinput()}
-					<Icon
-						src={passwordShowed ? AiOutlineEye : AiOutlineEyeInvisible}
-						size="22"
-						color={iconBeforeColor}
-					/>
+					<Tooltip
+						title={passwordShowed
+							? t('components.form.input.hide.password')
+							: t('components.form.input.show.password')}
+					>
+						<Icon
+							src={passwordShowed ? AiOutlineEye : AiOutlineEyeInvisible}
+							size="22"
+							color={iconBeforeColor}
+						/>
+					</Tooltip>
 				{:else}
 					<Icon src={iconAfter} size="22" color={iconBeforeColor} />
 				{/if}

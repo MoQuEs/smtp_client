@@ -7,8 +7,8 @@
 
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte';
-	import { RandomId } from '$components/Random';
-	import type { NEvent } from '$types/Event';
+	import { RandomId } from '$utils/random';
+	import type { NEvent } from '$utils/types';
 
 	export let name: string = RandomId();
 	export let value: string | number = '';

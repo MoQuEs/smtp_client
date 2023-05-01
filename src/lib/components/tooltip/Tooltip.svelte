@@ -1,17 +1,17 @@
 <script lang="ts">
 	import { titleTooltip, showTooltip, positionTooltip } from '$stores/tooltips';
-	import type { CEvent } from '$types/Event';
+	import type { SMEvent, SFEvent } from '$utils/types';
 
 	export let title: string = '';
 	export let className: string = '';
 
-	function mouseOver(event: CEvent<MouseEvent, HTMLDivElement>) {
+	function mouseOver(event: SMEvent<HTMLDivElement>) {
 		titleTooltip(title);
 		mouseMove(event);
 		showTooltip(true);
 	}
 
-	function mouseMove(event: CEvent<MouseEvent, HTMLDivElement>) {
+	function mouseMove(event: SMEvent<HTMLDivElement>) {
 		positionTooltip({ x: event.pageX, y: event.pageY });
 	}
 
@@ -19,7 +19,7 @@
 		showTooltip(false);
 	}
 
-	function focus(_: CEvent<FocusEvent, HTMLDivElement>) {}
+	function focus(_: SFEvent<HTMLDivElement>) {}
 </script>
 
 <div

@@ -1,40 +1,49 @@
 import { get, writable, type Writable } from 'svelte/store';
 import { NamedSMTPConfiguration } from '$api/tauri';
+import { clone } from '$utils/utils';
 
 export const customConfiguration: Writable<NamedSMTPConfiguration> = writable(
-	new NamedSMTPConfiguration('Custom')
+	new NamedSMTPConfiguration('')
 );
-export const allConfigurations: Writable<NamedSMTPConfiguration[]> = writable([
-	get(customConfiguration)
-]);
+export const allConfigurations: Writable<NamedSMTPConfiguration[]> = writable([]);
 
-export const addConfiguration = (configuration: NamedSMTPConfiguration) => {
-	allConfigurations.update((all) => [...all, configuration]);
-};
-
-export const setConfigurations = (configurations: NamedSMTPConfiguration[]) => {
-	allConfigurations.set([get(customConfiguration), ...configurations]);
-};
-
-export const selectCustomConfigurationByName = (name: string) => {
-	get(allConfigurations).forEach((configuration) => {
-		if (configuration.name === name) {
-			customConfiguration.set(configuration);
-		}
-	});
-};
-
-export const setCustomConfiguration = (configuration: NamedSMTPConfiguration) => {
+export const setCustomConfigurations = (configuration: NamedSMTPConfiguration) => {
 	customConfiguration.set(configuration);
 };
 
-export const getConfigurationByName = (name: string): NamedSMTPConfiguration => {
-	let all = get(allConfigurations);
-	for (let index = 0; index < all.length; index++) {
-		if (all[index].name === name) {
-			return all[index];
-		}
-	}
+export const setConfigurations = (configurations: NamedSMTPConfiguration[]) => {
+	allConfigurations.set([...configurations]);
+};
 
-	return get(customConfiguration);
+export const addConfiguration = () => {
+	allConfigurations.update((all) => [...all, clone(get(customConfiguration))]);
+};
+
+export const getConfiguration = (indexToSelect: number): NamedSMTPConfiguration | null => {
+	let configurationToReturn = null;
+	get(allConfigurations).forEach((configuration, index) => {
+		if (index === indexToSelect) {
+			configurationToReturn = configuration;
+		}
+	});
+	return configurationToReturn;
+};
+
+export const loadConfiguration = (indexToLoad: number) => {
+	let configuration = getConfiguration(indexToLoad);
+	if (configuration !== null) {
+		customConfiguration.set(clone(configuration));
+	}
+};
+
+export const repleaceConfiguration = (indexToRepleace: number) => {
+	allConfigurations.update((all) =>
+		all.map((configuration, index) =>
+			index === indexToRepleace ? clone(get(customConfiguration)) : configuration
+		)
+	);
+};
+
+export const removeConfiguration = (indexToRemove: number) => {
+	allConfigurations.update((all) => all.filter((_, index) => index !== indexToRemove));
 };
