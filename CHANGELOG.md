@@ -18,6 +18,9 @@ Unreleased changes
 - [Add save / load configurations #7](https://github.com/MoQuEs/smtp_client/issues/7)
     - Added save/load configurations
     - Added select configuration on main tab
+- [Add save / load messages #8](https://github.com/MoQuEs/smtp_client/issues/8)
+    - Added save/load messages
+    - Added select messages on main tab
 
 ### Changed
 - [Change frontend to accommodate more 'things' #9](https://github.com/MoQuEs/smtp_client/issues/9)
