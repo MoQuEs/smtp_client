@@ -1,7 +1,6 @@
 <script lang="ts">
 	import Icon from 'svelte-icons-pack';
 
-	import { smtp_message } from '$stores/smtp_message';
 	import t from '$i18n/translate';
 
 	import RiBusinessMailSendLine from 'svelte-icons-pack/ri/RiBusinessMailSendLine';
@@ -16,6 +15,7 @@
 	import Separator, { SeparatorSize } from '$components/Separator.svelte';
 	import SMTPConfigurationPanel from '$components/smtp/SMTPConfigurationPanel.svelte';
 	import SMTPMessage from '$components/smtp/SMTPMessage.svelte';
+	import SMTPMessagePanel from '$components/smtp/SMTPMessagePanel.svelte';
 	import Tooltip from '$components/tooltip/Tooltip.svelte';
 	import LogoWithText from '$components/logo/LogoWithText.svelte';
 	import SMTPSendMail from '$components/smtp/SMTPSendMail.svelte';
@@ -38,11 +38,11 @@
 				</Tab>
 			</Tooltip>
 
-			<!-- <Tooltip title={t('menu.messages')}>
+			<Tooltip title={t('menu.messages')}>
 				<Tab>
 					<Icon src={RiBusinessMailAddLine} size="26" color="white" />
 				</Tab>
-			</Tooltip> -->
+			</Tooltip>
 
 			<!-- <Tooltip title={t('menu.settings')}>
 				<Tab>
@@ -60,7 +60,7 @@
 
 			<Separator size={SeparatorSize.XS} />
 
-			<SMTPMessage bind:message={$smtp_message} />
+			<SMTPMessage />
 		</div>
 	</TabPanel>
 
@@ -68,9 +68,9 @@
 		<SMTPConfigurationPanel />
 	</TabPanel>
 
-	<!-- <TabPanel>
-		<SMTPMessage bind:message={$smtp_message} />
-	</TabPanel> -->
+	<TabPanel>
+		<SMTPMessagePanel />
+	</TabPanel>
 
 	<!-- <TabPanel>
 		<h2>TODO: Settings</h2>

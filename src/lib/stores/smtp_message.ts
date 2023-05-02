@@ -1,27 +1,138 @@
+import * as tauriApi from '$api/tauri';
 import { get, writable, type Writable } from 'svelte/store';
 import { NamedSMTPMessage } from '$api/tauri_classes';
+import { clone } from '$utils/utils';
+import { addToast } from '$stores/toasts';
+import { ToastType } from '$components/toast/Toast.svelte';
+import t from '$i18n/translate';
 
-const empty = new NamedSMTPMessage('Empty');
+export const customMessage: Writable<NamedSMTPMessage> = writable(new NamedSMTPMessage(''));
+export const allMessages: Writable<NamedSMTPMessage[]> = writable([]);
 
-export const smtp_message: Writable<NamedSMTPMessage> = writable(empty);
-export const smtp_messages: Writable<NamedSMTPMessage[]> = writable([empty]);
-
-export const addSMTPMessage = (message: NamedSMTPMessage) => {
-	smtp_messages.update((all) => [...all, message]);
+export const setCustomMessages = (message: NamedSMTPMessage) => {
+	customMessage.set(message);
 };
 
-export const setSMTPMessages = (messages: NamedSMTPMessage[]) => {
-	smtp_messages.set([empty, ...messages]);
+export const setMessages = (messages: NamedSMTPMessage[]) => {
+	allMessages.set([...messages]);
 };
 
-export const setSMTPMessageByName = (name: string) => {
-	get(smtp_messages).forEach((message) => {
-		if (message.name === name) {
-			smtp_message.set(message);
+export const saveMessage = () => {
+	let cloned = cloneCustom();
+
+	if (cloned.name === '') {
+		return addToast({
+			title: t('ERROR'),
+			type: ToastType.Error,
+			text: t('name_cant_be_empty_error')
+		});
+	}
+
+	if (get(allMessages).filter((message) => cloned.name === message.name).length > 0) {
+		return addToast({
+			title: t('ERROR'),
+			type: ToastType.Error,
+			text: t('name_exists_error')
+		});
+	}
+
+	tauriApi
+		.saveMessage(cloned)
+		.then((asd) => {
+			console.log(asd);
+			allMessages.update((all) => [...all, cloned]);
+			addToast({
+				title: t('SUCCESS'),
+				type: ToastType.Success,
+				text: t('smtp.message.saved')
+			});
+		})
+		.catch(() => {
+			addToast({
+				title: t('ERROR'),
+				type: ToastType.Error,
+				text: t('smtp.message.saved')
+			});
+		});
+};
+
+export const repleaceMessage = (messageToRepleace: NamedSMTPMessage) => {
+	let cloned = cloneCustom();
+
+	get(allMessages).forEach((message) => {
+		if (message.name !== messageToRepleace.name) {
+			cloned.name = message.name;
 		}
+	});
+
+	tauriApi
+		.saveMessage(cloned)
+		.then(() => {
+			allMessages.update((all) =>
+				all.map((message) => {
+					if (message.name !== messageToRepleace.name) {
+						return cloned;
+					}
+					return message;
+				})
+			);
+
+			addToast({
+				title: t('SUCCESS'),
+				type: ToastType.Success,
+				text: t('smtp.message.repleace')
+			});
+		})
+		.catch(() => {
+			addToast({
+				title: t('ERROR'),
+				type: ToastType.Error,
+				text: t('smtp.message.repleace_error')
+			});
+		});
+};
+
+export const removeMessage = (messageToRemove: NamedSMTPMessage) => {
+	tauriApi
+		.removeMessage(messageToRemove)
+		.then(() => {
+			allMessages.update((all) =>
+				all.filter((message) => {
+					if (message.name !== messageToRemove.name) {
+						return true;
+					}
+
+					return false;
+				})
+			);
+
+			addToast({
+				title: t('SUCCESS'),
+				type: ToastType.Success,
+				text: t('smtp.message.remove')
+			});
+		})
+		.catch(() => {
+			addToast({
+				title: t('ERROR'),
+				type: ToastType.Error,
+				text: t('smtp.message.remove_error')
+			});
+		});
+};
+
+export const loadMessage = (messageToLoad: NamedSMTPMessage) => {
+	let cloned = clone(messageToLoad);
+	cloned.name = get(customMessage).name;
+	customMessage.set(cloned);
+
+	addToast({
+		title: t('SUCCESS'),
+		type: ToastType.Success,
+		text: t('smtp.message.load')
 	});
 };
 
-export const setSMTPMessage = (message: NamedSMTPMessage) => {
-	smtp_message.set(message);
+const cloneCustom = (): NamedSMTPMessage => {
+	return clone(get(customMessage));
 };

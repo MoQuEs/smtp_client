@@ -29,6 +29,7 @@ fn main() {
             commands::remove_configuration_command,
             commands::get_messages_command,
             commands::save_message_command,
+            commands::remove_message_command,
             commands::send_mail_command,
         ])
         .run(tauri::generate_context!())

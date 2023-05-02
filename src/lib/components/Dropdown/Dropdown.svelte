@@ -27,7 +27,7 @@
 		</Button>
 
 		<ul
-			class="w-full max-h-96 overflow-auto absolute text-base z-10 float-left py-2 list-none text-left rounded shadow-lg mt-1 border-gray-600 flex-grow m-0 bg-clip-padding border-1 bg-gray-800 scrollbar
+			class="w-full max-h-96 overflow-auto absolute text-base z-10 float-left py-2 list-none text-left rounded shadow-lg mt-1 border-1 border-gray-600 flex-grow m-0 bg-clip-padding bg-gray-800 scrollbar
 			{filterDropdownIsOpen ? '' : 'hidden'}"
 		>
 			<slot />

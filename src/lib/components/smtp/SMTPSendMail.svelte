@@ -1,15 +1,15 @@
 <script lang="ts">
 	import t from '$i18n/translate';
 	import { sendMail } from '$api/tauri';
-	import { smtp_message } from '$stores/smtp_message';
+	import { allMessages, customMessage } from '$stores/smtp_message';
 	import { allConfigurations, customConfiguration } from '$stores/smtp_configuration';
 	import Button, { ButtonMode } from '$components/form/Button.svelte';
 	import Select, { SelectDispatch } from '$components/form/Select.svelte';
 	import { addToast } from '$stores/toasts';
 	import { ToastType } from '$components/toast/Toast.svelte';
 	import { get } from 'svelte/store';
-	import type { NamedSMTPConfiguration } from '$api/tauri_classes';
-	import { getConfigurationLabelForSelect } from '$utils/utils';
+	import type { NamedSMTPConfiguration, NamedSMTPMessage } from '$api/tauri_classes';
+	import { getConfigurationLabelForSelect, getMessageLabelForSelect } from '$utils/utils';
 
 	let selectedConfiguration: SelectDispatch<NamedSMTPConfiguration>;
 	$: configurations = [
@@ -29,11 +29,23 @@
 		)
 	];
 
+	let selectedMessage: SelectDispatch<NamedSMTPMessage>;
+	$: messages = [
+		new SelectDispatch(
+			getMessageLabelForSelect(t('smtp.configuration.unsaved'), $customMessage.message),
+			$customMessage
+		),
+		...get(allMessages).map(
+			(message) =>
+				new SelectDispatch(getMessageLabelForSelect(message.name, message.message), message)
+		)
+	];
+
 	let sendMailMode: ButtonMode = ButtonMode.Normal;
 	const sendMailHandle = () => {
 		sendMailMode = ButtonMode.Loding;
 
-		sendMail(selectedConfiguration.value.configuration, $smtp_message.message).then(
+		sendMail(selectedConfiguration.value.configuration, selectedMessage.value.message).then(
 			(response_data) => {
 				sendMailMode = ButtonMode.Normal;
 
@@ -53,17 +65,21 @@
 	};
 </script>
 
-<div class="flex flex-row space-x-5">
-	<Select
-		className="flex-grow"
-		bind:selected={selectedConfiguration}
-		bind:options={configurations}
-	/>
+<div class="flex flex-col space-y-5">
+	<div class="flex flex-row space-x-5">
+		<Select
+			className="flex-grow"
+			bind:selected={selectedConfiguration}
+			bind:options={configurations}
+		/>
 
-	<Button
-		text={t('smtp.send_mail')}
-		className="mb-5"
-		mode={sendMailMode}
-		on:click={sendMailHandle}
-	/>
+		<Button
+			text={t('smtp.send_mail')}
+			className="mb-5"
+			mode={sendMailMode}
+			on:click={sendMailHandle}
+		/>
+	</div>
+
+	<Select className="flex-grow" bind:selected={selectedMessage} bind:options={messages} />
 </div>

@@ -6,26 +6,28 @@
 	import Input, { InputType } from '$components/form/Input.svelte';
 	import Textarea from '$components/form/Textarea.svelte';
 	import Badge, { BadgeColor, BadgeSize, BadgeTheme } from '$components/Badge.svelte';
-	import { NamedSMTPMessage, SMTPMessageHeader } from '$api/tauri_classes';
+	import { SMTPMessageHeader } from '$api/tauri_classes';
 	import Checkbox from '$components/form/Checkbox.svelte';
 	import t from '$i18n/translate';
-
-	export let message: NamedSMTPMessage;
+	import { customMessage } from '$stores/smtp_message';
 
 	let convertHTMLToTEXT: boolean = true;
 
 	const addHeader = () => {
-		message.message.headers = [...message.message.headers, new SMTPMessageHeader('', '')];
+		$customMessage.message.headers = [
+			...$customMessage.message.headers,
+			new SMTPMessageHeader('', '')
+		];
 	};
 
 	const removeHeader = (index: number) =>
-		(message.message.headers = message.message.headers.filter(
+		($customMessage.message.headers = $customMessage.message.headers.filter(
 			(_, headerIndex) => index !== headerIndex
 		));
 
 	$: {
-		if (message.message.body.html && convertHTMLToTEXT) {
-			message.message.body.text = convert(message.message.body.html);
+		if ($customMessage.message.body.html && convertHTMLToTEXT) {
+			$customMessage.message.body.text = convert($customMessage.message.body.html);
 		}
 	}
 </script>
@@ -37,7 +39,7 @@
 			type={InputType.Text}
 			placeholder={t('smtp.message.to.name')}
 			className="flex flex-grow"
-			bind:value={message.message.to.name}
+			bind:value={$customMessage.message.to.name}
 		>
 			<span slot="label">{t('smtp.message.to.name')}</span>
 		</Input>
@@ -46,7 +48,7 @@
 			type={InputType.Text}
 			placeholder={t('smtp.message.to.email')}
 			className="flex flex-grow"
-			bind:value={message.message.to.email}
+			bind:value={$customMessage.message.to.email}
 		>
 			<span slot="label">{t('smtp.message.to.email')}</span>
 		</Input>
@@ -57,7 +59,7 @@
 			type={InputType.Text}
 			placeholder={t('smtp.message.from.name')}
 			className="flex flex-grow"
-			bind:value={message.message.from.name}
+			bind:value={$customMessage.message.from.name}
 		>
 			<span slot="label">{t('smtp.message.from.name')}</span>
 		</Input>
@@ -66,7 +68,7 @@
 			type={InputType.Text}
 			placeholder={t('smtp.message.from.email')}
 			className="flex flex-grow"
-			bind:value={message.message.from.email}
+			bind:value={$customMessage.message.from.email}
 		>
 			<span slot="label">{t('smtp.message.from.email')}</span>
 		</Input>
@@ -79,9 +81,9 @@
 		interactive={true}
 		on:click={addHeader}
 	/>
-	{#if message.message.headers.length > 0}
+	{#if $customMessage.message.headers.length > 0}
 		<div class="flex flex-grow flex-col mt-5 space-y-5">
-			{#each message.message.headers as header, index}
+			{#each $customMessage.message.headers as header, index}
 				<div class="flex flex-grow place-content-start space-x-5">
 					<Input
 						name="headerName_{index}"
@@ -114,7 +116,7 @@
 		type={InputType.Text}
 		placeholder={t('smtp.message.subject')}
 		className="flex flex-grow"
-		bind:value={message.message.subject}
+		bind:value={$customMessage.message.subject}
 	>
 		<span slot="label">{t('smtp.message.subject')}</span>
 	</Input>
@@ -122,7 +124,7 @@
 		name="body"
 		placeholder=""
 		className="flex flex-grow"
-		bind:value={message.message.body.html}
+		bind:value={$customMessage.message.body.html}
 	>
 		<div slot="label">
 			<div class="flex flex-row justify-between">
@@ -138,7 +140,7 @@
 			name="body"
 			placeholder=""
 			className="flex flex-grow"
-			bind:value={message.message.body.text}
+			bind:value={$customMessage.message.body.text}
 		>
 			<div slot="label">{t('smtp.message.body.text')}</div>
 		</Textarea>
