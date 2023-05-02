@@ -1,8 +1,7 @@
 #![allow(dead_code)]
 
 use crate::response::{
-    AnyResult, MaybeSMTPConfiguration, MaybeSMTPMessage, NamedSMTPConfiguration, NamedSMTPMessage,
-    SMTPConfigurations, SMTPMessages,
+    AnyResult, NamedSMTPConfiguration, NamedSMTPMessage, SMTPConfigurations, SMTPMessages,
 };
 use bincode::serde::{decode_from_slice, encode_to_vec};
 use serde::de::DeserializeOwned;
@@ -13,6 +12,7 @@ const DATABASE: &str = "data.sled";
 enum Section {
     SMTPConfiguration,
     SMTPMessage,
+    Settings,
     Secrets,
 }
 
@@ -21,6 +21,7 @@ impl AsRef<str> for Section {
         match self {
             Self::SMTPConfiguration => "smtp_configuration",
             Self::SMTPMessage => "smtp_message",
+            Self::Settings => "secrets",
             Self::Secrets => "secrets",
         }
     }
@@ -103,6 +104,10 @@ pub fn get_configurations() -> AnyResult<SMTPConfigurations> {
 
 pub fn save_message(message: &NamedSMTPMessage) -> AnyResult<Option<()>> {
     insert(Section::SMTPMessage, message.name.as_str(), message)
+}
+
+pub fn remove_message(message: &NamedSMTPMessage) -> AnyResult<Option<()>> {
+    remove(Section::SMTPMessage, message.name.as_str())
 }
 
 pub fn get_messages() -> AnyResult<SMTPMessages> {

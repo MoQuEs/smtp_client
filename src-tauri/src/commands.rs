@@ -1,5 +1,6 @@
 use crate::database::{
-    get_configurations, get_messages, remove_configuration, save_configuration, save_message,
+    get_configurations, get_messages, remove_configuration, remove_message, save_configuration,
+    save_message,
 };
 use crate::response::{
     error, success, AnyResult, MaybeSMTPConfiguration, MaybeSMTPMessage, NamedSMTPConfiguration,
@@ -49,6 +50,17 @@ pub fn remove_configuration_command(
 }
 
 #[tauri::command]
+pub fn get_messages_command() -> TauriResponse<SMTPMessages> {
+    match get_messages() {
+        Ok(data) => success(None, Some(data)),
+        Err(err) => {
+            println!("{:?}", err);
+            error(Some(format!("{:?}", err)), None)
+        }
+    }
+}
+
+#[tauri::command]
 pub fn save_message_command(message: NamedSMTPMessage) -> TauriResponse<MaybeSMTPMessage> {
     match save_message(&message) {
         Ok(data) => success(None, None),
@@ -60,9 +72,9 @@ pub fn save_message_command(message: NamedSMTPMessage) -> TauriResponse<MaybeSMT
 }
 
 #[tauri::command]
-pub fn get_messages_command() -> TauriResponse<SMTPMessages> {
-    match get_messages() {
-        Ok(data) => success(None, Some(data)),
+pub fn remove_message_command(message: NamedSMTPMessage) -> TauriResponse<MaybeSMTPMessage> {
+    match remove_message(&message) {
+        Ok(data) => success(None, None),
         Err(err) => {
             println!("{:?}", err);
             error(Some(format!("{:?}", err)), None)

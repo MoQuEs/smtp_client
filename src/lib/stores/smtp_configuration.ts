@@ -26,7 +26,7 @@ export const saveConfiguration = () => {
 		return addToast({
 			title: t('ERROR'),
 			type: ToastType.Error,
-			text: t('name_exists_error')
+			text: t('name_cant_be_empty_error')
 		});
 	}
 
@@ -36,7 +36,7 @@ export const saveConfiguration = () => {
 		return addToast({
 			title: t('ERROR'),
 			type: ToastType.Error,
-			text: t('name_cant_be_empty_error')
+			text: t('name_exists_error')
 		});
 	}
 

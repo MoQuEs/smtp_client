@@ -1,20 +1,20 @@
 const colors = require('tailwindcss/colors');
 
-function zIndex(min, max, step) {
+function keyValueRange(min, max, step, sufixOnValue) {
 	const obj = {};
 
 	for (let i = min; i <= max; i = i + step ?? 1) {
-		obj[i] = i.toString();
+		obj[i] = i.toString() + (sufixOnValue ?? '');
 	}
 
 	return obj;
 }
 
-function range(min, max, step) {
+function range(min, max, step, sufix) {
 	const arr = [];
 
 	for (let i = min; i <= max; i = i + step ?? 1) {
-		arr.push(i);
+		arr.push(i.toString() + (sufix ?? ''));
 	}
 
 	return arr;
@@ -29,7 +29,7 @@ module.exports = {
 	theme: {
 		extend: {
 			zIndex: {
-				...zIndex(10, 100),
+				...keyValueRange(10, 100),
 				...{
 					999: '999',
 					9999: '9999',
@@ -53,7 +53,7 @@ module.exports = {
 				warning: colors.orange,
 				info: colors.sky
 			},
-			borderWidth: range(0, 5)
+			borderWidth: keyValueRange(0, 5, 1, 'px')
 		}
 	},
 	darkMode: 'class',

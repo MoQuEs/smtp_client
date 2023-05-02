@@ -1,21 +1,16 @@
 import { invoke, type InvokeArgs } from '@tauri-apps/api/tauri';
-import t from '$i18n/translate';
-import { addToast } from '$stores/toasts';
-import { ToastType } from '$components/toast/Toast.svelte';
 import type {
 	TauriResponse,
 	SMTPConfiguration,
 	SMTPMessage,
 	NamedSMTPConfiguration,
-	NamedSMTPConfigurations
+	NamedSMTPConfigurations,
+	NamedSMTPMessages,
+	NamedSMTPMessage
 } from '$api/tauri_classes';
 
 export type Callback<T> = (response_data: TauriResponse<T>) => Promise<void>;
 export type PTauriResponse<T> = Promise<TauriResponse<T>>;
-
-function isTauriResponse<T>(res: unknown): res is TauriResponse<T> {
-	return (res as TauriResponse<T>) !== undefined;
-}
 
 export const sendMail = (
 	configuration: SMTPConfiguration,
@@ -38,6 +33,18 @@ export const removeConfiguration = (
 	configuration: NamedSMTPConfiguration
 ): PTauriResponse<NamedSMTPConfigurations> => {
 	return callTauri('remove_configuration_command', { configuration });
+};
+
+export const getMessages = (): PTauriResponse<NamedSMTPMessages> => {
+	return callTauri('get_messages_command');
+};
+
+export const saveMessage = (message: NamedSMTPMessage): PTauriResponse<NamedSMTPMessages> => {
+	return callTauri('save_message_command', { message });
+};
+
+export const removeMessage = (message: NamedSMTPMessage): PTauriResponse<NamedSMTPMessages> => {
+	return callTauri('remove_message_command', { message });
 };
 
 async function callTauri<T>(function_name: string, data: InvokeArgs = {}): PTauriResponse<T> {
