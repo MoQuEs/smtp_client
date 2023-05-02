@@ -6,32 +6,31 @@
 	import AiFillCaretDown from 'svelte-icons-pack/ai/AiFillCaretDown';
 
 	export let text: string;
+	export let className: string = '';
 	let filterDropdownIsOpen = false;
 </script>
 
-<div class="flex justify-center">
-	<div>
-		<div class="dropdown relative">
-			<Button
-				name="dropdown"
-				{text}
-				theme={ButtonTheme.Gray}
-				on:click={() => (filterDropdownIsOpen = !filterDropdownIsOpen)}
-			>
-				<Icon
-					src={filterDropdownIsOpen ? AiFillCaretUp : AiFillCaretDown}
-					slot="iconAfter"
-					color="white"
-				/>
-			</Button>
+<div class="flex justify-center {className}">
+	<div class="relative flex-grow">
+		<Button
+			name="dropdown"
+			{text}
+			theme={ButtonTheme.Gray}
+			className="w-full"
+			on:click={() => (filterDropdownIsOpen = !filterDropdownIsOpen)}
+		>
+			<Icon
+				src={filterDropdownIsOpen ? AiFillCaretUp : AiFillCaretDown}
+				slot="iconAfter"
+				color="white"
+			/>
+		</Button>
 
-			<ul
-				class="min-w-max absolute text-base z-50 float-left py-2 list-none text-left rounded-lg shadow-lg mt-1 border-gray-600 {filterDropdownIsOpen
-					? ''
-					: 'hidden'} m-0 bg-clip-padding border-1 bg-gray-800"
-			>
-				<slot />
-			</ul>
-		</div>
+		<ul
+			class="w-full max-h-96 overflow-auto absolute text-base z-10 float-left py-2 list-none text-left rounded shadow-lg mt-1 border-gray-600 flex-grow m-0 bg-clip-padding border-1 bg-gray-800 scrollbar
+			{filterDropdownIsOpen ? '' : 'hidden'}"
+		>
+			<slot />
+		</ul>
 	</div>
 </div>

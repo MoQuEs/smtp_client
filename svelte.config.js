@@ -22,8 +22,8 @@ const config = {
 			'$i18n/*': 'src/lib/i18n/*',
 			$stores: 'src/lib/stores',
 			'$stores/*': 'src/lib/stores/*',
-			$types: 'src/lib/types',
-			'$types/*': 'src/lib/types/*',
+			$utils: 'src/lib/utils',
+			'$utils/*': 'src/lib/utils/*',
 			$routes: 'src/routes',
 			'$routes/*': 'src/routes/*'
 		}

@@ -6,13 +6,12 @@
 	import Input, { InputType } from '$components/form/Input.svelte';
 	import Textarea from '$components/form/Textarea.svelte';
 	import Badge, { BadgeColor, BadgeSize, BadgeTheme } from '$components/Badge.svelte';
-	import { NamedSMTPMessage, SMTPMessageHeader } from '$api/tauri';
+	import { NamedSMTPMessage, SMTPMessageHeader } from '$api/tauri_classes';
 	import Checkbox from '$components/form/Checkbox.svelte';
 	import t from '$i18n/translate';
 
 	export let message: NamedSMTPMessage;
 
-	let showParams: boolean = true;
 	let convertHTMLToTEXT: boolean = true;
 
 	const addHeader = () => {

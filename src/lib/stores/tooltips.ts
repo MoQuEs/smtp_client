@@ -2,13 +2,13 @@ import { writable, type Writable } from 'svelte/store';
 
 const lastStabilized: TooltipPosition = { x: 0, y: 0 };
 
+export const tooltipTestPosition: Writable<TooltipPosition> = writable({ x: 0, y: 0 });
+
 export const tooltip: Writable<Tooltip> = writable({
 	title: '',
 	show: false,
 	position: { x: 0, y: 0 }
 });
-
-export const tooltipTestPosition: Writable<TooltipPosition> = writable({ x: 0, y: 0 });
 
 export declare type Tooltip = {
 	title: string;
@@ -23,6 +23,7 @@ export declare type TooltipPosition = {
 
 export const showTooltip = (show: boolean = true) => {
 	tooltip.update((tooltip) => {
+		tooltip.title = tooltip.title;
 		tooltip.show = show;
 		return tooltip;
 	});
