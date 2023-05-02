@@ -1,6 +1,10 @@
+import * as tauriApi from '$api/tauri';
 import { get, writable, type Writable } from 'svelte/store';
-import { NamedSMTPConfiguration } from '$api/tauri';
+import { NamedSMTPConfiguration } from '$api/tauri_classes';
 import { clone } from '$utils/utils';
+import { addToast } from '$stores/toasts';
+import { ToastType } from '$components/toast/Toast.svelte';
+import t from '$i18n/translate';
 
 export const customConfiguration: Writable<NamedSMTPConfiguration> = writable(
 	new NamedSMTPConfiguration('')
@@ -15,35 +19,123 @@ export const setConfigurations = (configurations: NamedSMTPConfiguration[]) => {
 	allConfigurations.set([...configurations]);
 };
 
-export const addConfiguration = () => {
-	allConfigurations.update((all) => [...all, clone(get(customConfiguration))]);
+export const saveConfiguration = () => {
+	let cloned = cloneCustom();
+
+	if (cloned.name === '') {
+		return addToast({
+			title: t('ERROR'),
+			type: ToastType.Error,
+			text: t('name_exists_error')
+		});
+	}
+
+	if (
+		get(allConfigurations).filter((configuration) => cloned.name === configuration.name).length > 0
+	) {
+		return addToast({
+			title: t('ERROR'),
+			type: ToastType.Error,
+			text: t('name_cant_be_empty_error')
+		});
+	}
+
+	tauriApi
+		.saveConfiguration(cloned)
+		.then(() => {
+			allConfigurations.update((all) => [...all, cloned]);
+			addToast({
+				title: t('SUCCESS'),
+				type: ToastType.Success,
+				text: t('smtp.configuration.saved')
+			});
+		})
+		.catch(() => {
+			addToast({
+				title: t('ERROR'),
+				type: ToastType.Error,
+				text: t('smtp.configuration.saved')
+			});
+		});
 };
 
-export const getConfiguration = (indexToSelect: number): NamedSMTPConfiguration | null => {
-	let configurationToReturn = null;
-	get(allConfigurations).forEach((configuration, index) => {
-		if (index === indexToSelect) {
-			configurationToReturn = configuration;
+export const repleaceConfiguration = (configurationToRepleace: NamedSMTPConfiguration) => {
+	let cloned = cloneCustom();
+
+	get(allConfigurations).forEach((configuration) => {
+		if (configuration.name !== configurationToRepleace.name) {
+			cloned.name = configuration.name;
 		}
 	});
-	return configurationToReturn;
+
+	tauriApi
+		.saveConfiguration(cloned)
+		.then(() => {
+			allConfigurations.update((all) =>
+				all.map((configuration) => {
+					if (configuration.name !== configurationToRepleace.name) {
+						return cloned;
+					}
+					return configuration;
+				})
+			);
+
+			addToast({
+				title: t('SUCCESS'),
+				type: ToastType.Success,
+				text: t('smtp.configuration.repleace')
+			});
+		})
+		.catch(() => {
+			addToast({
+				title: t('ERROR'),
+				type: ToastType.Error,
+				text: t('smtp.configuration.repleace_error')
+			});
+		});
 };
 
-export const loadConfiguration = (indexToLoad: number) => {
-	let configuration = getConfiguration(indexToLoad);
-	if (configuration !== null) {
-		customConfiguration.set(clone(configuration));
-	}
+export const removeConfiguration = (configurationToRemove: NamedSMTPConfiguration) => {
+	tauriApi
+		.removeConfiguration(configurationToRemove)
+		.then(() => {
+			allConfigurations.update((all) =>
+				all.filter((configuration) => {
+					if (configuration.name !== configurationToRemove.name) {
+						return true;
+					}
+
+					return false;
+				})
+			);
+
+			addToast({
+				title: t('SUCCESS'),
+				type: ToastType.Success,
+				text: t('smtp.configuration.remove')
+			});
+		})
+		.catch(() => {
+			addToast({
+				title: t('ERROR'),
+				type: ToastType.Error,
+				text: t('smtp.configuration.remove_error')
+			});
+		});
 };
 
-export const repleaceConfiguration = (indexToRepleace: number) => {
-	allConfigurations.update((all) =>
-		all.map((configuration, index) =>
-			index === indexToRepleace ? clone(get(customConfiguration)) : configuration
-		)
-	);
+export const loadConfiguration = (configurationToLoad: NamedSMTPConfiguration) => {
+	let cloned = clone(configurationToLoad);
+	cloned.name = get(customConfiguration).name;
+	customConfiguration.set(cloned);
+
+	addToast({
+		title: t('SUCCESS'),
+		type: ToastType.Success,
+		text: t('smtp.configuration.load')
+	});
 };
 
-export const removeConfiguration = (indexToRemove: number) => {
-	allConfigurations.update((all) => all.filter((_, index) => index !== indexToRemove));
+const cloneCustom = (): NamedSMTPConfiguration => {
+	return clone(get(customConfiguration));
 };

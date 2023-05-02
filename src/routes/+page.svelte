@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { sendMail } from '$api/tauri';
 	import Icon from 'svelte-icons-pack';
 
 	import { smtp_message } from '$stores/smtp_message';
@@ -10,16 +9,16 @@
 	import RiBusinessMailAddLine from 'svelte-icons-pack/ri/RiBusinessMailAddLine';
 	import FaSolidCogs from 'svelte-icons-pack/fa/FaSolidCogs';
 
-	import Button from '$components/form/Button.svelte';
 	import Tabs from '$components/tab/Tabs.svelte';
 	import TabList from '$components/tab/TabList.svelte';
 	import Tab from '$components/tab/Tab.svelte';
 	import TabPanel from '$components/tab/TabPanel.svelte';
-	import Separator from '$components/Separator.svelte';
+	import Separator, { SeparatorSize } from '$components/Separator.svelte';
 	import SMTPConfigurationPanel from '$components/smtp/SMTPConfigurationPanel.svelte';
 	import SMTPMessage from '$components/smtp/SMTPMessage.svelte';
 	import Tooltip from '$components/tooltip/Tooltip.svelte';
 	import LogoWithText from '$components/logo/LogoWithText.svelte';
+	import SMTPSendMail from '$components/smtp/SMTPSendMail.svelte';
 </script>
 
 <Tabs>
@@ -57,7 +56,9 @@
 
 	<TabPanel>
 		<div class="flex flex-col">
-			<Button name="sendMail" text="Send Mail" className="mb-5" />
+			<SMTPSendMail />
+
+			<Separator size={SeparatorSize.XS} />
 
 			<SMTPMessage bind:message={$smtp_message} />
 		</div>

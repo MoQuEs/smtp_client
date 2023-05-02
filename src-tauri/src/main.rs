@@ -24,11 +24,12 @@ fn main() {
         })
         //.manage(database::connect())
         .invoke_handler(tauri::generate_handler![
-            commands::send_mail_command,
-            commands::save_configuration_command,
             commands::get_configurations_command,
-            commands::save_message_command,
+            commands::save_configuration_command,
+            commands::remove_configuration_command,
             commands::get_messages_command,
+            commands::save_message_command,
+            commands::send_mail_command,
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { convert } from 'html-to-text';
 	import Separator from '$components/Separator.svelte';
-	import { NamedSMTPMessage, SMTPMessageHeader } from '$api/tauri';
+	import { NamedSMTPMessage, SMTPMessageHeader } from '$api/tauri_classes';
 	import Hide from '$components/Hide.svelte';
 	import { slide } from 'svelte/transition';
 	import t from '$i18n/translate';

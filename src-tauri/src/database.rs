@@ -46,11 +46,11 @@ fn insert<T: Serialize + DeserializeOwned>(
     section: Section,
     key: impl AsRef<str>,
     data: &T,
-) -> AnyResult<Option<T>> {
+) -> AnyResult<Option<()>> {
     let db = connect()?;
     let tree = db.open_tree(section.as_ref())?;
     match tree.insert(key.as_ref(), to_bytes(data)?)? {
-        Some(bytes) => Ok(from_bytes(&bytes)?),
+        Some(_) => Ok(Some(())),
         None => Ok(None),
     }
 }
@@ -64,11 +64,11 @@ fn get<T: DeserializeOwned>(section: Section, key: impl AsRef<str>) -> AnyResult
     }
 }
 
-fn remove<T: DeserializeOwned>(section: Section, key: impl AsRef<str>) -> AnyResult<Option<T>> {
+fn remove(section: Section, key: impl AsRef<str>) -> AnyResult<Option<()>> {
     let db = connect()?;
     let tree = db.open_tree(section.as_ref())?;
     match tree.remove(key.as_ref())? {
-        Some(bytes) => Ok(from_bytes(&bytes)?),
+        Some(bytes) => Ok(Some(())),
         None => Ok(None),
     }
 }
@@ -85,9 +85,7 @@ fn get_all<T: DeserializeOwned>(section: Section) -> AnyResult<Vec<T>> {
     Ok(res)
 }
 
-pub fn save_configuration(
-    configuration: &NamedSMTPConfiguration,
-) -> AnyResult<MaybeSMTPConfiguration> {
+pub fn save_configuration(configuration: &NamedSMTPConfiguration) -> AnyResult<Option<()>> {
     insert(
         Section::SMTPConfiguration,
         configuration.name.as_str(),
@@ -95,11 +93,15 @@ pub fn save_configuration(
     )
 }
 
+pub fn remove_configuration(configuration: &NamedSMTPConfiguration) -> AnyResult<Option<()>> {
+    remove(Section::SMTPConfiguration, configuration.name.as_str())
+}
+
 pub fn get_configurations() -> AnyResult<SMTPConfigurations> {
     get_all(Section::SMTPConfiguration)
 }
 
-pub fn save_message(message: &NamedSMTPMessage) -> AnyResult<MaybeSMTPMessage> {
+pub fn save_message(message: &NamedSMTPMessage) -> AnyResult<Option<()>> {
     insert(Section::SMTPMessage, message.name.as_str(), message)
 }
 

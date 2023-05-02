@@ -31,10 +31,12 @@
 
 	export let iconBefore: any = undefined;
 	export let iconBeforeColor: string = 'white';
+	export let iconBeforeTooltip: string = '';
 	export let iconBeforeInteractive: boolean = false;
 
 	export let iconAfter: any = undefined;
 	export let iconAfterColor: string = 'white';
+	export let iconAfterTooltip: string = '';
 	export let iconAfterInteractive: boolean = false;
 
 	let passwordShowed: boolean = false;
@@ -80,7 +82,13 @@
 				on:keyup={handleDummy}
 				on:keypress={handleDummy}
 			>
-				<Icon src={iconBefore} size="22" color={iconAfterColor} />
+				{#if iconAfterTooltip !== ''}
+					<Tooltip title={iconBeforeTooltip}>
+						<Icon src={iconBefore} size="22" color={iconAfterColor} />
+					</Tooltip>
+				{:else}
+					<Icon src={iconBefore} size="22" color={iconAfterColor} />
+				{/if}
 			</div>
 		{/if}
 		<input
@@ -91,7 +99,7 @@
 			on:input={handleInput}
 			on:change={handleInput}
 			{placeholder}
-			class="border text-sm rounded-lg block w-full
+			class="border text-sm rounded block w-full
 			{iconBefore ? 'pl-10' : ''}
 			{iconAfter ? 'pr-10' : ''}
 			{disabled ? 'cursor-not-allowed' : ''}
@@ -120,6 +128,10 @@
 							size="22"
 							color={iconBeforeColor}
 						/>
+					</Tooltip>
+				{:else if iconAfterTooltip !== ''}
+					<Tooltip title={iconAfterTooltip}>
+						<Icon src={iconAfter} size="22" color={iconBeforeColor} />
 					</Tooltip>
 				{:else}
 					<Icon src={iconAfter} size="22" color={iconBeforeColor} />

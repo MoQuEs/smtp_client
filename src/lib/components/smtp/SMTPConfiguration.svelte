@@ -1,6 +1,5 @@
 <script lang="ts">
 	import t from '$i18n/translate';
-	import { slide } from 'svelte/transition';
 	import Checkbox from '$components/form/Checkbox.svelte';
 	import Input, { InputType } from '$components/form/Input.svelte';
 	import { customConfiguration } from '$stores/smtp_configuration';
