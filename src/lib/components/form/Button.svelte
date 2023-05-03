@@ -186,7 +186,7 @@
 			{/if}
 		</div>
 	{/if}
-	<div class=" place-content-center align-middle {paddingSize}">
+	<div class="flex flex-grow place-content-center align-middle items-center {paddingSize}">
 		{#if $$slots.icon}
 			<div class="{text != '' ? 'mr-2' : ''} {iconSizeClass}">
 				<slot name="icon" />
