@@ -13,7 +13,6 @@ Unreleased changes
 - [Add and maintain changelog #4](https://github.com/MoQuEs/smtp_client/issues/4)
     - Added changelog with older releases/tags
 - [Change frontend to accommodate more 'things' #9](https://github.com/MoQuEs/smtp_client/issues/9)
-    - Added logo for project
     - Added tab system
 - [Add save / load configurations #7](https://github.com/MoQuEs/smtp_client/issues/7)
     - Added save/load configurations
@@ -21,10 +20,15 @@ Unreleased changes
 - [Add save / load messages #8](https://github.com/MoQuEs/smtp_client/issues/8)
     - Added save/load messages
     - Added select messages on main tab
+- [Make new logo / change fonts #14](https://github.com/MoQuEs/smtp_client/issues/14)
+    - Added logo for project
+    - Added ubuntu font as main for project
 
 ### Changed
 - [Change frontend to accommodate more 'things' #9](https://github.com/MoQuEs/smtp_client/issues/9)
     - Changed frontend to use tabs
+- [Make new logo / change fonts #14](https://github.com/MoQuEs/smtp_client/issues/14)
+    - Small frontend fixes
 
 ### Deprecated
 
