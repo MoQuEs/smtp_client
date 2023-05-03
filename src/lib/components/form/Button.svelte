@@ -24,7 +24,7 @@
 	export enum ButtonMode {
 		Normal,
 		Disabled,
-		Loding
+		Loading
 	}
 
 	export enum ButtonTheme {
@@ -114,7 +114,7 @@
 		case ButtonMode.Normal:
 			cursor = 'cursor-pointer';
 			break;
-		case ButtonMode.Loding:
+		case ButtonMode.Loading:
 			cursor = 'cursor-wait';
 			break;
 		case ButtonMode.Disabled:
@@ -159,26 +159,26 @@
 	const dispatch = createEventDispatcher();
 
 	let click = () => {
-		mode === ButtonMode.Loding || mode === ButtonMode.Disabled ? false : dispatch('click');
+		mode === ButtonMode.Loading || mode === ButtonMode.Disabled ? false : dispatch('click');
 	};
 </script>
 
 <button
 	{name}
 	{type}
-	class="relative {textSizeClass} leading-none
-    whitespace-nowrap font-bold btn-work active:brightness-75
-    hover:brightness-125 text-white {buttonClass} rounded {cursor}
+	class="relative flex flex-row flex-grow {textSizeClass}
+    whitespace-nowrap font-bold active:brightness-75
+    hover:brightness-125 text-white items-center rounded {buttonClass}  {cursor}
     {className}"
 	on:click={click}
 >
-	{#if mode === ButtonMode.Loding || mode === ButtonMode.Disabled}
+	{#if mode === ButtonMode.Loading || mode === ButtonMode.Disabled}
 		<div
-			class="absolute w-full h-full bg-gray-900 opacity-70 flex place-content-center
+			class="absolute w-full h-full bg-gray-900 opacity-70 flex flex-grow place-content-center
 		{mode === ButtonMode.Disabled ? 'cursor-not-allowed' : ''}
-		{mode === ButtonMode.Loding ? 'cursor-wait' : ''}"
+		{mode === ButtonMode.Loading ? 'cursor-wait' : ''}"
 		>
-			{#if mode === ButtonMode.Loding}
+			{#if mode === ButtonMode.Loading}
 				<Icon
 					src={CgSpinnerTwoAlt}
 					className="{iconSizeClass} fill-white animate-spin self-center"
@@ -186,7 +186,7 @@
 			{/if}
 		</div>
 	{/if}
-	<div class="flex flex-row flex-grow place-content-center align-middle {paddingSize}">
+	<div class=" place-content-center align-middle {paddingSize}">
 		{#if $$slots.icon}
 			<div class="{text != '' ? 'mr-2' : ''} {iconSizeClass}">
 				<slot name="icon" />

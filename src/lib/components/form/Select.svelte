@@ -41,17 +41,13 @@
 	<select
 		{id}
 		{name}
-		class="bborder text-sm rounded block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
+		class="border text-sm rounded block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
 		{disabled}
 		on:select={handleSelect}
 		on:change={handleSelect}
 	>
 		{#each options as option, i}
-			<option
-				class="rounded p-2.5"
-				value={i}
-				selected={(selected === undefined && i === 0) || selected === option}
-			>
+			<option value={i} selected={(selected === undefined && i === 0) || selected === option}>
 				{option.text}
 			</option>
 		{/each}

@@ -54,8 +54,13 @@ module.exports = {
 				info: colors.sky
 			},
 			borderWidth: keyValueRange(0, 5, 1, 'px')
+		},
+		fontFamily: {
+			sans: ['Ubuntu', 'Roboto', 'sans-serif'],
+			serif: ['Merriweather', 'Roboto Serif', 'serif'],
+			mono: ['Ubuntu Mono', 'Roboto Mono', 'monospace']
 		}
 	},
-	darkMode: 'class',
-	plugins: [require('tailwind-scrollbar'), require('flowbite/plugin')]
+	plugins: [require('tailwind-scrollbar'), require('flowbite/plugin')],
+	darkMode: 'class'
 };

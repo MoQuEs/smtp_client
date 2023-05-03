@@ -43,7 +43,7 @@
 
 	let sendMailMode: ButtonMode = ButtonMode.Normal;
 	const sendMailHandle = () => {
-		sendMailMode = ButtonMode.Loding;
+		sendMailMode = ButtonMode.Loading;
 
 		sendMail(selectedConfiguration.value.configuration, selectedMessage.value.message).then(
 			(response_data) => {
@@ -65,21 +65,15 @@
 	};
 </script>
 
-<div class="flex flex-col space-y-5">
-	<div class="flex flex-row space-x-5">
+<div class="flex flex-row space-x-5">
+	<div class="flex flex-col flex-grow space-y-5">
 		<Select
 			className="flex-grow"
 			bind:selected={selectedConfiguration}
 			bind:options={configurations}
 		/>
-
-		<Button
-			text={t('smtp.send_mail')}
-			className="mb-5"
-			mode={sendMailMode}
-			on:click={sendMailHandle}
-		/>
+		<Select className="flex-grow" bind:selected={selectedMessage} bind:options={messages} />
 	</div>
 
-	<Select className="flex-grow" bind:selected={selectedMessage} bind:options={messages} />
+	<Button text={t('smtp.send_mail')} className="" mode={sendMailMode} on:click={sendMailHandle} />
 </div>
