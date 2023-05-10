@@ -1,6 +1,7 @@
-<br/>
-<img src="src/assets/logo.svg" height="100px" alt="Logo" />
-<img src="src/assets/logo_text.svg" height="100px" alt="SMTPclient" />
+<p float="left">
+  <img src="src/assets/logo.svg" height="100px" alt="Logo" />
+  <img src="src/assets/logo_text.svg" height="100px" alt="SMTPclient" />
+</p>
 
 [![License](https://img.shields.io/github/license/MoQuEs/smtp_client)](https://github.com/MoQuEs/smtp_client/tree/main)
 [![Last commit](https://img.shields.io/github/last-commit/MoQuEs/smtp_client/develop)](https://github.com/MoQuEs/smtp_client/tree/develop)
@@ -17,8 +18,10 @@
 ## Introduction
 SMTPclient is a simple gui smtp client, mainly used for testing smtp servers and send simple mails
 
-<img src=".github/assets/img.png" width="49%" alt="Logo" />
-<img src=".github/assets/img_1.png" width="49%" alt="SMTPclient" />
+<p float="left">
+  <img src=".github/assets/img.png" width="48%" alt="Logo" />
+  <img src=".github/assets/img_1.png" width="48%" alt="SMTPclient" />
+</p>
 
 
 ## Development
