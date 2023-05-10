@@ -12,19 +12,19 @@ rust-version = "1.66.0"
 readme = "README.md"
 
 [build-dependencies]
-tauri-build = { version = "2.0.0-alpha.4", default-features = false, features = [] }
+tauri-build = { version = "1.3.0", default-features = false, features = [] }
 
 [dependencies]
 serde_json = { version = "1.0.96", default-features = false, features = [] }
 serde = { version = "1.0.160", default-features = false, features = ["derive"] }
-tauri = { version = "2.0.0-alpha.8", default-features = false, features = ["compression", "wry"] }
-anyhow = { version = "1.0.70", default-features = false, features = [] }
-tauri-runtime = { version = "0.13.0-alpha.4", default-features = false, features = [] }
+tauri = { version = "1.3.0", default-features = false, features = ["compression", "wry"] }
+anyhow = { version = "1.0.71", default-features = false, features = [] }
+tauri-runtime = { version = "0.13.0", default-features = false, features = [] }
 orion = { version = "0.17.4", default-features = false, features = ["serde", "safe_api"] }
 typeshare = { version = "1.0.1", default-features = false, features = [] }
 mail-send = { version = "0.3.3", default-features = false, features = ["builder"] }
 sled = { version = "0.34.7", default-features = false, features = [] }
-bincode = { version = "2.0.0-rc.3", default-features = false, features = ["serde", "alloc"] }
+bincode = { version = "1.3.3", default-features = false, features = [] }
 
 rust_utils = { git = "https://github.com/MoQuEs/rust_utils", default-features = false, features = [] }
 

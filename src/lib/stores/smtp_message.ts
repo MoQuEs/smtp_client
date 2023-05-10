@@ -41,11 +41,6 @@ export const saveMessage = () => {
 		.then((asd) => {
 			console.log(asd);
 			allMessages.update((all) => [...all, cloned]);
-			addToast({
-				title: t('SUCCESS'),
-				type: ToastType.Success,
-				text: t('smtp.message.saved')
-			});
 		})
 		.catch(() => {
 			addToast({
@@ -76,12 +71,6 @@ export const repleaceMessage = (messageToRepleace: NamedSMTPMessage) => {
 					return message;
 				})
 			);
-
-			addToast({
-				title: t('SUCCESS'),
-				type: ToastType.Success,
-				text: t('smtp.message.repleace')
-			});
 		})
 		.catch(() => {
 			addToast({
@@ -105,12 +94,6 @@ export const removeMessage = (messageToRemove: NamedSMTPMessage) => {
 					return false;
 				})
 			);
-
-			addToast({
-				title: t('SUCCESS'),
-				type: ToastType.Success,
-				text: t('smtp.message.remove')
-			});
 		})
 		.catch(() => {
 			addToast({
@@ -125,12 +108,6 @@ export const loadMessage = (messageToLoad: NamedSMTPMessage) => {
 	let cloned = clone(messageToLoad);
 	cloned.name = get(customMessage).name;
 	customMessage.set(cloned);
-
-	addToast({
-		title: t('SUCCESS'),
-		type: ToastType.Success,
-		text: t('smtp.message.load')
-	});
 };
 
 const cloneCustom = (): NamedSMTPMessage => {

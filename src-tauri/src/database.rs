@@ -3,11 +3,10 @@
 use crate::response::{
     AnyResult, NamedSMTPConfiguration, NamedSMTPMessage, SMTPConfigurations, SMTPMessages,
 };
-use bincode::serde::{decode_from_slice, encode_to_vec};
 use serde::de::DeserializeOwned;
 use serde::Serialize;
-
-const DATABASE: &str = "data.sled";
+use tauri::api::path::app_data_dir;
+use tauri::Config;
 
 enum Section {
     SMTPConfiguration,
@@ -27,89 +26,100 @@ impl AsRef<str> for Section {
     }
 }
 
-fn config() -> bincode::config::Configuration {
-    bincode::config::standard()
+pub struct Database {
+    db: sled::Db,
 }
 
-fn connect() -> AnyResult<sled::Db> {
-    Ok(sled::open(DATABASE)?)
-}
-
-fn to_bytes<T: Serialize>(data: &T) -> AnyResult<Vec<u8>> {
-    Ok(encode_to_vec(data, config())?)
-}
-
-fn from_bytes<T: DeserializeOwned>(data: &[u8]) -> AnyResult<T> {
-    Ok(decode_from_slice(data, config())?.0)
-}
-
-fn insert<T: Serialize + DeserializeOwned>(
-    section: Section,
-    key: impl AsRef<str>,
-    data: &T,
-) -> AnyResult<Option<()>> {
-    let db = connect()?;
-    let tree = db.open_tree(section.as_ref())?;
-    match tree.insert(key.as_ref(), to_bytes(data)?)? {
-        Some(_) => Ok(Some(())),
-        None => Ok(None),
-    }
-}
-
-fn get<T: DeserializeOwned>(section: Section, key: impl AsRef<str>) -> AnyResult<Option<T>> {
-    let db = connect()?;
-    let tree = db.open_tree(section.as_ref())?;
-    match tree.get(key.as_ref())? {
-        Some(bytes) => Ok(from_bytes(&bytes)?),
-        None => Ok(None),
-    }
-}
-
-fn remove(section: Section, key: impl AsRef<str>) -> AnyResult<Option<()>> {
-    let db = connect()?;
-    let tree = db.open_tree(section.as_ref())?;
-    match tree.remove(key.as_ref())? {
-        Some(bytes) => Ok(Some(())),
-        None => Ok(None),
-    }
-}
-
-fn get_all<T: DeserializeOwned>(section: Section) -> AnyResult<Vec<T>> {
-    let mut res = Vec::new();
-
-    let db = connect()?;
-    let tree = db.open_tree(section.as_ref())?;
-    for (_, bytes) in tree.iter().flatten() {
-        res.push(from_bytes(&bytes)?)
+impl Database {
+    pub fn new(config: &Config) -> AnyResult<Self> {
+        Ok(Self {
+            db: sled::open(app_data_dir(config).unwrap().join("data.sled"))?,
+        })
     }
 
-    Ok(res)
-}
+    fn serialize<T: Serialize>(data: &T) -> AnyResult<Vec<u8>> {
+        Ok(bincode::serialize(data)?)
+    }
 
-pub fn save_configuration(configuration: &NamedSMTPConfiguration) -> AnyResult<Option<()>> {
-    insert(
-        Section::SMTPConfiguration,
-        configuration.name.as_str(),
-        configuration,
-    )
-}
+    fn deserialize<T: DeserializeOwned>(data: &[u8]) -> AnyResult<T> {
+        Ok(bincode::deserialize(data)?)
+    }
 
-pub fn remove_configuration(configuration: &NamedSMTPConfiguration) -> AnyResult<Option<()>> {
-    remove(Section::SMTPConfiguration, configuration.name.as_str())
-}
+    fn insert<T: Serialize + DeserializeOwned>(
+        &self,
+        section: Section,
+        key: impl AsRef<str>,
+        data: &T,
+    ) -> AnyResult<Option<()>> {
+        let tree = self.db.open_tree(section.as_ref())?;
+        match tree.insert(key.as_ref(), Self::serialize(data)?)? {
+            Some(_) => Ok(Some(())),
+            None => Ok(None),
+        }
+    }
 
-pub fn get_configurations() -> AnyResult<SMTPConfigurations> {
-    get_all(Section::SMTPConfiguration)
-}
+    fn get<T: DeserializeOwned>(
+        &self,
+        section: Section,
+        key: impl AsRef<str>,
+    ) -> AnyResult<Option<T>> {
+        let tree = self.db.open_tree(section.as_ref())?;
+        match tree.get(key.as_ref())? {
+            Some(bytes) => Ok(Self::deserialize(&bytes)?),
+            None => Ok(None),
+        }
+    }
 
-pub fn save_message(message: &NamedSMTPMessage) -> AnyResult<Option<()>> {
-    insert(Section::SMTPMessage, message.name.as_str(), message)
-}
+    fn remove(&self, section: Section, key: impl AsRef<str>) -> AnyResult<Option<()>> {
+        let tree = self.db.open_tree(section.as_ref())?;
+        match tree.remove(key.as_ref())? {
+            Some(bytes) => Ok(Some(())),
+            None => Ok(None),
+        }
+    }
 
-pub fn remove_message(message: &NamedSMTPMessage) -> AnyResult<Option<()>> {
-    remove(Section::SMTPMessage, message.name.as_str())
-}
+    fn get_all<T: DeserializeOwned>(&self, section: Section) -> AnyResult<Vec<T>> {
+        let mut res = Vec::new();
 
-pub fn get_messages() -> AnyResult<SMTPMessages> {
-    get_all(Section::SMTPMessage)
+        let tree = self.db.open_tree(section.as_ref())?;
+        for (_, bytes) in tree.iter().flatten() {
+            res.push(Self::deserialize(&bytes)?)
+        }
+
+        Ok(res)
+    }
+
+    pub fn save_configuration(
+        &self,
+        configuration: &NamedSMTPConfiguration,
+    ) -> AnyResult<Option<()>> {
+        self.insert(
+            Section::SMTPConfiguration,
+            configuration.name.as_str(),
+            configuration,
+        )
+    }
+
+    pub fn remove_configuration(
+        &self,
+        configuration: &NamedSMTPConfiguration,
+    ) -> AnyResult<Option<()>> {
+        self.remove(Section::SMTPConfiguration, configuration.name.as_str())
+    }
+
+    pub fn get_configurations(&self) -> AnyResult<SMTPConfigurations> {
+        self.get_all(Section::SMTPConfiguration)
+    }
+
+    pub fn save_message(&self, message: &NamedSMTPMessage) -> AnyResult<Option<()>> {
+        self.insert(Section::SMTPMessage, message.name.as_str(), message)
+    }
+
+    pub fn remove_message(&self, message: &NamedSMTPMessage) -> AnyResult<Option<()>> {
+        self.remove(Section::SMTPMessage, message.name.as_str())
+    }
+
+    pub fn get_messages(&self) -> AnyResult<SMTPMessages> {
+        self.get_all(Section::SMTPMessage)
+    }
 }

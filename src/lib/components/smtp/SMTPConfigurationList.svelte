@@ -101,6 +101,7 @@
 					<Tooltip title={t('remove')}>
 						<Button
 							text=""
+							theme={ButtonTheme.Error}
 							padding={ButtonPaddingSize.SM}
 							on:click={() => removeConfiguration(configuration)}
 						>

@@ -1,11 +1,11 @@
 <script context="module" lang="ts">
 	export enum ToastType {
+		Primary,
+		Secondary,
 		Info,
 		Success,
 		Warning,
 		Error,
-		Primary,
-		Secondary,
 		CloseAll
 	}
 </script>

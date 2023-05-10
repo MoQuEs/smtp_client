@@ -12,7 +12,7 @@
 </script>
 
 <button
-	class="px-3 py-2 border-info-400 border-b-2 {$selectedTab === tab ? 'border-primary-400' : ''}
+	class="px-3 py-2 border-b-2 {$selectedTab === tab ? 'border-primary-500' : 'border-secondary-500'}
     active:brightness-75 hover:brightness-125 {className}"
 	on:click={() => selectTab(tab)}
 >

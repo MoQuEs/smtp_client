@@ -44,11 +44,6 @@ export const saveConfiguration = () => {
 		.saveConfiguration(cloned)
 		.then(() => {
 			allConfigurations.update((all) => [...all, cloned]);
-			addToast({
-				title: t('SUCCESS'),
-				type: ToastType.Success,
-				text: t('smtp.configuration.saved')
-			});
 		})
 		.catch(() => {
 			addToast({
@@ -79,12 +74,6 @@ export const repleaceConfiguration = (configurationToRepleace: NamedSMTPConfigur
 					return configuration;
 				})
 			);
-
-			addToast({
-				title: t('SUCCESS'),
-				type: ToastType.Success,
-				text: t('smtp.configuration.repleace')
-			});
 		})
 		.catch(() => {
 			addToast({
@@ -108,12 +97,6 @@ export const removeConfiguration = (configurationToRemove: NamedSMTPConfiguratio
 					return false;
 				})
 			);
-
-			addToast({
-				title: t('SUCCESS'),
-				type: ToastType.Success,
-				text: t('smtp.configuration.remove')
-			});
 		})
 		.catch(() => {
 			addToast({
@@ -128,12 +111,6 @@ export const loadConfiguration = (configurationToLoad: NamedSMTPConfiguration) =
 	let cloned = clone(configurationToLoad);
 	cloned.name = get(customConfiguration).name;
 	customConfiguration.set(cloned);
-
-	addToast({
-		title: t('SUCCESS'),
-		type: ToastType.Success,
-		text: t('smtp.configuration.load')
-	});
 };
 
 const cloneCustom = (): NamedSMTPConfiguration => {

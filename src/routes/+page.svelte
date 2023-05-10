@@ -19,6 +19,7 @@
 	import Tooltip from '$components/tooltip/Tooltip.svelte';
 	import LogoWithText from '$components/logo/LogoWithText.svelte';
 	import SMTPSendMail from '$components/smtp/SMTPSendMail.svelte';
+	import Button, { ButtonPaddingSize, ButtonTheme } from '$src/lib/components/form/Button.svelte';
 </script>
 
 <Tabs>
@@ -27,7 +28,7 @@
 
 		<TabList className="flex-grow justify-center">
 			<Tooltip title={t('menu.send')}>
-				<Tab className="flex flex-col items-center">
+				<Tab>
 					<Icon src={RiBusinessMailSendLine} size="26" color="white" />
 				</Tab>
 			</Tooltip>
@@ -55,7 +56,25 @@
 	<Separator />
 
 	<TabPanel>
-		<div class="flex flex-col">
+		<div class="flex flex-col space-y-5">
+			<!-- <div class="flex flex-row space-x-5">BUTTON COLOR TEST:</div>
+			<div class="flex flex-row space-x-5">
+				<Button text="Primary" theme={ButtonTheme.Primary} padding={ButtonPaddingSize.SM} />
+				<Button text="Secondary" theme={ButtonTheme.Secondary} padding={ButtonPaddingSize.SM} />
+			</div>
+			<div class="flex flex-row space-x-5">
+				<Button text="Success" theme={ButtonTheme.Success} padding={ButtonPaddingSize.SM} />
+				<Button text="Error" theme={ButtonTheme.Error} padding={ButtonPaddingSize.SM} />
+				<Button text="Warning" theme={ButtonTheme.Warning} padding={ButtonPaddingSize.SM} />
+				<Button text="Info" theme={ButtonTheme.Info} padding={ButtonPaddingSize.SM} />
+			</div>
+			<div class="flex flex-row space-x-5">
+				<Button text="LightGray" theme={ButtonTheme.LightGray} padding={ButtonPaddingSize.SM} />
+				<Button text="Gray" theme={ButtonTheme.Gray} padding={ButtonPaddingSize.SM} />
+				<Button text="DarkGray" theme={ButtonTheme.DarkGray} padding={ButtonPaddingSize.SM} />
+				<Button text="DarkestGray" theme={ButtonTheme.DarkestGray} padding={ButtonPaddingSize.SM} />
+			</div> -->
+
 			<SMTPSendMail />
 
 			<Separator size={SeparatorSize.XS} />

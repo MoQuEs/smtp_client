@@ -28,12 +28,12 @@
 	}
 
 	export enum ButtonTheme {
+		Primary,
+		Secondary,
 		Info,
 		Success,
 		Warning,
 		Error,
-		Primary,
-		Secondary,
 		LightGray,
 		Gray,
 		DarkGray,

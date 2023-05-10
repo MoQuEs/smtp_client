@@ -6,6 +6,7 @@ export default {
 	SUCCESS: 'SUCCESS',
 	custom: 'Custom',
 	logo: 'Logo',
+	'logo.text': 'Logo text',
 	show: 'Show',
 	hide: 'Hide',
 	save: 'Save',

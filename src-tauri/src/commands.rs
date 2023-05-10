@@ -1,20 +1,17 @@
-use crate::database::{
-    get_configurations, get_messages, remove_configuration, remove_message, save_configuration,
-    save_message,
-};
 use crate::response::{
     error, success, AnyResult, MaybeSMTPConfiguration, MaybeSMTPMessage, NamedSMTPConfiguration,
     NamedSMTPMessage, SMTPConfiguration, SMTPConfigurations, SMTPMessage, SMTPMessages,
     TauriResponse,
 };
+use crate::state::{AppHandle, ServiceAccess};
 use mail_send::mail_builder::headers::address::Address;
 use mail_send::mail_builder::headers::HeaderType;
 use mail_send::mail_builder::MessageBuilder;
 use mail_send::SmtpClientBuilder;
 
 #[tauri::command]
-pub fn get_configurations_command() -> TauriResponse<SMTPConfigurations> {
-    match get_configurations() {
+pub fn get_configurations_command(app_handle: AppHandle) -> TauriResponse<SMTPConfigurations> {
+    match app_handle.db(|db| db.get_configurations()) {
         Ok(data) => success(None, Some(data)),
         Err(err) => {
             println!("{:?}", err);
@@ -25,9 +22,10 @@ pub fn get_configurations_command() -> TauriResponse<SMTPConfigurations> {
 
 #[tauri::command]
 pub fn save_configuration_command(
+    app_handle: AppHandle,
     configuration: NamedSMTPConfiguration,
 ) -> TauriResponse<MaybeSMTPConfiguration> {
-    match save_configuration(&configuration) {
+    match app_handle.db(|db| db.save_configuration(&configuration)) {
         Ok(data) => success(None, None),
         Err(err) => {
             println!("{:?}", err);
@@ -38,9 +36,10 @@ pub fn save_configuration_command(
 
 #[tauri::command]
 pub fn remove_configuration_command(
+    app_handle: AppHandle,
     configuration: NamedSMTPConfiguration,
 ) -> TauriResponse<MaybeSMTPConfiguration> {
-    match remove_configuration(&configuration) {
+    match app_handle.db(|db| db.remove_configuration(&configuration)) {
         Ok(data) => success(None, None),
         Err(err) => {
             println!("{:?}", err);
@@ -50,8 +49,8 @@ pub fn remove_configuration_command(
 }
 
 #[tauri::command]
-pub fn get_messages_command() -> TauriResponse<SMTPMessages> {
-    match get_messages() {
+pub fn get_messages_command(app_handle: AppHandle) -> TauriResponse<SMTPMessages> {
+    match app_handle.db(|db| db.get_messages()) {
         Ok(data) => success(None, Some(data)),
         Err(err) => {
             println!("{:?}", err);
@@ -61,8 +60,11 @@ pub fn get_messages_command() -> TauriResponse<SMTPMessages> {
 }
 
 #[tauri::command]
-pub fn save_message_command(message: NamedSMTPMessage) -> TauriResponse<MaybeSMTPMessage> {
-    match save_message(&message) {
+pub fn save_message_command(
+    app_handle: AppHandle,
+    message: NamedSMTPMessage,
+) -> TauriResponse<MaybeSMTPMessage> {
+    match app_handle.db(|db| db.save_message(&message)) {
         Ok(data) => success(None, None),
         Err(err) => {
             println!("{:?}", err);
@@ -72,8 +74,11 @@ pub fn save_message_command(message: NamedSMTPMessage) -> TauriResponse<MaybeSMT
 }
 
 #[tauri::command]
-pub fn remove_message_command(message: NamedSMTPMessage) -> TauriResponse<MaybeSMTPMessage> {
-    match remove_message(&message) {
+pub fn remove_message_command(
+    app_handle: AppHandle,
+    message: NamedSMTPMessage,
+) -> TauriResponse<MaybeSMTPMessage> {
+    match app_handle.db(|db| db.remove_message(&message)) {
         Ok(data) => success(None, None),
         Err(err) => {
             println!("{:?}", err);

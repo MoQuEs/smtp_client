@@ -98,7 +98,12 @@
 						</Button>
 					</Tooltip>
 					<Tooltip title={t('remove')}>
-						<Button text="" padding={ButtonPaddingSize.SM} on:click={() => removeMessage(message)}>
+						<Button
+							text=""
+							theme={ButtonTheme.Error}
+							padding={ButtonPaddingSize.SM}
+							on:click={() => removeMessage(message)}
+						>
 							<Icon src={AiOutlineMinus} size="22" color="white" slot="icon" />
 						</Button>
 					</Tooltip>

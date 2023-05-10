@@ -77,7 +77,7 @@
 		text={t('smtp.message.header.add')}
 		size={BadgeSize.SM}
 		theme={BadgeTheme.Normal}
-		color={BadgeColor.Info}
+		color={BadgeColor.Primary}
 		interactive={true}
 		on:click={addHeader}
 	/>

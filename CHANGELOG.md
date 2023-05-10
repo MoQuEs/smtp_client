@@ -1,4 +1,6 @@
 # Changelog
+- [Readme](README.md)
+- [Roadmap](ROADMAP.md)
 
 All notable changes to this project will be documented in this file.
 
@@ -7,36 +9,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [Unreleased] - Unreleased
-Unreleased changes
+Make project look better and add save/load configurations/messages
 
 ### Added
-- [Add and maintain changelog #4](https://github.com/MoQuEs/smtp_client/issues/4)
     - Added changelog with older releases/tags
-- [Change frontend to accommodate more 'things' #9](https://github.com/MoQuEs/smtp_client/issues/9)
     - Added tab system
-- [Add save / load configurations #7](https://github.com/MoQuEs/smtp_client/issues/7)
     - Added save/load configurations
     - Added select configuration on main tab
-- [Add save / load messages #8](https://github.com/MoQuEs/smtp_client/issues/8)
     - Added save/load messages
     - Added select messages on main tab
-- [Make new logo / change fonts #14](https://github.com/MoQuEs/smtp_client/issues/14)
     - Added logo for project
-    - Added ubuntu font as main for project
+    - Added ubuntu font as main font for project
 
 ### Changed
-- [Change frontend to accommodate more 'things' #9](https://github.com/MoQuEs/smtp_client/issues/9)
     - Changed frontend to use tabs
-- [Make new logo / change fonts #14](https://github.com/MoQuEs/smtp_client/issues/14)
     - Small frontend fixes
-
-### Deprecated
-
-### Removed
-
-### Fixed
-
-### Security
 
 
 ## [0.2.9] - 23.04.2023
