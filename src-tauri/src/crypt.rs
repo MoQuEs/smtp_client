@@ -1,3 +1,5 @@
+#![allow(dead_code)]
+
 use crate::response::AnyResult;
 use orion::aead::{open, seal, SecretKey};
 

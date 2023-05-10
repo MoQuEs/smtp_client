@@ -8,12 +8,12 @@
 	}
 
 	export enum BadgeColor {
-		Info = 'info',
-		Success = 'success',
-		Warning = 'warning',
-		Error = 'error',
-		Primary = 'primary',
-		Secondary = 'secondary'
+		Primary,
+		Secondary,
+		Info,
+		Success,
+		Warning,
+		Error
 	}
 
 	export enum BadgeTheme {

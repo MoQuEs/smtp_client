@@ -1,11 +1,11 @@
 <script context="module" lang="ts">
 	export enum ToastType {
+		Primary,
+		Secondary,
 		Info,
 		Success,
 		Warning,
 		Error,
-		Primary,
-		Secondary,
 		CloseAll
 	}
 </script>
@@ -71,6 +71,7 @@
 	const dispatch = createEventDispatcher();
 
 	const closeToast = () => dispatch('dismiss');
+	const dummy = () => {};
 </script>
 
 <div
@@ -89,8 +90,13 @@
 			{#if subTitle != '' && subTitle != undefined}
 				<p class="text-white opacity-90 text-xs mr-1">{subTitle}</p>
 			{/if}
-			<!-- svelte-ignore a11y-click-events-have-key-events -->
-			<div class="flex items-center" on:click={closeToast}>
+			<div
+				class="flex items-center"
+				on:click={closeToast}
+				on:keydown={dummy}
+				on:keyup={dummy}
+				on:keypress={dummy}
+			>
 				<Icon
 					src={type != ToastType.CloseAll ? AiOutlineClose : AiOutlineCheck}
 					size="20"

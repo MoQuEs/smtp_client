@@ -1,8 +1,8 @@
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte';
-	import { RandomId } from '$src/lib/components/Random';
+	import { RandomId } from '$utils/random';
 
-	export let name: string;
+	export let name: string = RandomId();
 
 	export let rows: number = 4;
 	export let value: string = '';
@@ -28,7 +28,7 @@
 		{id}
 		{name}
 		{rows}
-		class="block p-2.5 w-full text-sm rounded-lg border bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500
+		class="block p-2.5 w-full text-sm rounded border bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500
 		{disabled ? 'cursor-not-allowed' : ''}"
 		{placeholder}
 		{disabled}

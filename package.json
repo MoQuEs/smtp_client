@@ -1,7 +1,7 @@
 {
 	"name": "smtp_client",
 	"private": true,
-	"version": "0.2.9",
+	"version": "0.3.0",
 	"type": "module",
 	"scripts": {
 		"dev": "vite dev",
@@ -10,43 +10,40 @@
 		"check": "svelte-kit sync && svelte-check --tsconfig ./jsconfig.json",
 		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./jsconfig.json --watch",
 		"tauri": "tauri",
-		"bump": "node ./scripts/bump",
-		"format": "node ./scripts/format"
+		"typeshare": "typeshare --lang=typescript --output-file=./src/generated/tauri.ts .",
+		"set_version": "node ./scripts/set_version",
+		"format": "node ./scripts/format",
+		"logo": "node ./scripts/logo"
 	},
 	"dependencies": {
-		"@tauri-apps/api": "^1.2.0"
+		"@tauri-apps/api": "^1.3.0"
 	},
 	"devDependencies": {
-		"@fortawesome/free-brands-svg-icons": "^6.4.0",
-		"@fortawesome/free-regular-svg-icons": "^6.4.0",
-		"@fortawesome/free-solid-svg-icons": "^6.4.0",
-		"@sveltejs/adapter-static": "^2.0.1",
-		"@sveltejs/kit": "^1.14.0",
+		"@popperjs/core": "^2.11.7",
+		"@sveltejs/adapter-static": "^2.0.2",
+		"@sveltejs/kit": "^1.15.10",
 		"@tauri-apps/cli": "^1.2.3",
 		"@types/html-to-text": "^9.0.0",
 		"autoprefixer": "^10.4.14",
-		"class-validator": "^0.14.0",
-		"css.gg": "^2.0.0",
-		"cssnano": "^6.0.0",
-		"flowbite-svelte": "^0.34.2",
+		"cssnano": "^6.0.1",
+		"flowbite": "^1.6.5",
+		"flowbite-svelte": "^0.34.10",
 		"html-to-text": "^9.0.5",
-		"marked": "^4.3.0",
-		"postcss": "^8.4.21",
+		"postcss": "^8.4.23",
 		"postcss-import": "^15.1.0",
 		"postcss-nesting": "^11.2.2",
-		"postcss-preset-env": "^8.2.0",
-		"prettier": "^2.8.7",
+		"postcss-preset-env": "^8.3.2",
+		"prettier": "^2.8.8",
 		"prettier-plugin-svelte": "^2.10.0",
-		"sass": "^1.60.0",
-		"svelte": "^3.57.0",
-		"svelte-check": "^3.1.4",
-		"svelte-fa": "^3.0.3",
+		"sass": "^1.62.1",
+		"svelte": "^3.58.0",
+		"svelte-check": "^3.3.2",
 		"svelte-icons-pack": "^2.1.0",
+		"svelte-virtual-scroll-list": "^1.1.0",
 		"tailwind-scrollbar": "^3.0.0",
-		"tailwindcss": "=3.2.7",
+		"tailwindcss": "^3.3.2",
 		"tslib": "^2.5.0",
-		"typescript": "^5.0.2",
-		"v8n": "^1.5.1",
-		"vite": "^4.2.1"
+		"typescript": "^5.0.4",
+		"vite": "^4.3.4"
 	}
 }

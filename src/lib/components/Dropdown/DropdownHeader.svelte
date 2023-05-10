@@ -2,12 +2,13 @@
 	import DropdownItem from './DropdownItem.svelte';
 
 	export let text: string;
+	export let className: string = '';
 </script>
 
 <DropdownItem alowHover={false}>
-	<h6
-		class="text-gray-400 font-semibold text-sm py-2 px-4 block w-full whitespace-nowrap bg-transparent"
+	<h4
+		class="text-gray-400 font-semibold text-sm px-4 block w-full whitespace-nowrap bg-transparent {className}"
 	>
 		{text}
-	</h6>
+	</h4>
 </DropdownItem>

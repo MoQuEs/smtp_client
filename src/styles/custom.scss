@@ -1,0 +1,13 @@
+.scrollbar {
+	@apply scrollbar-thin scrollbar-thumb-primary-800 scrollbar-track-gray-700;
+}
+
+select {
+	option {
+		@apply bg-gray-800 text-base;
+		
+		&:checked {
+			@apply bg-info-800 text-base;
+		}
+	}
+}

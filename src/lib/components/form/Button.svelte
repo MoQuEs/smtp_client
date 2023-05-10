@@ -13,19 +13,27 @@
 		XL
 	}
 
+	export enum ButtonPaddingSize {
+		XS,
+		SM,
+		MD,
+		LG,
+		XL
+	}
+
 	export enum ButtonMode {
 		Normal,
 		Disabled,
-		Loding
+		Loading
 	}
 
 	export enum ButtonTheme {
+		Primary,
+		Secondary,
 		Info,
 		Success,
 		Warning,
 		Error,
-		Primary,
-		Secondary,
 		LightGray,
 		Gray,
 		DarkGray,
@@ -37,13 +45,15 @@
 	import { createEventDispatcher } from 'svelte';
 	import Icon from 'svelte-icons-pack';
 	import CgSpinnerTwoAlt from 'svelte-icons-pack/cg/CgSpinnerTwoAlt';
+	import { RandomId } from '$utils/random';
 
-	export let name: string;
 	export let text: string;
+	export let name: string = RandomId();
 
 	export let type: ButtonType = ButtonType.Button;
 	export let theme: ButtonTheme = ButtonTheme.Primary;
 	export let size: ButtonSize = ButtonSize.MD;
+	export let padding: ButtonPaddingSize = ButtonPaddingSize.LG;
 	export let mode: ButtonMode = ButtonMode.Normal;
 	export let className: string = '';
 
@@ -76,12 +86,35 @@
 			break;
 	}
 
+	let paddingSize = 'mx-5 my-3';
+	switch (padding) {
+		case ButtonPaddingSize.XS:
+			paddingSize = 'mx-2 my-1';
+			break;
+
+		case ButtonPaddingSize.SM:
+			paddingSize = 'mx-3 my-2';
+			break;
+
+		case ButtonPaddingSize.MD:
+			paddingSize = 'mx-4 my-2';
+			break;
+
+		case ButtonPaddingSize.LG:
+			paddingSize = 'mx-5 my-3';
+			break;
+
+		case ButtonPaddingSize.XL:
+			paddingSize = 'mx-6 my-4';
+			break;
+	}
+
 	let cursor = 'cursor-pointer';
 	switch (mode) {
 		case ButtonMode.Normal:
 			cursor = 'cursor-pointer';
 			break;
-		case ButtonMode.Loding:
+		case ButtonMode.Loading:
 			cursor = 'cursor-wait';
 			break;
 		case ButtonMode.Disabled:
@@ -126,26 +159,26 @@
 	const dispatch = createEventDispatcher();
 
 	let click = () => {
-		mode === ButtonMode.Loding || mode === ButtonMode.Disabled ? false : dispatch('click');
+		mode === ButtonMode.Loading || mode === ButtonMode.Disabled ? false : dispatch('click');
 	};
 </script>
 
 <button
 	{name}
 	{type}
-	class="relative {textSizeClass} leading-none
-    whitespace-nowrap font-bold btn-work active:brightness-75
-    hover:brightness-125 text-white {buttonClass} rounded {cursor}
+	class="relative flex flex-row flex-grow {textSizeClass}
+    whitespace-nowrap font-bold active:brightness-75
+    hover:brightness-125 text-white items-center rounded {buttonClass}  {cursor}
     {className}"
 	on:click={click}
 >
-	{#if mode === ButtonMode.Loding || mode === ButtonMode.Disabled}
+	{#if mode === ButtonMode.Loading || mode === ButtonMode.Disabled}
 		<div
-			class="absolute w-full h-full bg-gray-900 opacity-70 flex place-content-center
+			class="absolute w-full h-full bg-gray-900 opacity-70 flex flex-grow place-content-center
 		{mode === ButtonMode.Disabled ? 'cursor-not-allowed' : ''}
-		{mode === ButtonMode.Loding ? 'cursor-wait' : ''}"
+		{mode === ButtonMode.Loading ? 'cursor-wait' : ''}"
 		>
-			{#if mode === ButtonMode.Loding}
+			{#if mode === ButtonMode.Loading}
 				<Icon
 					src={CgSpinnerTwoAlt}
 					className="{iconSizeClass} fill-white animate-spin self-center"
@@ -153,7 +186,7 @@
 			{/if}
 		</div>
 	{/if}
-	<div class="flex flex-row flex-grow place-content-center align-middle mx-5 my-3">
+	<div class="flex flex-grow place-content-center align-middle items-center {paddingSize}">
 		{#if $$slots.icon}
 			<div class="{text != '' ? 'mr-2' : ''} {iconSizeClass}">
 				<slot name="icon" />

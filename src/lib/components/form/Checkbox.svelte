@@ -1,8 +1,7 @@
 <script lang="ts">
-	import { createEventDispatcher } from 'svelte';
-	import { RandomId } from '$src/lib/components/Random';
+	import { RandomId } from '$utils/random';
 
-	export let name: string;
+	export let name: string = RandomId();
 
 	export let checked: boolean = false;
 	export let value: string = '';

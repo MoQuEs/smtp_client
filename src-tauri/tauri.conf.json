@@ -2,13 +2,14 @@
 	"build": {
 		"beforeDevCommand": "npm run dev",
 		"beforeBuildCommand": "npm run build",
+		"beforeBundleCommand": "",
 		"devPath": "http://localhost:1420",
 		"distDir": "../build",
 		"withGlobalTauri": false
 	},
 	"package": {
-		"productName": "smtp_client",
-		"version": "0.2.9"
+		"productName": "SMTPclient",
+		"version": "0.3.0"
 	},
 	"tauri": {
 		"allowlist": {
@@ -29,7 +30,7 @@
 				"icons/icon.icns",
 				"icons/icon.ico"
 			],
-			"identifier": "smtp.client",
+			"identifier": "com.moques.smtpclient",
 			"longDescription": "",
 			"macOS": {
 				"entitlements": null,
@@ -48,7 +49,7 @@
 			}
 		},
 		"security": {
-			"csp": null
+			"csp": "default-src asset: blob: data: filesystem: ws: wss: http: https: tauri: 'unsafe-eval' 'unsafe-inline' 'self'"
 		},
 		"updater": {
 			"active": false
@@ -56,10 +57,10 @@
 		"windows": [
 			{
 				"fullscreen": false,
-				"height": 768,
+				"height": 800,
 				"resizable": true,
-				"title": "SMTP Client",
-				"width": 500
+				"title": "SMTPclient",
+				"width": 600
 			}
 		]
 	}

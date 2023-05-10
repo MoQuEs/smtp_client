@@ -12,7 +12,10 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        platform: [macos-latest, ubuntu-22.04, windows-latest]
+        platform:
+          - macos-latest
+          - windows-latest
+          - ubuntu-latest
     runs-on: ${{ matrix.platform }}
 
     steps:
@@ -20,18 +23,16 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Install dependencies (ubuntu only)
-        if: matrix.platform == 'ubuntu-22.04'
+        if: matrix.platform == 'ubuntu-latest'
         run: |
           sudo apt-get update
-          sudo apt-get install -y libwebkit2gtk-4.1-dev libsoup-3.0-dev libjavascriptcoregtk-4.1-dev libglib2.0-dev libgtk-3-dev libwebkit2gtk-4.0-dev libayatana-appindicator3-dev librsvg2-dev
+          sudo apt-get install -y build-essential curl wget libssl-dev gobject-2.0 libwebkit2gtk-4.1-dev libsoup-3.0-dev libjavascriptcoregtk-4.1-dev libglib2.0-dev libgtk-3-dev libwebkit2gtk-4.0-dev libayatana-appindicator3-dev librsvg2-dev
 
       - name: Rust setup
         uses: dtolnay/rust-toolchain@stable
 
       - name: Rust cache
         uses: swatinem/rust-cache@v2
-        with:
-          workspaces: '. -> target'
 
       - name: Sync node version and setup cache
         uses: actions/setup-node@v3
@@ -41,6 +42,10 @@ jobs:
 
       - name: Install frontend dependencies
         run: npm install
+
+      - name: Install additional frontend dependencies (ubuntu only)
+        if: matrix.platform == 'ubuntu-latest'
+        run: npm install @tauri-apps/cli-linux-x64-gnu
 
       - name: Build the app
         uses: tauri-apps/tauri-action@v0

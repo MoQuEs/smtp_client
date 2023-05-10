@@ -1,19 +1,56 @@
-use crate::database::{get_configurations, get_messages, save_configuration, save_message};
 use crate::response::{
     error, success, AnyResult, MaybeSMTPConfiguration, MaybeSMTPMessage, NamedSMTPConfiguration,
     NamedSMTPMessage, SMTPConfiguration, SMTPConfigurations, SMTPMessage, SMTPMessages,
     TauriResponse,
 };
+use crate::state::{AppHandle, ServiceAccess};
 use mail_send::mail_builder::headers::address::Address;
 use mail_send::mail_builder::headers::HeaderType;
 use mail_send::mail_builder::MessageBuilder;
 use mail_send::SmtpClientBuilder;
 
 #[tauri::command]
+pub fn get_configurations_command(app_handle: AppHandle) -> TauriResponse<SMTPConfigurations> {
+    match app_handle.db(|db| db.get_configurations()) {
+        Ok(data) => success(None, Some(data)),
+        Err(err) => {
+            println!("{:?}", err);
+            error(Some(format!("{:?}", err)), None)
+        }
+    }
+}
+
+#[tauri::command]
 pub fn save_configuration_command(
+    app_handle: AppHandle,
     configuration: NamedSMTPConfiguration,
 ) -> TauriResponse<MaybeSMTPConfiguration> {
-    match save_configuration(&configuration) {
+    match app_handle.db(|db| db.save_configuration(&configuration)) {
+        Ok(data) => success(None, None),
+        Err(err) => {
+            println!("{:?}", err);
+            error(Some(format!("{:?}", err)), None)
+        }
+    }
+}
+
+#[tauri::command]
+pub fn remove_configuration_command(
+    app_handle: AppHandle,
+    configuration: NamedSMTPConfiguration,
+) -> TauriResponse<MaybeSMTPConfiguration> {
+    match app_handle.db(|db| db.remove_configuration(&configuration)) {
+        Ok(data) => success(None, None),
+        Err(err) => {
+            println!("{:?}", err);
+            error(Some(format!("{:?}", err)), None)
+        }
+    }
+}
+
+#[tauri::command]
+pub fn get_messages_command(app_handle: AppHandle) -> TauriResponse<SMTPMessages> {
+    match app_handle.db(|db| db.get_messages()) {
         Ok(data) => success(None, Some(data)),
         Err(err) => {
             println!("{:?}", err);
@@ -23,9 +60,12 @@ pub fn save_configuration_command(
 }
 
 #[tauri::command]
-pub fn get_configurations_command() -> TauriResponse<SMTPConfigurations> {
-    match get_configurations() {
-        Ok(data) => success(None, Some(data)),
+pub fn save_message_command(
+    app_handle: AppHandle,
+    message: NamedSMTPMessage,
+) -> TauriResponse<MaybeSMTPMessage> {
+    match app_handle.db(|db| db.save_message(&message)) {
+        Ok(data) => success(None, None),
         Err(err) => {
             println!("{:?}", err);
             error(Some(format!("{:?}", err)), None)
@@ -34,20 +74,12 @@ pub fn get_configurations_command() -> TauriResponse<SMTPConfigurations> {
 }
 
 #[tauri::command]
-pub fn save_message_command(message: NamedSMTPMessage) -> TauriResponse<MaybeSMTPMessage> {
-    match save_message(&message) {
-        Ok(data) => success(None, Some(data)),
-        Err(err) => {
-            println!("{:?}", err);
-            error(Some(format!("{:?}", err)), None)
-        }
-    }
-}
-
-#[tauri::command]
-pub fn get_messages_command() -> TauriResponse<SMTPMessages> {
-    match get_messages() {
-        Ok(data) => success(None, Some(data)),
+pub fn remove_message_command(
+    app_handle: AppHandle,
+    message: NamedSMTPMessage,
+) -> TauriResponse<MaybeSMTPMessage> {
+    match app_handle.db(|db| db.remove_message(&message)) {
+        Ok(data) => success(None, None),
         Err(err) => {
             println!("{:?}", err);
             error(Some(format!("{:?}", err)), None)
@@ -57,10 +89,10 @@ pub fn get_messages_command() -> TauriResponse<SMTPMessages> {
 
 #[tauri::command]
 pub async fn send_mail_command(
-    server: SMTPConfiguration,
+    configuration: SMTPConfiguration,
     message: SMTPMessage,
 ) -> TauriResponse<()> {
-    match send_mail(server, message).await {
+    match send_mail(configuration, message).await {
         Ok(_) => success(None, None),
         Err(err) => {
             println!("{:?}", err);
@@ -69,7 +101,7 @@ pub async fn send_mail_command(
     }
 }
 
-pub async fn send_mail(server: SMTPConfiguration, message: SMTPMessage) -> AnyResult<()> {
+pub async fn send_mail(configuration: SMTPConfiguration, message: SMTPMessage) -> AnyResult<()> {
     let mut message_builder = MessageBuilder::new()
         .to(Address::new_address(message.to.name, message.to.email))
         .from(Address::new_address(message.from.name, message.from.email))
@@ -101,14 +133,16 @@ pub async fn send_mail(server: SMTPConfiguration, message: SMTPMessage) -> AnyRe
         }
     }
 
-    let mut smtp_builder = SmtpClientBuilder::new(server.address.address, server.address.port)
-        .implicit_tls(server.require_ssl);
+    let mut smtp_builder =
+        SmtpClientBuilder::new(configuration.address.address, configuration.address.port)
+            .implicit_tls(configuration.require_ssl);
 
-    if server.auth.use_auth {
-        smtp_builder = smtp_builder.credentials((server.auth.user, server.auth.password))
+    if configuration.auth.use_auth {
+        smtp_builder =
+            smtp_builder.credentials((configuration.auth.user, configuration.auth.password))
     }
 
-    if !server.verify_certificates {
+    if !configuration.verify_certificates {
         smtp_builder = smtp_builder.allow_invalid_certs();
     }
 
