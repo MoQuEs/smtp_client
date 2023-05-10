@@ -47,8 +47,9 @@ npm run tauri build
 #### Scripts
 - `npm run check` - Run check on frontend
 - `npm run format` - Reformat whole project
+- `npm run typeshare` - Generate typescript definitions from rust
 - `npm run logo <logo_image_name_in_logo_folder>` - Run generator on logo to generate icons
-- `npm run prepare_release <sver_version_to_prepare>` - Will bump version in:
+- `npm run set_version <sver_version_to_prepare>` - Will bump version in:
   - `package.json` - frontend
   - `cargo.toml` - backend
   - `src-tauri/tauri.conf.json` - build script

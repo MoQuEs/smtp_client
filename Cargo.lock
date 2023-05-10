@@ -2721,7 +2721,7 @@ checksum = "d4b756ac662e92a0e5b360349bea5f0b0784d4be4541eff2972049dfdfd7f862"
 
 [[package]]
 name = "smtp_client"
-version = "0.2.9"
+version = "0.3.0"
 dependencies = [
  "anyhow",
  "bincode",
