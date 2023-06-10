@@ -1,8 +1,10 @@
 #![allow(dead_code)]
 
 use crate::response::{
-    AnyResult, NamedSMTPConfiguration, NamedSMTPMessage, SMTPConfigurations, SMTPMessages,
+    AnyResult, MaybeSecret, NamedSMTPConfiguration, NamedSMTPMessage, SMTPConfigurations,
+    SMTPMessages, Secret,
 };
+use rust_utils::ignore::Ignore;
 use serde::de::DeserializeOwned;
 use serde::Serialize;
 use tauri::api::path::app_data_dir;
@@ -121,5 +123,17 @@ impl Database {
 
     pub fn get_messages(&self) -> AnyResult<SMTPMessages> {
         self.get_all(Section::SMTPMessage)
+    }
+
+    pub fn get_secret<T>(&self, secret: impl AsRef<str>) -> AnyResult<MaybeSecret<T>> {
+        self.get(Section::Secrets, secret)
+    }
+
+    pub fn save_secret<T>(&self, secret: &Secret<T>) -> AnyResult<Option<()>> {
+        self.insert(Section::Secrets, secret.name.as_str(), secret)
+    }
+
+    pub fn remove_secret<T>(&self, secret: &Secret<T>) -> AnyResult<Option<()>> {
+        self.remove(Section::Secrets, secret.name.as_str())
     }
 }
