@@ -45,6 +45,7 @@ pub type MaybeSMTPConfiguration = Option<NamedSMTPConfiguration>;
 pub type MaybeSMTPMessage = Option<NamedSMTPMessage>;
 pub type SMTPConfigurations = Vec<NamedSMTPConfiguration>;
 pub type SMTPMessages = Vec<NamedSMTPMessage>;
+pub type MaybeSecret<T> = Option<Secret<T>>;
 
 #[typeshare]
 #[derive(Deserialize, Serialize, Debug, Clone)]
@@ -116,4 +117,11 @@ pub struct SMTPMessageHeader {
 pub struct SMTPMessageBody {
     pub html: String,
     pub text: String,
+}
+
+#[typeshare]
+#[derive(Deserialize, Serialize, Debug, Clone)]
+pub struct Secret<T> {
+    pub name: String,
+    pub value: T,
 }
