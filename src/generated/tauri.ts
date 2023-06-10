@@ -62,3 +62,21 @@ export interface NamedSMTPMessage {
 	message: SMTPMessage;
 }
 
+export interface Secret<T> {
+	name: string;
+	value: T;
+}
+
+export enum SettingsTheme {
+	Dark = "Dark",
+}
+
+export enum SettingsLanguage {
+	English = "English",
+}
+
+export interface Settings {
+	theme: SettingsTheme;
+	language: SettingsLanguage;
+}
+

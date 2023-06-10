@@ -127,20 +127,22 @@ pub struct Secret<T> {
 }
 
 #[typeshare]
-#[derive(Deserialize, Serialize, Debug, Clone)]
+#[derive(Deserialize, Serialize, Default, Debug, Clone)]
 pub struct Settings {
     pub theme: SettingsTheme,
     pub language: SettingsLanguage,
 }
 
 #[typeshare]
-#[derive(Deserialize, Serialize, Debug, Clone)]
+#[derive(Deserialize, Serialize, Default, Debug, Clone)]
 pub enum SettingsTheme {
-    Light,
+    #[default]
+    Dark,
 }
 
 #[typeshare]
-#[derive(Deserialize, Serialize, Debug, Clone)]
+#[derive(Deserialize, Serialize, Default, Debug, Clone)]
 pub enum SettingsLanguage {
+    #[default]
     English,
 }

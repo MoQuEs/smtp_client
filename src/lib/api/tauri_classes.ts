@@ -127,3 +127,27 @@ export class SMTPMessageBody implements tauri.SMTPMessageBody {
 		this.text = text;
 	}
 }
+
+export class Secret<T> implements tauri.Secret<T> {
+	public name: string;
+	public value: T;
+
+	constructor(name: string, value: T) {
+		this.name = name;
+		this.value = value;
+	}
+}
+
+export type SettingsTheme = tauri.SettingsTheme;
+
+export type SettingsLanguage = tauri.SettingsLanguage;
+
+export class Settings implements tauri.Settings {
+	public theme: SettingsTheme;
+	public language: SettingsLanguage;
+
+	constructor(theme: SettingsTheme, language: SettingsLanguage) {
+		this.theme = theme;
+		this.language = language;
+	}
+}

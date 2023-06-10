@@ -85,6 +85,13 @@ export default {
 	'smtp.message.load': 'Loaded message',
 	'smtp.message.load_error': "Can't load message",
 
+	'settings.save_error': "Can't save settings",
+	'settings.load_error': "Can't load settings",
+	'settings.language': 'Language',
+	'settings.language.English': 'English',
+	'settings.theme': 'Theme',
+	'settings.theme.Dark': 'Dark',
+
 	'api.error': 'Error while calling api',
 	'api.data.error': 'Error while calling api',
 	'api.send_mail.success': 'Email was sent',

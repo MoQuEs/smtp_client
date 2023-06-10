@@ -6,7 +6,9 @@ import type {
 	NamedSMTPConfiguration,
 	NamedSMTPConfigurations,
 	NamedSMTPMessages,
-	NamedSMTPMessage
+	NamedSMTPMessage,
+	Settings,
+	Secret
 } from '$api/tauri_classes';
 
 export type Callback<T> = (response_data: TauriResponse<T>) => Promise<void>;
@@ -45,6 +47,26 @@ export const saveMessage = (message: NamedSMTPMessage): PTauriResponse<NamedSMTP
 
 export const removeMessage = (message: NamedSMTPMessage): PTauriResponse<NamedSMTPMessages> => {
 	return callTauri('remove_message_command', { message });
+};
+
+export const setSecret = <T>(secret: string): PTauriResponse<Secret<T>> => {
+	return callTauri('get_secret_command', { secret });
+};
+
+export const saveSecret = <T>(secret: Secret<T>): PTauriResponse<Secret<T>> => {
+	return callTauri('save_secret_command', { secret });
+};
+
+export const removeSecret = <T>(secret: Secret<T>): PTauriResponse<Secret<T>> => {
+	return callTauri('remove_secret_command', { secret });
+};
+
+export const getSettings = (): PTauriResponse<Settings> => {
+	return callTauri('get_settings_command');
+};
+
+export const saveSettings = (settings: Settings): PTauriResponse<Settings> => {
+	return callTauri('save_settings_command', { settings });
 };
 
 async function callTauri<T>(function_name: string, data: InvokeArgs = {}): PTauriResponse<T> {

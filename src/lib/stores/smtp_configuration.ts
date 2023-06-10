@@ -1,6 +1,10 @@
 import * as tauriApi from '$api/tauri';
 import { get, writable, type Writable } from 'svelte/store';
-import { NamedSMTPConfiguration } from '$api/tauri_classes';
+import {
+	NamedSMTPConfiguration,
+	type NamedSMTPConfigurations,
+	type TauriResponse
+} from '$api/tauri_classes';
 import { clone } from '$utils/utils';
 import { addToast } from '$stores/toasts';
 import { ToastType } from '$components/toast/Toast.svelte';
@@ -15,8 +19,25 @@ export const setCustomConfigurations = (configuration: NamedSMTPConfiguration) =
 	customConfiguration.set(configuration);
 };
 
-export const setConfigurations = (configurations: NamedSMTPConfiguration[]) => {
+export const setConfigurations = (configurations: NamedSMTPConfigurations) => {
 	allConfigurations.set([...configurations]);
+};
+
+export const loadConfigurations = () => {
+	tauriApi
+		.getConfigurations()
+		.then((configurations: TauriResponse<NamedSMTPConfigurations>) => {
+			if (configurations.data !== undefined) {
+				setConfigurations(configurations.data);
+			}
+		})
+		.catch(() => {
+			addToast({
+				title: t('ERROR'),
+				type: ToastType.Error,
+				text: t('smtp.configuration.load_error')
+			});
+		});
 };
 
 export const saveConfiguration = () => {
@@ -49,7 +70,7 @@ export const saveConfiguration = () => {
 			addToast({
 				title: t('ERROR'),
 				type: ToastType.Error,
-				text: t('smtp.configuration.saved')
+				text: t('smtp.configuration.save_error')
 			});
 		});
 };

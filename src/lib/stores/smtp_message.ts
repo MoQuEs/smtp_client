@@ -1,6 +1,6 @@
 import * as tauriApi from '$api/tauri';
 import { get, writable, type Writable } from 'svelte/store';
-import { NamedSMTPMessage } from '$api/tauri_classes';
+import { NamedSMTPMessage, type NamedSMTPMessages, type TauriResponse } from '$api/tauri_classes';
 import { clone } from '$utils/utils';
 import { addToast } from '$stores/toasts';
 import { ToastType } from '$components/toast/Toast.svelte';
@@ -13,8 +13,25 @@ export const setCustomMessages = (message: NamedSMTPMessage) => {
 	customMessage.set(message);
 };
 
-export const setMessages = (messages: NamedSMTPMessage[]) => {
+export const setMessages = (messages: NamedSMTPMessages) => {
 	allMessages.set([...messages]);
+};
+
+export const loadMessages = () => {
+	tauriApi
+		.getMessages()
+		.then((messages: TauriResponse<NamedSMTPMessages>) => {
+			if (messages.data !== undefined) {
+				setMessages(messages.data);
+			}
+		})
+		.catch(() => {
+			addToast({
+				title: t('ERROR'),
+				type: ToastType.Error,
+				text: t('smtp.message.load_error')
+			});
+		});
 };
 
 export const saveMessage = () => {
@@ -46,7 +63,7 @@ export const saveMessage = () => {
 			addToast({
 				title: t('ERROR'),
 				type: ToastType.Error,
-				text: t('smtp.message.saved')
+				text: t('smtp.message.save_error')
 			});
 		});
 };

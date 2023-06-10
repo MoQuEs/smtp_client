@@ -27,7 +27,7 @@
 	<div class="flex flex-row">
 		<LogoWithText />
 
-		<TabList className="flex-grow justify-center">
+		<TabList className="flex-grow justify-end">
 			<Tooltip title={t('menu.send')}>
 				<Tab>
 					<Icon src={RiBusinessMailSendLine} size="26" color="white" />

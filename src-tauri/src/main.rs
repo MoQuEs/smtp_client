@@ -40,6 +40,8 @@ fn main() {
             commands::save_message_command,
             commands::remove_message_command,
             commands::send_mail_command,
+            commands::get_settings_command,
+            commands::save_settings_command
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
