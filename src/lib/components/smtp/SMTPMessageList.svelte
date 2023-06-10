@@ -3,11 +3,12 @@
 
 	import BiRepost from 'svelte-icons-pack/bi/BiRepost';
 	import AiOutlineMinus from 'svelte-icons-pack/ai/AiOutlineMinus';
-	import AiOutlineDownload from 'svelte-icons-pack/ai/AiOutlineDownload';
-	import AiOutlineUpload from 'svelte-icons-pack/ai/AiOutlineUpload';
+	import RiDeviceSave3Line from 'svelte-icons-pack/ri/RiDeviceSave3Line';
+	import RiDocumentContactsBookUploadLine from 'svelte-icons-pack/ri/RiDocumentContactsBookUploadLine';
 
 	import RiSystemFilter2Line from 'svelte-icons-pack/ri/RiSystemFilter2Line';
 	import RiSystemFilter2Fill from 'svelte-icons-pack/ri/RiSystemFilter2Fill';
+	import HiOutlineSaveAs from 'svelte-icons-pack/hi/HiOutlineSaveAs';
 
 	import t from '$i18n/translate';
 	import {
@@ -55,7 +56,7 @@
 			/>
 			<Tooltip title={t('save')}>
 				<Button theme={ButtonTheme.Success} text="" on:click={() => saveMessage()}>
-					<Icon src={AiOutlineDownload} size="22" color="white" slot="icon" />
+					<Icon src={RiDeviceSave3Line} size="22" color="white" slot="icon" />
 				</Button>
 			</Tooltip>
 		</div>
@@ -84,7 +85,7 @@
 							padding={ButtonPaddingSize.SM}
 							on:click={() => loadMessage(message)}
 						>
-							<Icon src={AiOutlineUpload} size="22" color="white" slot="icon" />
+							<Icon src={RiDocumentContactsBookUploadLine} size="22" color="white" slot="icon" />
 						</Button>
 					</Tooltip>
 					<Tooltip title={t('repleace')}>

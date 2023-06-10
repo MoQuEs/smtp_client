@@ -16,6 +16,9 @@ Add settings and fix security for saved passwords
     - Added settings for language selection
     - Added settings for theme selection
 
+### Changed
+    - Changed icons for save/load buttons for messages and configurations
+
 
 ## [0.3.0] - 10-05-2023
 Make project look better and add save/load configurations/messages
