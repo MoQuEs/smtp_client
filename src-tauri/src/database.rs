@@ -136,4 +136,23 @@ impl Database {
     pub fn remove_secret<T>(&self, secret: &Secret<T>) -> AnyResult<Option<()>> {
         self.remove(Section::Secrets, secret.name.as_str())
     }
+
+    pub fn get_settings(&self) -> AnyResult<Settings> {
+        let settings = self.get(Section::Settings, "settings");
+        if let Ok(Some(settings)) = settings {
+            Ok(settings)
+        }
+
+        let default = Settings::default();
+        self.save_settings(&default).ignore();
+        Ok(default)
+    }
+
+    pub fn save_settings(&self, settings: &Settings) -> AnyResult<Option<()>> {
+        self.insert(Section::Settings, "settings", settings)
+    }
+
+    pub fn remove_settings(&self, settings: &Settings) -> AnyResult<Option<()>> {
+        self.remove(Section::Settings, "settings")
+    }
 }
