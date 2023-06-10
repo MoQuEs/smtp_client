@@ -13,6 +13,7 @@
 	import Tab from '$components/tab/Tab.svelte';
 	import TabPanel from '$components/tab/TabPanel.svelte';
 	import Separator, { SeparatorSize } from '$components/Separator.svelte';
+	import SettingsPanel from '$components/settings/SettingsPanel.svelte';
 	import SMTPConfigurationPanel from '$components/smtp/SMTPConfigurationPanel.svelte';
 	import SMTPMessage from '$components/smtp/SMTPMessage.svelte';
 	import SMTPMessagePanel from '$components/smtp/SMTPMessagePanel.svelte';
@@ -45,11 +46,11 @@
 				</Tab>
 			</Tooltip>
 
-			<!-- <Tooltip title={t('menu.settings')}>
+			<Tooltip title={t('menu.settings')}>
 				<Tab>
 					<Icon src={FaSolidCogs} size="26" color="white" />
 				</Tab>
-			</Tooltip> -->
+			</Tooltip>
 		</TabList>
 	</div>
 
@@ -91,7 +92,7 @@
 		<SMTPMessagePanel />
 	</TabPanel>
 
-	<!-- <TabPanel>
-		<h2>TODO: Settings</h2>
-	</TabPanel> -->
+	<TabPanel>
+		<SettingsPanel />
+	</TabPanel>
 </Tabs>
