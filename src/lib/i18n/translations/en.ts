@@ -19,6 +19,9 @@ export default {
 	turn_off_filter: 'Turn off filter',
 	name_exists_error: 'Name alredy exists',
 	name_cant_be_empty_error: "Name can't be empty",
+	imports_exports: 'Imports/Exports',
+	import: 'Import',
+	export: 'Export',
 
 	'components.form.input.show.password': 'Show password',
 	'components.form.input.hide.password': 'Hide password',

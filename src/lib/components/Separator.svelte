@@ -62,23 +62,23 @@
 	let sizeMarginClass = 'my-3';
 	switch (sizeMargin) {
 		case SeparatorMarginSize.XS:
-			sizeMarginClass = 'my-2';
+			sizeMarginClass = 'my-1';
 			break;
 
 		case SeparatorMarginSize.SM:
-			sizeMarginClass = 'my-4';
+			sizeMarginClass = 'my-2';
 			break;
 
 		case SeparatorMarginSize.MD:
-			sizeMarginClass = 'my-6';
+			sizeMarginClass = 'my-3';
 			break;
 
 		case SeparatorMarginSize.LG:
-			sizeMarginClass = 'my-8';
+			sizeMarginClass = 'my-4';
 			break;
 
 		case SeparatorMarginSize.XL:
-			sizeMarginClass = 'my-10';
+			sizeMarginClass = 'my-6';
 			break;
 	}
 
