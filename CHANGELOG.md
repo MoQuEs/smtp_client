@@ -9,6 +9,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [Unreleased] - Unreleased
+Add settings and fix security for saved passwords
+
+### Added
+    - Added settings tab
+    - Added settings for language selection
+    - Added settings for theme selection
 
 
 ## [0.3.0] - 10-05-2023
