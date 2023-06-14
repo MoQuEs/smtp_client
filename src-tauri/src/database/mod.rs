@@ -6,6 +6,8 @@ mod smtp_configuration;
 mod smtp_message;
 
 use crate::response::AnyResult;
+use rust_utils::log_option::LogErrorFromOption;
+use rust_utils::log_result::LogErrorFromResult;
 use serde::de::DeserializeOwned;
 use serde::Serialize;
 use tauri::api::path::app_data_dir;
@@ -36,7 +38,12 @@ pub struct Database {
 impl Database {
     pub fn new(config: &Config) -> AnyResult<Self> {
         Ok(Self {
-            db: sled::open(app_data_dir(config).unwrap().join("data.sled"))?,
+            db: sled::open(
+                app_data_dir(config)
+                    .log_error("backend::database::Database::new", "Can't get app data dir")
+                    .expect("Can't get app data dir")
+                    .join("data.sled"),
+            )?,
         })
     }
 

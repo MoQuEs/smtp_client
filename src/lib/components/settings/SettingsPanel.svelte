@@ -1,6 +1,6 @@
 <script lang="ts">
 	import * as tauri from '$generated/tauri';
-	import t from '$i18n/translate';
+	import t from '$src/lib/i18n/translate';
 	import { settings } from '$stores/settings';
 	import Select, { SelectDispatch } from '$components/form/Select.svelte';
 	import HideShow from '$components/hide_show/HideShow.svelte';
@@ -17,8 +17,6 @@
 	$: settingsThemes = Object.keys(tauri.SettingsTheme).map(
 		(theme) => new SelectDispatch(t(`settings.theme.${theme}`), theme)
 	);
-
-	let showImports = false;
 </script>
 
 <div class="flex flex-col space-y-5">

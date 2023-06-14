@@ -69,6 +69,9 @@ export const saveSettings = (settings: Settings): PTauriResponse<Settings> => {
 	return callTauri('save_settings_command', { settings });
 };
 
-async function callTauri<T>(function_name: string, data: InvokeArgs = {}): PTauriResponse<T> {
+export async function callTauri<T>(
+	function_name: string,
+	data: InvokeArgs = {}
+): PTauriResponse<T> {
 	return (await invoke<TauriResponse<T>>(function_name, data)) as TauriResponse<T>;
 }

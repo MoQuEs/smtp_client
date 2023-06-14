@@ -1,4 +1,4 @@
-import t from '$i18n/translate';
+import t from '$src/lib/i18n/translate';
 import type { SMTPConfiguration, SMTPMessage } from '$api/tauri_classes';
 
 export const clone = <T = Object>(toClone: T): T => {

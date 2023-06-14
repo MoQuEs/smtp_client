@@ -3,7 +3,7 @@ import { get, writable, type Writable } from 'svelte/store';
 import type { Settings, TauriResponse } from '$api/tauri_classes';
 import { addToast } from '$stores/toasts';
 import { ToastType } from '$components/toast/Toast.svelte';
-import t from '$i18n/translate';
+import t from '$src/lib/i18n/translate';
 
 export const settings: Writable<Settings> = writable();
 

@@ -4,7 +4,7 @@ import { NamedSMTPMessage, type NamedSMTPMessages, type TauriResponse } from '$a
 import { clone } from '$utils/utils';
 import { addToast } from '$stores/toasts';
 import { ToastType } from '$components/toast/Toast.svelte';
-import t from '$i18n/translate';
+import t from '$src/lib/i18n/translate';
 
 export const customMessage: Writable<NamedSMTPMessage> = writable(new NamedSMTPMessage(''));
 export const allMessages: Writable<NamedSMTPMessage[]> = writable([]);

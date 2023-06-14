@@ -17,8 +17,4 @@ impl Database {
     pub fn save_settings(&self, settings: &Settings) -> AnyResult<Option<()>> {
         self.insert(Section::Settings, "settings", settings)
     }
-
-    pub fn remove_settings(&self, settings: &Settings) -> AnyResult<Option<()>> {
-        self.remove(Section::Settings, "settings")
-    }
 }

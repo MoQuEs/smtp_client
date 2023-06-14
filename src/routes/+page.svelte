@@ -21,6 +21,7 @@
 	import LogoWithText from '$components/logo/LogoWithText.svelte';
 	import SMTPSendMail from '$components/smtp/SMTPSendMail.svelte';
 	import Button, { ButtonPaddingSize, ButtonTheme } from '$src/lib/components/form/Button.svelte';
+	import Test from '$src/lib/components/Test.svelte';
 </script>
 
 <Tabs>
@@ -75,6 +76,8 @@
 				<Button text="DarkGray" theme={ButtonTheme.DarkGray} padding={ButtonPaddingSize.SM} />
 				<Button text="DarkestGray" theme={ButtonTheme.DarkestGray} padding={ButtonPaddingSize.SM} />
 			</div> -->
+
+			<Test />
 
 			<SMTPSendMail />
 
