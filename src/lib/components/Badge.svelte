@@ -31,9 +31,9 @@
 	export let color: BadgeColor = BadgeColor.Primary;
 	export let theme: BadgeTheme = BadgeTheme.FullColor;
 
-	export let interactive: boolean = false;
+	export let interactive = false;
 
-	export let className: string = '';
+	export let className = '';
 
 	let sizeClass = 'text-base';
 	switch (size) {

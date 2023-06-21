@@ -20,8 +20,6 @@
 	import Tooltip from '$components/tooltip/Tooltip.svelte';
 	import LogoWithText from '$components/logo/LogoWithText.svelte';
 	import SMTPSendMail from '$components/smtp/SMTPSendMail.svelte';
-	import Button, { ButtonPaddingSize, ButtonTheme } from '$src/lib/components/form/Button.svelte';
-	import Test from '$src/lib/components/Test.svelte';
 </script>
 
 <Tabs>
@@ -29,25 +27,25 @@
 		<LogoWithText />
 
 		<TabList className="flex-grow justify-end">
-			<Tooltip title={t('menu.send')}>
+			<Tooltip title={$t('menu.send')}>
 				<Tab>
 					<Icon src={RiBusinessMailSendLine} size="26" color="white" />
 				</Tab>
 			</Tooltip>
 
-			<Tooltip title={t('menu.configurations')}>
+			<Tooltip title={$t('menu.configurations')}>
 				<Tab>
 					<Icon src={RiBusinessMailSettingsLine} size="26" color="white" />
 				</Tab>
 			</Tooltip>
 
-			<Tooltip title={t('menu.messages')}>
+			<Tooltip title={$t('menu.messages')}>
 				<Tab>
 					<Icon src={RiBusinessMailAddLine} size="26" color="white" />
 				</Tab>
 			</Tooltip>
 
-			<Tooltip title={t('menu.settings')}>
+			<Tooltip title={$t('menu.settings')}>
 				<Tab>
 					<Icon src={FaSolidCogs} size="26" color="white" />
 				</Tab>
@@ -59,26 +57,6 @@
 
 	<TabPanel>
 		<div class="flex flex-col space-y-5">
-			<!-- <div class="flex flex-row space-x-5">BUTTON COLOR TEST:</div>
-			<div class="flex flex-row space-x-5">
-				<Button text="Primary" theme={ButtonTheme.Primary} padding={ButtonPaddingSize.SM} />
-				<Button text="Secondary" theme={ButtonTheme.Secondary} padding={ButtonPaddingSize.SM} />
-			</div>
-			<div class="flex flex-row space-x-5">
-				<Button text="Success" theme={ButtonTheme.Success} padding={ButtonPaddingSize.SM} />
-				<Button text="Error" theme={ButtonTheme.Error} padding={ButtonPaddingSize.SM} />
-				<Button text="Warning" theme={ButtonTheme.Warning} padding={ButtonPaddingSize.SM} />
-				<Button text="Info" theme={ButtonTheme.Info} padding={ButtonPaddingSize.SM} />
-			</div>
-			<div class="flex flex-row space-x-5">
-				<Button text="LightGray" theme={ButtonTheme.LightGray} padding={ButtonPaddingSize.SM} />
-				<Button text="Gray" theme={ButtonTheme.Gray} padding={ButtonPaddingSize.SM} />
-				<Button text="DarkGray" theme={ButtonTheme.DarkGray} padding={ButtonPaddingSize.SM} />
-				<Button text="DarkestGray" theme={ButtonTheme.DarkestGray} padding={ButtonPaddingSize.SM} />
-			</div> -->
-
-			<Test />
-
 			<SMTPSendMail />
 
 			<Separator size={SeparatorSize.XS} />

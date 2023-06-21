@@ -22,14 +22,14 @@ if (typeof process.argv[2] !== 'string' || process.argv[2] === '') {
 
 const version = process.argv[2];
 
-new Promise((resolve, reject) => {
+new Promise((resolve) => {
 	resolve();
 }).then(async () => {
 	// change version in tauri.conf.json
 	let tauriConfFile = './src-tauri/tauri.conf.json';
 	fs.readFile(tauriConfFile, 'utf8', function (err, data) {
 		if (err) {
-			console.error(`Error while loading file: ${file}`);
+			console.error(`Error while loading file: ${tauriConfFile}`);
 			console.error(err);
 			process.exit(1);
 		}
@@ -45,7 +45,7 @@ new Promise((resolve, reject) => {
 	});
 
 	// change version in cargo
-	await exec(`cargo bump ${version}`);
+	await exec(`cd src-tauri & cargo bump ${version}`);
 
 	// change version in npm
 	await exec(
@@ -56,7 +56,7 @@ new Promise((resolve, reject) => {
 	let changelogFile = './CHANGELOG.md';
 	fs.readFile(changelogFile, 'utf8', function (err, data) {
 		if (err) {
-			console.error(`Error while loading file: ${file}`);
+			console.error(`Error while loading file: ${changelogFile}`);
 			console.error(err);
 			process.exit(1);
 		}
@@ -67,7 +67,7 @@ new Promise((resolve, reject) => {
 
 		data = data.replace(
 			/## \[Unreleased\] - Unreleased/g,
-			`## \[Unreleased\] - Unreleased\r\n\r\n\r\n## [${version}] - ${currentDate}`
+			`## [Unreleased] - Unreleased\r\n\r\n\r\n## [${version}] - ${currentDate}`
 		);
 
 		data = data.replace(

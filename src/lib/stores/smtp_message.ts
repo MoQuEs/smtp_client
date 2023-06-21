@@ -4,7 +4,8 @@ import { NamedSMTPMessage, type NamedSMTPMessages, type TauriResponse } from '$a
 import { clone } from '$utils/utils';
 import { addToast } from '$stores/toasts';
 import { ToastType } from '$components/toast/Toast.svelte';
-import t from '$src/lib/i18n/translate';
+import { ts } from '$i18n/translate';
+import { error } from 'tauri-plugin-log-api';
 
 export const customMessage: Writable<NamedSMTPMessage> = writable(new NamedSMTPMessage(''));
 export const allMessages: Writable<NamedSMTPMessage[]> = writable([]);
@@ -27,29 +28,30 @@ export const loadMessages = () => {
 		})
 		.catch(() => {
 			addToast({
-				title: t('ERROR'),
+				title: ts('ERROR'),
 				type: ToastType.Error,
-				text: t('smtp.message.load_error')
+				text: ts('smtp.message.load_error')
 			});
+			error('Error loading messages');
 		});
 };
 
 export const saveMessage = () => {
-	let cloned = cloneCustom();
+	const cloned = cloneCustom();
 
 	if (cloned.name === '') {
 		return addToast({
-			title: t('ERROR'),
+			title: ts('ERROR'),
 			type: ToastType.Error,
-			text: t('name_cant_be_empty_error')
+			text: ts('name_cant_be_empty_error')
 		});
 	}
 
 	if (get(allMessages).filter((message) => cloned.name === message.name).length > 0) {
 		return addToast({
-			title: t('ERROR'),
+			title: ts('ERROR'),
 			type: ToastType.Error,
-			text: t('name_exists_error')
+			text: ts('name_exists_error')
 		});
 	}
 
@@ -61,15 +63,16 @@ export const saveMessage = () => {
 		})
 		.catch(() => {
 			addToast({
-				title: t('ERROR'),
+				title: ts('ERROR'),
 				type: ToastType.Error,
-				text: t('smtp.message.save_error')
+				text: ts('smtp.message.save_error')
 			});
+			error('Error saving message');
 		});
 };
 
 export const repleaceMessage = (messageToRepleace: NamedSMTPMessage) => {
-	let cloned = cloneCustom();
+	const cloned = cloneCustom();
 
 	get(allMessages).forEach((message) => {
 		if (message.name !== messageToRepleace.name) {
@@ -91,10 +94,11 @@ export const repleaceMessage = (messageToRepleace: NamedSMTPMessage) => {
 		})
 		.catch(() => {
 			addToast({
-				title: t('ERROR'),
+				title: ts('ERROR'),
 				type: ToastType.Error,
-				text: t('smtp.message.repleace_error')
+				text: ts('smtp.message.repleace_error')
 			});
+			error('Error repleacing message');
 		});
 };
 
@@ -114,15 +118,16 @@ export const removeMessage = (messageToRemove: NamedSMTPMessage) => {
 		})
 		.catch(() => {
 			addToast({
-				title: t('ERROR'),
+				title: ts('ERROR'),
 				type: ToastType.Error,
-				text: t('smtp.message.remove_error')
+				text: ts('smtp.message.remove_error')
 			});
+			error('Error removing message');
 		});
 };
 
 export const loadMessage = (messageToLoad: NamedSMTPMessage) => {
-	let cloned = clone(messageToLoad);
+	const cloned = clone(messageToLoad);
 	cloned.name = get(customMessage).name;
 	customMessage.set(cloned);
 };

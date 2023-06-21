@@ -1,16 +1,19 @@
-import { createLogger, defineConfig } from 'vite';
+import { createLogger } from 'vite';
 import { sveltekit } from '@sveltejs/kit/vite';
+import { defineConfig } from 'vitest/config';
 
 const logger = createLogger();
 const originalWarning = logger.warn;
 logger.warn = (msg, options) => {
-	if (
-		msg.includes('vite:css') &&
-		msg.includes('Complex selectors in') &&
-		msg.includes(" can not be transformed to an equivalent selector without ':is()'")
-	) {
-		return;
+	if (msg.includes('vite:css')) {
+		if (
+			msg.includes('Complex selectors in') &&
+			msg.includes(" can not be transformed to an equivalent selector without ':is()'")
+		) {
+			return;
+		}
 	}
+
 	originalWarning(msg, options);
 };
 
@@ -29,5 +32,8 @@ export default defineConfig({
 		target: process.env.TAURI_PLATFORM == 'windows' ? 'chrome105' : 'safari13',
 		minify: !process.env.TAURI_DEBUG ? 'esbuild' : false,
 		sourcemap: !!process.env.TAURI_DEBUG
+	},
+	test: {
+		include: ['src/**/*.{test,spec}.{js,ts}']
 	}
 });

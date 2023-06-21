@@ -40,21 +40,21 @@
 		.sort((c1, c2) => c1.name.localeCompare(c2.name));
 </script>
 
-<Dropdown text={t('smtp.configuration.configurations')}>
+<Dropdown text={$t('smtp.configuration.name')}>
 	<DropdownItem>
 		<div class="flex flex-row space-x-5">
 			<Input
 				className="flex-grow"
-				placeholder="{t('smtp.configuration.configuration_name')} / {t(
+				placeholder="{$t('smtp.configuration.configuration_name')} / {$t(
 					'smtp.configuration.configuration_filter'
 				)}"
 				bind:value={$customConfiguration.name}
 				iconAfter={filter ? RiSystemFilter2Fill : RiSystemFilter2Line}
 				iconAfterInteractive={true}
 				on:click_after={() => (filter = !filter)}
-				iconAfterTooltip={filter ? t('turn_off_filter') : t('turn_on_filter')}
+				iconAfterTooltip={filter ? $t('turn_off_filter') : $t('turn_on_filter')}
 			/>
-			<Tooltip title={t('save')}>
+			<Tooltip title={$t('save')}>
 				<Button theme={ButtonTheme.Success} text="" on:click={() => saveConfiguration()}>
 					<Icon src={RiDeviceSave3Line} size="22" color="white" slot="icon" />
 				</Button>
@@ -66,7 +66,7 @@
 
 	{#if $allConfigurations.length === 0}
 		<DropdownItem>
-			{t('smtp.configuration.no_configurations_saved')}
+			{$t('smtp.configuration.no_configurations_saved')}
 		</DropdownItem>
 	{/if}
 
@@ -78,7 +78,7 @@
 					text={getConfigurationLabelForSelect(configuration.name, configuration.configuration)}
 				/>
 				<div class="flex flex-row flex-grow justify-end self-center space-x-2">
-					<Tooltip title={t('load')}>
+					<Tooltip title={$t('load')}>
 						<Button
 							text=""
 							theme={ButtonTheme.Success}
@@ -88,7 +88,7 @@
 							<Icon src={RiDocumentContactsBookUploadLine} size="22" color="white" slot="icon" />
 						</Button>
 					</Tooltip>
-					<Tooltip title={t('repleace')}>
+					<Tooltip title={$t('repleace')}>
 						<Button
 							text=""
 							theme={ButtonTheme.Success}
@@ -98,7 +98,7 @@
 							<Icon src={BiRepost} size="22" color="white" slot="icon" />
 						</Button>
 					</Tooltip>
-					<Tooltip title={t('remove')}>
+					<Tooltip title={$t('remove')}>
 						<Button
 							text=""
 							theme={ButtonTheme.Error}

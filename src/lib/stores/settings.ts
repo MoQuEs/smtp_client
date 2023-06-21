@@ -3,37 +3,48 @@ import { get, writable, type Writable } from 'svelte/store';
 import type { Settings, TauriResponse } from '$api/tauri_classes';
 import { addToast } from '$stores/toasts';
 import { ToastType } from '$components/toast/Toast.svelte';
-import t from '$src/lib/i18n/translate';
+import { ts, changeLocale } from '$src/lib/i18n/translate';
+import { error } from 'tauri-plugin-log-api';
 
 export const settings: Writable<Settings> = writable();
-
-export const setSettings = (settingsToSet: Settings) => {
-	settings.set(settingsToSet);
-};
 
 export const loadSettings = () => {
 	tauriApi
 		.getSettings()
-		.then((settings: TauriResponse<Settings>) => {
-			if (settings.data !== undefined) {
-				setSettings(settings.data);
+		.then((settingsResponse: TauriResponse<Settings>) => {
+			if (settingsResponse.data !== undefined) {
+				settings.set(settingsResponse.data);
 			}
+
+			settings.subscribe((settings: Settings) => {
+				if (settings === undefined) {
+					return;
+				}
+
+				if (settings.language !== undefined) {
+					changeLocale(settings.language.toString());
+				}
+
+				saveSettings();
+			});
 		})
 		.catch(() => {
 			addToast({
-				title: t('ERROR'),
+				title: ts('ERROR'),
 				type: ToastType.Error,
-				text: t('settings.load_error')
+				text: ts('settings.load_error')
 			});
+			error('Error loading settings');
 		});
 };
 
-export const saveSettings = () => {
+const saveSettings = () => {
 	tauriApi.saveSettings(get(settings)).catch(() => {
 		addToast({
-			title: t('ERROR'),
+			title: ts('ERROR'),
 			type: ToastType.Error,
-			text: t('settings.save_error')
+			text: ts('settings.save_error')
 		});
+		error('Error saving settings');
 	});
 };

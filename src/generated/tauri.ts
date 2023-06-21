@@ -62,17 +62,23 @@ export interface NamedSMTPMessage {
 	message: SMTPMessage;
 }
 
+export interface KeyValue<T> {
+	name: string;
+	value: T;
+}
+
 export interface Secret<T> {
 	name: string;
 	value: T;
 }
 
 export enum SettingsTheme {
-	Dark = "Dark",
+	Dark = 'Dark'
 }
 
 export enum SettingsLanguage {
-	English = "English",
+	EN = 'EN',
+	PL = 'PL'
 }
 
 export interface Settings {
@@ -80,3 +86,9 @@ export interface Settings {
 	language: SettingsLanguage;
 }
 
+export interface ImportExportSettings {
+	password: string;
+	smtp_configurations: boolean;
+	smtp_messages: boolean;
+	settings: boolean;
+}

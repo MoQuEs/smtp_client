@@ -1,6 +1,6 @@
 import type * as tauri from '$generated/tauri';
 
-export interface TauriResponse<T> extends tauri.TauriResponse<T> {}
+export type TauriResponse<T> = tauri.TauriResponse<T>;
 
 export type NamedSMTPConfigurations = NamedSMTPConfiguration[];
 
@@ -23,8 +23,8 @@ export class SMTPConfiguration implements tauri.SMTPConfiguration {
 	constructor(
 		address: SMTPConfigurationAddress = new SMTPConfigurationAddress(),
 		auth: SMTPConfigurationAuth = new SMTPConfigurationAuth(),
-		require_ssl: boolean = false,
-		verify_certificates: boolean = false
+		require_ssl = false,
+		verify_certificates = false
 	) {
 		this.address = address;
 		this.auth = auth;
@@ -37,7 +37,7 @@ export class SMTPConfigurationAddress implements tauri.SMTPConfigurationAddress 
 	public address: string;
 	public port: number;
 
-	constructor(address: string = '', port: number = 25) {
+	constructor(address = '', port = 25) {
 		this.address = address;
 		this.port = port;
 	}
@@ -48,7 +48,7 @@ export class SMTPConfigurationAuth implements tauri.SMTPConfigurationAuth {
 	public user: string;
 	public password: string;
 
-	constructor(use_auth: boolean = false, user: string = '', password: string = '') {
+	constructor(use_auth = false, user = '', password = '') {
 		this.use_auth = use_auth;
 		this.user = user;
 		this.password = password;
@@ -84,7 +84,7 @@ export class SMTPMessage implements tauri.SMTPMessage {
 		cc: SMTPMessageAddress = new SMTPMessageAddress(),
 		bcc: SMTPMessageAddress = new SMTPMessageAddress(),
 		headers: SMTPMessageHeader[] = [],
-		subject: string = '',
+		subject = '',
 		body: SMTPMessageBody = new SMTPMessageBody()
 	) {
 		this.to = to;
@@ -102,7 +102,7 @@ export class SMTPMessageAddress implements tauri.SMTPMessageAddress {
 	public name: string | undefined;
 	public email: string;
 
-	constructor(name: string | undefined = '', email: string = '') {
+	constructor(name: string | undefined = '', email = '') {
 		this.name = name;
 		this.email = email;
 	}
@@ -122,7 +122,7 @@ export class SMTPMessageBody implements tauri.SMTPMessageBody {
 	public html: string;
 	public text: string;
 
-	constructor(html: string = '', text: string = '') {
+	constructor(html = '', text = '') {
 		this.html = html;
 		this.text = text;
 	}
@@ -149,5 +149,24 @@ export class Settings implements tauri.Settings {
 	constructor(theme: SettingsTheme, language: SettingsLanguage) {
 		this.theme = theme;
 		this.language = language;
+	}
+}
+
+export class ImportExportSettings implements tauri.ImportExportSettings {
+	public password: string;
+	public smtp_configurations: boolean;
+	public smtp_messages: boolean;
+	public settings: boolean;
+
+	constructor(
+		password: string,
+		smtp_configurations: boolean,
+		smtp_messages: boolean,
+		settings: boolean
+	) {
+		this.password = password;
+		this.smtp_configurations = smtp_configurations;
+		this.smtp_messages = smtp_messages;
+		this.settings = settings;
 	}
 }

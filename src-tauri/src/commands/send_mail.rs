@@ -1,4 +1,6 @@
-use crate::response::{error, success, AnyResult, SMTPConfiguration, SMTPMessage, TauriResponse};
+use crate::response::{
+    error, success_empty, AnyResult, SMTPConfiguration, SMTPMessage, TauriResponse,
+};
 use mail_send::mail_builder::headers::address::Address;
 use mail_send::mail_builder::headers::HeaderType;
 use mail_send::mail_builder::MessageBuilder;
@@ -9,16 +11,24 @@ pub async fn send_mail_command(
     configuration: SMTPConfiguration,
     message: SMTPMessage,
 ) -> TauriResponse<()> {
+    log::trace!(target: "backend::commands::send_mail::send_mail_command", "send_mail_command");
+    log::debug!(target: "backend::commands::send_mail::send_mail_command", "configuration: {:?}", configuration);
+    log::debug!(target: "backend::commands::send_mail::send_mail_command", "message: {:?}", message);
+
     match send_mail(configuration, message).await {
-        Ok(_) => success(None, None),
+        Ok(_) => success_empty(),
         Err(err) => {
-            println!("{:?}", err);
+            log::error!(target: "backend::commands::send_mail::send_mail_command", "err: {:?}", err);
             error(Some(format!("{:?}", err)), None)
         }
     }
 }
 
 pub async fn send_mail(configuration: SMTPConfiguration, message: SMTPMessage) -> AnyResult<()> {
+    log::trace!(target: "backend::commands::send_mail::send_mail", "send_mail");
+    log::debug!(target: "backend::commands::send_mail::send_mail", "configuration: {:?}", configuration);
+    log::debug!(target: "backend::commands::send_mail::send_mail", "message: {:?}", message);
+
     let mut message_builder = MessageBuilder::new()
         .to(Address::new_address(message.to.name, message.to.email))
         .from(Address::new_address(message.from.name, message.from.email))

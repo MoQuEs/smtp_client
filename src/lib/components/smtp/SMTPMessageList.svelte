@@ -8,7 +8,6 @@
 
 	import RiSystemFilter2Line from 'svelte-icons-pack/ri/RiSystemFilter2Line';
 	import RiSystemFilter2Fill from 'svelte-icons-pack/ri/RiSystemFilter2Fill';
-	import HiOutlineSaveAs from 'svelte-icons-pack/hi/HiOutlineSaveAs';
 
 	import t from '$i18n/translate';
 	import {
@@ -42,19 +41,19 @@
 		.sort((c1, c2) => c1.name.localeCompare(c2.name));
 </script>
 
-<Dropdown text={t('smtp.message.messages')}>
+<Dropdown text={$t('smtp.message.name')}>
 	<DropdownItem>
 		<div class="flex flex-row space-x-5">
 			<Input
 				className="flex-grow"
-				placeholder="{t('smtp.message.message_name')} / {t('smtp.message.message_filter')}"
+				placeholder="{$t('smtp.message.message_name')} / {$t('smtp.message.message_filter')}"
 				bind:value={$customMessage.name}
 				iconAfter={filter ? RiSystemFilter2Fill : RiSystemFilter2Line}
 				iconAfterInteractive={true}
 				on:click_after={() => (filter = !filter)}
-				iconAfterTooltip={filter ? t('turn_off_filter') : t('turn_on_filter')}
+				iconAfterTooltip={filter ? $t('turn_off_filter') : $t('turn_on_filter')}
 			/>
-			<Tooltip title={t('save')}>
+			<Tooltip title={$t('save')}>
 				<Button theme={ButtonTheme.Success} text="" on:click={() => saveMessage()}>
 					<Icon src={RiDeviceSave3Line} size="22" color="white" slot="icon" />
 				</Button>
@@ -66,7 +65,7 @@
 
 	{#if $allMessages.length === 0}
 		<DropdownItem>
-			{t('smtp.message.no_messages_saved')}
+			{$t('smtp.message.no_messages_saved')}
 		</DropdownItem>
 	{/if}
 
@@ -78,7 +77,7 @@
 					text={getMessageLabelForSelect(message.name, message.message)}
 				/>
 				<div class="flex flex-row flex-grow justify-end self-center space-x-2">
-					<Tooltip title={t('load')}>
+					<Tooltip title={$t('load')}>
 						<Button
 							text=""
 							theme={ButtonTheme.Success}
@@ -88,7 +87,7 @@
 							<Icon src={RiDocumentContactsBookUploadLine} size="22" color="white" slot="icon" />
 						</Button>
 					</Tooltip>
-					<Tooltip title={t('repleace')}>
+					<Tooltip title={$t('repleace')}>
 						<Button
 							text=""
 							theme={ButtonTheme.Success}
@@ -98,7 +97,7 @@
 							<Icon src={BiRepost} size="22" color="white" slot="icon" />
 						</Button>
 					</Tooltip>
-					<Tooltip title={t('remove')}>
+					<Tooltip title={$t('remove')}>
 						<Button
 							text=""
 							theme={ButtonTheme.Error}

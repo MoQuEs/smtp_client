@@ -6,23 +6,29 @@
 
 extern crate core;
 
-use crate::database::Database;
-use crate::state::AppState;
-use rust_utils::log_result::LogErrorFromResult;
+use crate::state::{AppState, ServiceAccess};
+use rust_utils::log::Log;
 use std::sync::Mutex;
-use tauri::{Manager, State};
 
+mod backup;
 mod commands;
 mod crypt;
 mod database;
+mod migration;
 mod response;
+mod serialize;
 mod state;
 
 fn main() {
     tauri::Builder::default()
         .plugin(
             tauri_plugin_log::Builder::default()
-                .targets([tauri_plugin_log::LogTarget::LogDir])
+                .level_for("sled::pagecache", log::LevelFilter::Warn)
+                .targets([
+                    tauri_plugin_log::LogTarget::Stdout,
+                    tauri_plugin_log::LogTarget::Webview,
+                    tauri_plugin_log::LogTarget::LogDir,
+                ])
                 .build(),
         )
         .plugin(tauri_plugin_persisted_scope::init())
@@ -32,18 +38,7 @@ fn main() {
             db: Mutex::new(None),
         })
         .setup(|app| {
-            let handle = app.handle();
-
-            let app_state: State<AppState> = handle.state();
-            let db = Database::new(app.config().as_ref())
-                .log_error("backend::main::main", "Database initialize failed")
-                .expect("Database initialize should succeed");
-
-            *app_state
-                .db
-                .lock()
-                .log_error("backend::main::main", "Lock database for data")
-                .expect("Lock database for data") = Some(db);
+            app.handle().setup(app);
 
             Ok(())
         })
@@ -60,5 +55,6 @@ fn main() {
             commands::save_settings_command
         ])
         .run(tauri::generate_context!())
-        .expect("error while running tauri application");
+        .log_error("backend::main", "Tauri application failed")
+        .unwrap()
 }

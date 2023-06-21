@@ -23,23 +23,23 @@
 
 	export let type: InputType = InputType.Text;
 	export let value: string | number = '';
-	export let placeholder: string = '';
-	export let autocomplete: string = 'off';
-	export let disabled: boolean = false;
-	export let readonly: boolean = false;
-	export let className: string = '';
+	export let placeholder = '';
+	export let autocomplete = 'off';
+	export let disabled = false;
+	export let readonly = false;
+	export let className = '';
 
 	export let iconBefore: any = undefined;
-	export let iconBeforeColor: string = 'white';
-	export let iconBeforeTooltip: string = '';
-	export let iconBeforeInteractive: boolean = false;
+	export let iconBeforeColor = 'white';
+	export let iconBeforeTooltip = '';
+	export let iconBeforeInteractive = false;
 
 	export let iconAfter: any = undefined;
-	export let iconAfterColor: string = 'white';
-	export let iconAfterTooltip: string = '';
-	export let iconAfterInteractive: boolean = false;
+	export let iconAfterColor = 'white';
+	export let iconAfterTooltip = '';
+	export let iconAfterInteractive = false;
 
-	let passwordShowed: boolean = false;
+	let passwordShowed = false;
 	let isPasswordinput = () =>
 		type === InputType.Password || (type === InputType.Text && passwordShowed == true);
 
@@ -51,11 +51,11 @@
 		dispatch('input');
 	};
 
-	const handleClickBefore = (e: Event) => {
+	const handleClickBefore = () => {
 		dispatch('click_before');
 	};
 
-	const handleClickAfter = (e: Event) => {
+	const handleClickAfter = () => {
 		if (isPasswordinput()) {
 			passwordShowed = !passwordShowed;
 		}
@@ -63,7 +63,7 @@
 		dispatch('click_after');
 	};
 
-	const handleDummy = (e: Event) => {};
+	const handleDummy = () => {};
 </script>
 
 <div class="flex flex-col {className}">
@@ -120,8 +120,8 @@
 				{#if isPasswordinput()}
 					<Tooltip
 						title={passwordShowed
-							? t('components.form.input.hide.password')
-							: t('components.form.input.show.password')}
+							? $t('components.form.input.hide.password')
+							: $t('components.form.input.show.password')}
 					>
 						<Icon
 							src={passwordShowed ? AiOutlineEye : AiOutlineEyeInvisible}

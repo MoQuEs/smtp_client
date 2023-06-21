@@ -7,12 +7,27 @@
 		"dev": "vite dev",
 		"build": "vite build",
 		"preview": "vite preview",
+
+		"tauri": "tauri",
+
+		"test": "npm run test:playwright && test:vitest && npm run test:cargo",
+		"test:playwright": "playwright test",
+		"test:vitest": "vitest",
+		"test:cargo": "cargo test",
+
 		"check": "svelte-kit sync && svelte-check --tsconfig ./jsconfig.json",
 		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./jsconfig.json --watch",
-		"tauri": "tauri",
-		"typeshare": "typeshare --lang=typescript --output-file=./src/generated/tauri.ts .",
-		"set_version": "node ./scripts/set_version",
-		"format": "node ./scripts/format",
+
+		"lint": "prettier --plugin-search-dir . --check .",
+		"lint:prettier": "prettier --plugin-search-dir . --check .",
+		"lint:eslint": "eslint .",
+
+		"format": "npm run format:prettier && npm run format:rust",
+		"format:prettier": "prettier --plugin-search-dir . --ignore-unknown --write .",
+		"format:cargo": "cargo fmt",
+
+		"generate": "typeshare --lang=typescript --output-file=./src/generated/tauri.ts .",
+		"version": "node ./scripts/version",
 		"logo": "node ./scripts/logo"
 	},
 	"dependencies": {
@@ -47,6 +62,15 @@
 		"tailwindcss": "^3.3.2",
 		"tslib": "^2.5.0",
 		"typescript": "^5.0.4",
-		"vite": "^4.3.4"
+		"vite": "^4.3.4",
+		"vitest": "^0.25.3",
+		"@playwright/test": "^1.28.1",
+		"@sveltejs/adapter-auto": "^2.0.0",
+		"@types/cookie": "^0.5.1",
+		"@typescript-eslint/eslint-plugin": "^5.45.0",
+		"@typescript-eslint/parser": "^5.45.0",
+		"eslint": "^8.28.0",
+		"eslint-config-prettier": "^8.5.0",
+		"eslint-plugin-svelte": "^2.26.0"
 	}
 }

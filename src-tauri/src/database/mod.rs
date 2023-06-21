@@ -1,23 +1,25 @@
 #![allow(dead_code)]
 
-mod secret;
+mod key_value;
 mod settings;
 mod smtp_configuration;
 mod smtp_message;
 
 use crate::response::AnyResult;
-use rust_utils::log_option::LogErrorFromOption;
-use rust_utils::log_result::LogErrorFromResult;
+use crate::serialize::{deserialize, serialize};
+use rust_utils::log::LogU;
 use serde::de::DeserializeOwned;
 use serde::Serialize;
+use std::fmt::Debug;
 use tauri::api::path::app_data_dir;
 use tauri::Config;
 
+#[derive(Debug, Clone, Copy)]
 enum Section {
     SMTPConfiguration,
     SMTPMessage,
     Settings,
-    Secrets,
+    KeyValue,
 }
 
 impl AsRef<str> for Section {
@@ -25,8 +27,8 @@ impl AsRef<str> for Section {
         match self {
             Self::SMTPConfiguration => "smtp_configuration",
             Self::SMTPMessage => "smtp_message",
-            Self::Settings => "secrets",
-            Self::Secrets => "secrets",
+            Self::Settings => "settings",
+            Self::KeyValue => "key_value",
         }
     }
 }
@@ -37,63 +39,71 @@ pub struct Database {
 
 impl Database {
     pub fn new(config: &Config) -> AnyResult<Self> {
+        log::trace!(target: "backend::database::Database::new", "new");
+
+        log::debug!(target: "backend::database::Database::new", "config: {:?}", config);
+        log::debug!(target: "backend::database::Database::new", "app_data_dir: {:?}", app_data_dir(config));
+
         Ok(Self {
             db: sled::open(
                 app_data_dir(config)
-                    .log_error("backend::database::Database::new", "Can't get app data dir")
-                    .expect("Can't get app data dir")
+                    .log_error_u("backend::database::Database::new", "Can't get app data dir")
                     .join("data.sled"),
             )?,
         })
     }
 
-    fn serialize<T: Serialize>(data: &T) -> AnyResult<Vec<u8>> {
-        Ok(bincode::serialize(data)?)
-    }
-
-    fn deserialize<T: DeserializeOwned>(data: &[u8]) -> AnyResult<T> {
-        Ok(bincode::deserialize(data)?)
-    }
-
-    fn insert<T: Serialize + DeserializeOwned>(
+    fn insert<T: Serialize + Debug>(
         &self,
         section: Section,
         key: impl AsRef<str>,
         data: &T,
-    ) -> AnyResult<Option<()>> {
+    ) -> AnyResult<()> {
+        log::trace!(target: "backend::database::Database::insert", "insert");
+        log::debug!(target: "backend::database::Database::insert", "section: {:?}", section);
+        log::debug!(target: "backend::database::Database::insert", "key: {}", key.as_ref());
+        log::debug!(target: "backend::database::Database::insert", "data: {:?}", data);
+
         let tree = self.db.open_tree(section.as_ref())?;
-        match tree.insert(key.as_ref(), Self::serialize(data)?)? {
-            Some(_) => Ok(Some(())),
-            None => Ok(None),
-        }
+        tree.insert(key.as_ref(), serialize(data)?)?;
+        Ok(())
     }
 
-    fn get<T: DeserializeOwned>(
+    fn get<T: DeserializeOwned + Debug>(
         &self,
         section: Section,
         key: impl AsRef<str>,
     ) -> AnyResult<Option<T>> {
+        log::trace!(target: "backend::database::Database::get", "get");
+        log::debug!(target: "backend::database::Database::get", "section: {:?}", section);
+        log::debug!(target: "backend::database::Database::get", "key: {}", key.as_ref());
+
         let tree = self.db.open_tree(section.as_ref())?;
         match tree.get(key.as_ref())? {
-            Some(bytes) => Ok(Self::deserialize(&bytes)?),
+            Some(bytes) => Ok(deserialize(&bytes)?),
             None => Ok(None),
         }
     }
 
-    fn remove(&self, section: Section, key: impl AsRef<str>) -> AnyResult<Option<()>> {
+    fn remove(&self, section: Section, key: impl AsRef<str>) -> AnyResult<()> {
+        log::trace!(target: "backend::database::Database::remove", "remove");
+        log::debug!(target: "backend::database::Database::remove", "section: {:?}", section);
+        log::debug!(target: "backend::database::Database::remove", "key: {}", key.as_ref());
+
         let tree = self.db.open_tree(section.as_ref())?;
-        match tree.remove(key.as_ref())? {
-            Some(bytes) => Ok(Some(())),
-            None => Ok(None),
-        }
+        tree.remove(key.as_ref())?;
+        Ok(())
     }
 
-    fn get_all<T: DeserializeOwned>(&self, section: Section) -> AnyResult<Vec<T>> {
+    fn get_all<T: DeserializeOwned + Debug>(&self, section: Section) -> AnyResult<Vec<T>> {
+        log::trace!(target: "backend::database::Database::get_all", "get_all");
+        log::debug!(target: "backend::database::Database::get_all", "section: {:?}", section);
+
         let mut res = Vec::new();
 
         let tree = self.db.open_tree(section.as_ref())?;
         for (_, bytes) in tree.iter().flatten() {
-            res.push(Self::deserialize(&bytes)?)
+            res.push(deserialize(&bytes)?)
         }
 
         Ok(res)

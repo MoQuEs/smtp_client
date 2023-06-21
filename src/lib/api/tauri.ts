@@ -8,7 +8,8 @@ import type {
 	NamedSMTPMessages,
 	NamedSMTPMessage,
 	Settings,
-	Secret
+	Secret,
+	ImportExportSettings
 } from '$api/tauri_classes';
 
 export type Callback<T> = (response_data: TauriResponse<T>) => Promise<void>;
@@ -25,15 +26,13 @@ export const getConfigurations = (): PTauriResponse<NamedSMTPConfigurations> => 
 	return callTauri('get_configurations_command');
 };
 
-export const saveConfiguration = (
-	configuration: NamedSMTPConfiguration
-): PTauriResponse<NamedSMTPConfigurations> => {
+export const saveConfiguration = (configuration: NamedSMTPConfiguration): PTauriResponse<null> => {
 	return callTauri('save_configuration_command', { configuration });
 };
 
 export const removeConfiguration = (
 	configuration: NamedSMTPConfiguration
-): PTauriResponse<NamedSMTPConfigurations> => {
+): PTauriResponse<null> => {
 	return callTauri('remove_configuration_command', { configuration });
 };
 
@@ -41,23 +40,23 @@ export const getMessages = (): PTauriResponse<NamedSMTPMessages> => {
 	return callTauri('get_messages_command');
 };
 
-export const saveMessage = (message: NamedSMTPMessage): PTauriResponse<NamedSMTPMessages> => {
+export const saveMessage = (message: NamedSMTPMessage): PTauriResponse<null> => {
 	return callTauri('save_message_command', { message });
 };
 
-export const removeMessage = (message: NamedSMTPMessage): PTauriResponse<NamedSMTPMessages> => {
+export const removeMessage = (message: NamedSMTPMessage): PTauriResponse<null> => {
 	return callTauri('remove_message_command', { message });
 };
 
-export const setSecret = <T>(secret: string): PTauriResponse<Secret<T>> => {
+export const setSecret = <T>(secret: Secret<T>): PTauriResponse<null> => {
 	return callTauri('get_secret_command', { secret });
 };
 
-export const saveSecret = <T>(secret: Secret<T>): PTauriResponse<Secret<T>> => {
+export const saveSecret = <T>(secret: Secret<T>): PTauriResponse<null> => {
 	return callTauri('save_secret_command', { secret });
 };
 
-export const removeSecret = <T>(secret: Secret<T>): PTauriResponse<Secret<T>> => {
+export const removeSecret = <T>(secret: Secret<T>): PTauriResponse<null> => {
 	return callTauri('remove_secret_command', { secret });
 };
 
@@ -65,8 +64,16 @@ export const getSettings = (): PTauriResponse<Settings> => {
 	return callTauri('get_settings_command');
 };
 
-export const saveSettings = (settings: Settings): PTauriResponse<Settings> => {
+export const saveSettings = (settings: Settings): PTauriResponse<null> => {
 	return callTauri('save_settings_command', { settings });
+};
+
+export const importData = (settings: ImportExportSettings): PTauriResponse<null> => {
+	return callTauri('import_command', { settings });
+};
+
+export const exportFile = (settings: ImportExportSettings): PTauriResponse<null> => {
+	return callTauri('export_command', { settings });
 };
 
 export async function callTauri<T>(

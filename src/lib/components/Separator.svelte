@@ -34,7 +34,7 @@
 	export let sizeMargin: SeparatorMarginSize = SeparatorMarginSize.SM;
 	export let color: SeparatorColor = SeparatorColor.LightGray;
 
-	export let className: string = '';
+	export let className = '';
 
 	let sizeClass = 'border-2';
 	switch (size) {

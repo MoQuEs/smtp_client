@@ -15,7 +15,7 @@
 	$: configurations = [
 		new SelectDispatch(
 			getConfigurationLabelForSelect(
-				t('smtp.configuration.unsaved'),
+				$t('smtp.configuration.unsaved'),
 				$customConfiguration.configuration
 			),
 			$customConfiguration
@@ -32,7 +32,7 @@
 	let selectedMessage: SelectDispatch<NamedSMTPMessage>;
 	$: messages = [
 		new SelectDispatch(
-			getMessageLabelForSelect(t('smtp.configuration.unsaved'), $customMessage.message),
+			getMessageLabelForSelect($t('smtp.configuration.unsaved'), $customMessage.message),
 			$customMessage
 		),
 		...get(allMessages).map(
@@ -52,12 +52,12 @@
 				if (response_data !== null && response_data.success) {
 					addToast({
 						type: ToastType.Success,
-						title: t('api.send_mail.success')
+						title: $t('api.send_mail.success')
 					});
 				} else {
 					addToast({
 						type: ToastType.Error,
-						title: t('api.send_mail.error')
+						title: $t('api.send_mail.error')
 					});
 				}
 			}
@@ -75,5 +75,5 @@
 		<Select className="flex-grow" bind:selected={selectedMessage} bind:options={messages} />
 	</div>
 
-	<Button text={t('smtp.send_mail')} className="" mode={sendMailMode} on:click={sendMailHandle} />
+	<Button text={$t('smtp.send_mail')} className="" mode={sendMailMode} on:click={sendMailHandle} />
 </div>

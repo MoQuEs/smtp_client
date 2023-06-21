@@ -14,7 +14,7 @@ export declare type ToastComponent = {
 
 type ToastComponentShowed = ToastComponent & {
 	id: number | string;
-	timeOut: number;
+	timeOut: NodeJS.Timeout;
 };
 
 export const addToast = (toast: ToastComponent) => {
@@ -31,7 +31,7 @@ export const addToast = (toast: ToastComponent) => {
 	toasts.update((all) => [addedToast, ...all]);
 };
 
-export const dismissToast = (id: Number | String) => {
+export const dismissToast = (id: number | string) => {
 	toasts.update((all) =>
 		all.filter((t) => {
 			if (t.id === id) {

@@ -2,7 +2,7 @@
 	import Tooltip from '$components/tooltip/Tooltip.svelte';
 
 	export let text: string;
-	export let className: string = '';
+	export let className = '';
 </script>
 
 <Tooltip className="text-ellipsis overflow-hidden {className}" title={text}>

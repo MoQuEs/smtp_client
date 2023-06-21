@@ -1,12 +1,12 @@
 <script lang="ts">
 	import { RandomId } from '$utils/random';
 
-	export let name: string = RandomId();
+	export let name = RandomId();
 
-	export let checked: boolean = false;
-	export let value: string = '';
-	export let disabled: boolean = false;
-	export let className: string = '';
+	export let checked = false;
+	export let value = '';
+	export let disabled = false;
+	export let className = '';
 
 	const id = RandomId();
 

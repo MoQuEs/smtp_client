@@ -2,8 +2,8 @@
 	import { RandomId } from '$utils/random';
 
 	export class SelectDispatch<T> {
-		readonly text: string;
-		readonly value: T;
+		text: string;
+		value: T;
 
 		constructor(text: string, value: T) {
 			this.text = text;
@@ -47,7 +47,7 @@
 		on:change={handleSelect}
 	>
 		{#each options as option, i}
-			<option value={i} selected={(selected === undefined && i === 0) || selected === option}>
+			<option value={i}>
 				{option.text}
 			</option>
 		{/each}

@@ -2,14 +2,14 @@
 	import { createEventDispatcher } from 'svelte';
 	import { RandomId } from '$utils/random';
 
-	export let name: string = RandomId();
+	export let name = RandomId();
 
-	export let rows: number = 4;
-	export let value: string = '';
-	export let placeholder: string = '';
-	export let disabled: boolean = false;
-	export let readonly: boolean = false;
-	export let className: string = '';
+	export let rows = 4;
+	export let value = '';
+	export let placeholder = '';
+	export let disabled = false;
+	export let readonly = false;
+	export let className = '';
 
 	const dispatch = createEventDispatcher();
 	const id = RandomId();

@@ -8,7 +8,8 @@ import {
 import { clone } from '$utils/utils';
 import { addToast } from '$stores/toasts';
 import { ToastType } from '$components/toast/Toast.svelte';
-import t from '$src/lib/i18n/translate';
+import { ts } from '$src/lib/i18n/translate';
+import { error } from 'tauri-plugin-log-api';
 
 export const customConfiguration: Writable<NamedSMTPConfiguration> = writable(
 	new NamedSMTPConfiguration('')
@@ -33,21 +34,22 @@ export const loadConfigurations = () => {
 		})
 		.catch(() => {
 			addToast({
-				title: t('ERROR'),
+				title: ts('ERROR'),
 				type: ToastType.Error,
-				text: t('smtp.configuration.load_error')
+				text: ts('smtp.configuration.load_error')
 			});
+			error('Error loading configurations');
 		});
 };
 
 export const saveConfiguration = () => {
-	let cloned = cloneCustom();
+	const cloned = cloneCustom();
 
 	if (cloned.name === '') {
 		return addToast({
-			title: t('ERROR'),
+			title: ts('ERROR'),
 			type: ToastType.Error,
-			text: t('name_cant_be_empty_error')
+			text: ts('name_cant_be_empty_error')
 		});
 	}
 
@@ -55,9 +57,9 @@ export const saveConfiguration = () => {
 		get(allConfigurations).filter((configuration) => cloned.name === configuration.name).length > 0
 	) {
 		return addToast({
-			title: t('ERROR'),
+			title: ts('ERROR'),
 			type: ToastType.Error,
-			text: t('name_exists_error')
+			text: ts('name_exists_error')
 		});
 	}
 
@@ -68,15 +70,16 @@ export const saveConfiguration = () => {
 		})
 		.catch(() => {
 			addToast({
-				title: t('ERROR'),
+				title: ts('ERROR'),
 				type: ToastType.Error,
-				text: t('smtp.configuration.save_error')
+				text: ts('smtp.configuration.save_error')
 			});
+			error('Error saving configuration');
 		});
 };
 
 export const repleaceConfiguration = (configurationToRepleace: NamedSMTPConfiguration) => {
-	let cloned = cloneCustom();
+	const cloned = cloneCustom();
 
 	get(allConfigurations).forEach((configuration) => {
 		if (configuration.name !== configurationToRepleace.name) {
@@ -98,10 +101,11 @@ export const repleaceConfiguration = (configurationToRepleace: NamedSMTPConfigur
 		})
 		.catch(() => {
 			addToast({
-				title: t('ERROR'),
+				title: ts('ERROR'),
 				type: ToastType.Error,
-				text: t('smtp.configuration.repleace_error')
+				text: ts('smtp.configuration.repleace_error')
 			});
+			error('Error repleacing configuration');
 		});
 };
 
@@ -121,15 +125,16 @@ export const removeConfiguration = (configurationToRemove: NamedSMTPConfiguratio
 		})
 		.catch(() => {
 			addToast({
-				title: t('ERROR'),
+				title: ts('ERROR'),
 				type: ToastType.Error,
-				text: t('smtp.configuration.remove_error')
+				text: ts('smtp.configuration.remove_error')
 			});
+			error('Error removing configuration');
 		});
 };
 
 export const loadConfiguration = (configurationToLoad: NamedSMTPConfiguration) => {
-	let cloned = clone(configurationToLoad);
+	const cloned = clone(configurationToLoad);
 	cloned.name = get(customConfiguration).name;
 	customConfiguration.set(cloned);
 };

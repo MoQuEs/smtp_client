@@ -1,12 +1,12 @@
 export default {
-	title: 'SMTPclient',
-	'title-1': 'SMTP',
-	'title-2': 'client',
+	title: {
+		full: 'SMTPclient',
+		first_part: 'SMTP',
+		second_part: 'client'
+	},
 	ERROR: 'ERROR',
 	SUCCESS: 'SUCCESS',
 	custom: 'Custom',
-	logo: 'Logo',
-	'logo.text': 'Logo text',
 	show: 'Show',
 	hide: 'Hide',
 	save: 'Save',
@@ -22,81 +22,118 @@ export default {
 	imports_exports: 'Imports/Exports',
 	import: 'Import',
 	export: 'Export',
-
-	'components.form.input.show.password': 'Show password',
-	'components.form.input.hide.password': 'Hide password',
-
-	'toast.close_all': 'Close all',
-	'toast.close_in': 'Close in {{seconds}}s',
-
-	'menu.send': 'Send',
-	'menu.configurations': 'Configurations',
-	'menu.messages': 'Messages',
-	'menu.settings': 'Settings',
-
-	'smtp.send_mail': 'Send Mail',
-
-	'smtp.configuration.unsaved': 'Unsaved configuration',
-	'smtp.configuration.select_label': '{{name}}\n[{{address}}:{{port}}]',
-	'smtp.configuration.select_label_with_auth': '{{name}}\n[{{login}}:***@{{address}}:{{port}}]',
-	'smtp.configuration.no_configurations_saved': 'No configurations saved',
-	'smtp.configuration.configurations': 'Configurations',
-	'smtp.configuration.address': 'Address',
-	'smtp.configuration.port': 'Port',
-	'smtp.configuration.use_auth': 'Use auth',
-	'smtp.configuration.user': 'User',
-	'smtp.configuration.password': 'Password',
-	'smtp.configuration.require_ssl': 'Require SSL',
-	'smtp.configuration.verify_certificates': 'Verify Certificates',
-	'smtp.configuration.configuration_name': 'Configuration name',
-	'smtp.configuration.configuration_filter': 'Configuration filter',
-	'smtp.configuration.saved': 'Saved configuration',
-	'smtp.configuration.save_error': "Can't save configuration",
-	'smtp.configuration.repleace': 'Repleaced configuration',
-	'smtp.configuration.repleace_error': "Can't repleace configuration",
-	'smtp.configuration.remove': 'Removed configuration',
-	'smtp.configuration.remove_error': "Can't remove configuration",
-	'smtp.configuration.load': 'Loaded configuration',
-	'smtp.configuration.load_error': "Can't load configuration",
-
-	'smtp.message.unsaved': 'Unsaved mesage',
-	'smtp.message.select_label': '{{name}}\n[{{to_email}}]',
-	'smtp.message.select_label_with_name': '{{name}}\n["{{to_name}}" <{{to_email}}>]',
-	'smtp.message.no_messages_saved': 'No messages saved',
-	'smtp.message.messages': 'Messages',
-	'smtp.message.to.name': 'To name',
-	'smtp.message.to.email': 'To email',
-	'smtp.message.from.name': 'From name',
-	'smtp.message.from.email': 'From email',
-	'smtp.message.reply_to.name': 'Replay to name',
-	'smtp.message.reply_to.email': 'Replay to email',
-	'smtp.message.header.add': 'Add custom header',
-	'smtp.message.header.name': 'Name',
-	'smtp.message.header.value': 'Value',
-	'smtp.message.subject': 'Subject',
-	'smtp.message.body.html': 'HTML',
-	'smtp.message.body.convert_html_to_text': 'Get TEXT version from HTML',
-	'smtp.message.body.text': 'TEXT',
-	'smtp.message.message_name': 'Message name',
-	'smtp.message.message_filter': 'Message filter',
-	'smtp.message.saved': 'Saved message',
-	'smtp.message.save_error': "Can't save message",
-	'smtp.message.repleace': 'Repleaced message',
-	'smtp.message.repleace_error': "Can't repleace message",
-	'smtp.message.remove': 'Removed message',
-	'smtp.message.remove_error': "Can't remove message",
-	'smtp.message.load': 'Loaded message',
-	'smtp.message.load_error': "Can't load message",
-
-	'settings.save_error': "Can't save settings",
-	'settings.load_error': "Can't load settings",
-	'settings.language': 'Language',
-	'settings.language.English': 'English',
-	'settings.theme': 'Theme',
-	'settings.theme.Dark': 'Dark',
-
-	'api.error': 'Error while calling api',
-	'api.data.error': 'Error while calling api',
-	'api.send_mail.success': 'Email was sent',
-	'api.send_mail.error': 'Cant sent email'
+	logo: {
+		alt: 'Logo',
+		text: 'Logo text'
+	},
+	components: {
+		form: {
+			input: {
+				email: 'Email',
+				show_password: 'Show password',
+				hide_password: 'Hide password'
+			}
+		}
+	},
+	toast: {
+		loading: 'Loading...',
+		close_all: 'Close all',
+		close_in: 'Close in {{seconds}}s'
+	},
+	menu: {
+		send: 'Send',
+		configurations: 'Configurations',
+		messages: 'Messages',
+		settings: 'Settings'
+	},
+	smtp: {
+		send_mail: 'Send Mail',
+		configuration: {
+			name: 'Configuration',
+			unsaved: 'Unsaved configuration',
+			no_configurations_saved: 'No configurations saved',
+			address: 'Address',
+			port: 'Port',
+			use_auth: 'Use auth',
+			user: 'User',
+			password: 'Password',
+			require_ssl: 'Require SSL',
+			verify_certificates: 'Verify Certificates',
+			configuration_name: 'Configuration name',
+			configuration_filter: 'Configuration filter',
+			saved: 'Saved configuration',
+			save_error: "Can't save configuration",
+			repleace: 'Repleaced configuration',
+			repleace_error: "Can't repleace configuration",
+			remove: 'Removed configuration',
+			remove_error: "Can't remove configuration",
+			load: 'Loaded configuration',
+			load_error: "Can't load configuration"
+		},
+		message: {
+			name: 'Message',
+			unsaved: 'Unsaved mesage',
+			select_label: '',
+			select_label_with_name: '',
+			no_messages_saved: 'No messages saved',
+			to: {
+				name: 'To name',
+				email: 'To email'
+			},
+			from: {
+				name: 'From name',
+				email: 'From email'
+			},
+			reply_to: {
+				name: 'Replay to name',
+				email: 'Replay to email'
+			},
+			header: {
+				add: 'Add custom header',
+				name: 'Name',
+				value: 'Value'
+			},
+			subject: 'Subject',
+			body: {
+				html: 'HTML',
+				convert_html_to_text: 'Get TEXT version from HTML',
+				text: 'TEXT'
+			},
+			message_name: 'Message name',
+			message_filter: 'Message filter',
+			saved: 'Saved message',
+			save_error: "Can't save message",
+			repleace: 'Repleaced message',
+			repleace_error: "Can't repleace message",
+			remove: 'Removed message',
+			remove_error: "Can't remove message",
+			load: 'Loaded message',
+			load_error: "Can't load message"
+		}
+	},
+	settings: {
+		save_success: 'Settings saved',
+		save_error: "Can't save settings",
+		load_error: "Can't load settings",
+		locale_error: "Can't load language",
+		language: 'Language',
+		languages: {
+			en: 'English',
+			pl: 'Polski'
+		},
+		theme: 'Theme',
+		themes: {
+			dark: 'Dark'
+		}
+	},
+	api: {
+		error: 'Error while calling api',
+		data: {
+			error: 'Error while calling api'
+		},
+		send_mail: {
+			success: 'Email was sent',
+			error: 'Cant sent email'
+		}
+	}
 };

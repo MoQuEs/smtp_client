@@ -8,7 +8,7 @@ use typeshare::typeshare;
 pub type AnyResult<T> = anyhow::Result<T>;
 
 #[typeshare]
-#[derive(Deserialize, Serialize, Debug)]
+#[derive(Deserialize, Serialize, Debug, Clone)]
 pub struct TauriResponse<T> {
     success: bool,
     message: Option<String>,
@@ -42,10 +42,9 @@ pub fn error_empty() -> TauriResponse<()> {
 }
 
 pub type MaybeSMTPConfiguration = Option<NamedSMTPConfiguration>;
-pub type MaybeSMTPMessage = Option<NamedSMTPMessage>;
 pub type SMTPConfigurations = Vec<NamedSMTPConfiguration>;
+pub type MaybeSMTPMessage = Option<NamedSMTPMessage>;
 pub type SMTPMessages = Vec<NamedSMTPMessage>;
-pub type MaybeSecret<T> = Option<Secret<T>>;
 
 #[typeshare]
 #[derive(Deserialize, Serialize, Debug, Clone)]
@@ -121,6 +120,13 @@ pub struct SMTPMessageBody {
 
 #[typeshare]
 #[derive(Deserialize, Serialize, Debug, Clone)]
+pub struct KeyValue<T> {
+    pub name: String,
+    pub value: T,
+}
+
+#[typeshare]
+#[derive(Deserialize, Serialize, Debug, Clone)]
 pub struct Secret<T> {
     pub name: String,
     pub value: T,
@@ -144,5 +150,15 @@ pub enum SettingsTheme {
 #[derive(Deserialize, Serialize, Default, Debug, Clone)]
 pub enum SettingsLanguage {
     #[default]
-    English,
+    EN,
+    PL,
+}
+
+#[typeshare]
+#[derive(Deserialize, Serialize, Debug, Clone)]
+pub struct ImportExportSettings {
+    pub password: String,
+    pub smtp_configurations: bool,
+    pub smtp_messages: bool,
+    pub settings: bool,
 }

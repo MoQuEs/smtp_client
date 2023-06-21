@@ -21,9 +21,8 @@ export declare type TooltipPosition = {
 	y: number;
 };
 
-export const showTooltip = (show: boolean = true) => {
+export const showTooltip = (show = true) => {
 	tooltip.update((tooltip) => {
-		tooltip.title = tooltip.title;
 		tooltip.show = show;
 		return tooltip;
 	});
@@ -36,7 +35,7 @@ export const titleTooltip = (title: string) => {
 	});
 };
 
-const positionNormalize = (position: TooltipPosition, down: boolean = true): TooltipPosition => {
+const positionNormalize = (position: TooltipPosition, down = true): TooltipPosition => {
 	return {
 		x: position.x + 10,
 		y: position.y + (down ? 15 : -30)
@@ -47,18 +46,18 @@ export const positionTooltip = (position: TooltipPosition) => {
 	let down = true;
 
 	tooltipTestPosition.set(positionNormalize(position, down));
-	let elem = document.getElementById('tooltip-container-test');
+	const elem = document.getElementById('tooltip-container-test');
 	if (elem === null) {
 		return;
 	}
 
-	let bounding = elem.getBoundingClientRect();
-	let windowWidth = window.innerWidth || document.documentElement.clientWidth;
-	let windowHeight = window.innerHeight || document.documentElement.clientHeight;
+	const bounding = elem.getBoundingClientRect();
+	const windowWidth = window.innerWidth || document.documentElement.clientWidth;
+	const windowHeight = window.innerHeight || document.documentElement.clientHeight;
 
 	if (bounding.right > windowWidth) {
-		let toRemove = Math.floor(windowWidth - bounding.right);
-		let newX = position.x + (toRemove - 1);
+		const toRemove = Math.floor(windowWidth - bounding.right);
+		const newX = position.x + (toRemove - 1);
 		if (newX > lastStabilized.x - 5 && newX < lastStabilized.x + 5) {
 			position.x = lastStabilized.x;
 		} else {

@@ -2,8 +2,8 @@
 	import { titleTooltip, showTooltip, positionTooltip } from '$stores/tooltips';
 	import type { SMEvent, SFEvent } from '$utils/types';
 
-	export let title: string = '';
-	export let className: string = '';
+	export let title = '';
+	export let className = '';
 
 	function mouseOver(event: SMEvent<HTMLDivElement>) {
 		titleTooltip(title);
@@ -19,7 +19,7 @@
 		showTooltip(false);
 	}
 
-	function focus(_: SFEvent<HTMLDivElement>) {}
+	function focus() {}
 </script>
 
 <div
