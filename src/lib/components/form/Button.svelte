@@ -43,9 +43,9 @@
 
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte';
-	import Icon from 'svelte-icons-pack';
-	import CgSpinnerTwoAlt from 'svelte-icons-pack/cg/CgSpinnerTwoAlt';
-	import { RandomId } from '$utils/random';
+	import { Icon } from 'svelte-icons-pack';
+	import { CgSpinnerTwoAlt } from 'svelte-icons-pack/cg';
+	import { RandomId } from '../../utils/random';
 
 	export let text: string;
 	export let name: string = RandomId();
@@ -159,7 +159,12 @@
 	const dispatch = createEventDispatcher();
 
 	let click = () => {
-		mode === ButtonMode.Loading || mode === ButtonMode.Disabled ? false : dispatch('click');
+		if (![ButtonMode.Loading, ButtonMode.Disabled].includes(mode)) {
+			try {
+				dispatch('click');
+			} catch (e) {
+			}
+		}
 	};
 </script>
 

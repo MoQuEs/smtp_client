@@ -1,9 +1,9 @@
 <script lang="ts">
-	import Button, { ButtonTheme, ButtonType } from '$components/form/Button.svelte';
+	import Button, { ButtonTheme, ButtonType } from '../../components/form/Button.svelte';
 
-	import Icon from 'svelte-icons-pack/Icon.svelte';
-	import AiFillCaretUp from 'svelte-icons-pack/ai/AiFillCaretUp';
-	import AiFillCaretDown from 'svelte-icons-pack/ai/AiFillCaretDown';
+	import { Icon } from 'svelte-icons-pack';
+	import { AiFillCaretUp } from 'svelte-icons-pack/ai';
+	import { AiFillCaretDown } from 'svelte-icons-pack/ai';
 
 	export let text: string;
 	export let className: string = '';

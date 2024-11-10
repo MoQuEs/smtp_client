@@ -12,12 +12,12 @@
 
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte';
-	import Icon from 'svelte-icons-pack/Icon.svelte';
-	import AiOutlineEyeInvisible from 'svelte-icons-pack/ai/AiOutlineEyeInvisible';
-	import AiOutlineEye from 'svelte-icons-pack/ai/AiOutlineEye';
-	import t from '$i18n/translate';
-	import { RandomId } from '$utils/random';
-	import Tooltip from '$components/tooltip/Tooltip.svelte';
+	import { Icon } from 'svelte-icons-pack';
+	import { AiOutlineEyeInvisible } from 'svelte-icons-pack/ai';
+	import { AiOutlineEye } from 'svelte-icons-pack/ai';
+	import t from '../../i18n/translate';
+	import { RandomId } from '../../utils/random';
+	import Tooltip from '../../components/tooltip/Tooltip.svelte';
 
 	export let name: string = RandomId();
 
@@ -63,7 +63,8 @@
 		dispatch('click_after');
 	};
 
-	const handleDummy = () => {};
+	const handleDummy = () => {
+	};
 </script>
 
 <div class="flex flex-col {className}">
@@ -81,6 +82,7 @@
 				on:keydown={handleDummy}
 				on:keyup={handleDummy}
 				on:keypress={handleDummy}
+				role="button" tabindex="0"
 			>
 				{#if iconAfterTooltip !== ''}
 					<Tooltip title={iconBeforeTooltip}>
@@ -116,6 +118,7 @@
 				on:keydown={handleDummy}
 				on:keyup={handleDummy}
 				on:keypress={handleDummy}
+				role="button" tabindex="0"
 			>
 				{#if isPasswordinput()}
 					<Tooltip

@@ -14,13 +14,13 @@
 	import { createEventDispatcher } from 'svelte';
 	import { fade } from 'svelte/transition';
 
-	import Icon from 'svelte-icons-pack';
-	import AiFillInfoCircle from 'svelte-icons-pack/ai/AiFillInfoCircle';
-	import AiFillWarning from 'svelte-icons-pack/ai/AiFillWarning';
-	import AiFillCheckCircle from 'svelte-icons-pack/ai/AiFillCheckCircle';
-	import AiFillCloseCircle from 'svelte-icons-pack/ai/AiFillCloseCircle';
-	import AiOutlineClose from 'svelte-icons-pack/ai/AiOutlineClose';
-	import AiOutlineCheck from 'svelte-icons-pack/ai/AiOutlineCheck';
+	import { Icon } from 'svelte-icons-pack';
+	import { AiFillInfoCircle } from 'svelte-icons-pack/ai';
+	import { AiFillWarning } from 'svelte-icons-pack/ai';
+	import { AiFillCheckCircle } from 'svelte-icons-pack/ai';
+	import { AiFillCloseCircle } from 'svelte-icons-pack/ai';
+	import { AiOutlineClose } from 'svelte-icons-pack/ai';
+	import { AiOutlineCheck } from 'svelte-icons-pack/ai';
 
 	export let type: ToastType;
 	export let title: string;
@@ -96,6 +96,7 @@
 				on:keydown={dummy}
 				on:keyup={dummy}
 				on:keypress={dummy}
+				role="button" tabindex="0"
 			>
 				<Icon
 					src={type != ToastType.CloseAll ? AiOutlineClose : AiOutlineCheck}

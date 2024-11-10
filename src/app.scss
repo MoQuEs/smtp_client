@@ -1,8 +1,9 @@
-@import "styles/fonts";
+@use "sass:meta";
+@use "styles/fonts";
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-@import "styles/custom";
+@include meta.load-css("styles/custom");
 

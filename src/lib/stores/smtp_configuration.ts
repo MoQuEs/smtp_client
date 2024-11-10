@@ -1,15 +1,15 @@
-import * as tauriApi from '$api/tauri';
+import * as tauriApi from '$lib/api/tauri';
 import { get, writable, type Writable } from 'svelte/store';
 import {
 	NamedSMTPConfiguration,
 	type NamedSMTPConfigurations,
 	type TauriResponse
-} from '$api/tauri_classes';
-import { clone } from '$utils/utils';
-import { addToast } from '$stores/toasts';
-import { ToastType } from '$components/toast/Toast.svelte';
-import { ts } from '$src/lib/i18n/translate';
-import { error } from 'tauri-plugin-log-api';
+} from '$lib/api/tauri_classes';
+import { clone } from '$lib/utils/utils';
+import { addToast } from '$lib/stores/toasts';
+import { ToastType } from '$lib/components/toast/Toast.svelte';
+import { ts } from '$lib/i18n/translate';
+import { error } from '@tauri-apps/plugin-log';
 
 export const customConfiguration: Writable<NamedSMTPConfiguration> = writable(
 	new NamedSMTPConfiguration('')

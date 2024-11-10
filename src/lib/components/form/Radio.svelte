@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { RandomId } from '$utils/random';
+	import { RandomId } from '../../utils/random';
 
 	export let name: string = RandomId();
 

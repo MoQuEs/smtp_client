@@ -1,7 +1,7 @@
 <script lang="ts">
-	import Toast, { ToastType } from '$components/toast/Toast.svelte';
-	import t from '$i18n/translate';
-	import { dismissToast, dismissAllToasts, toasts } from '$stores/toasts';
+	import Toast, { ToastType } from '../../components/toast/Toast.svelte';
+	import t from '../../i18n/translate';
+	import { dismissToast, dismissAllToasts, toasts } from '$lib/stores/toasts';
 </script>
 
 {#if $toasts.length > 0}

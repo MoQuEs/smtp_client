@@ -1,10 +1,10 @@
-import * as tauriApi from '$api/tauri';
+import * as tauriApi from '$lib/api/tauri';
 import { get, writable, type Writable } from 'svelte/store';
-import type { Settings, TauriResponse } from '$api/tauri_classes';
-import { addToast } from '$stores/toasts';
-import { ToastType } from '$components/toast/Toast.svelte';
-import { ts, changeLocale } from '$src/lib/i18n/translate';
-import { error } from 'tauri-plugin-log-api';
+import type { Settings, TauriResponse } from '$lib/api/tauri_classes';
+import { addToast } from '$lib/stores/toasts';
+import { ToastType } from '$lib/components/toast/Toast.svelte';
+import { ts, changeLocale } from '$lib/i18n/translate';
+import { error } from '@tauri-apps/plugin-log';
 
 export const settings: Writable<Settings> = writable();
 

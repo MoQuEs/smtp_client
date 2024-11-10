@@ -1,8 +1,8 @@
 <script lang="ts">
 	import '../app.scss';
 
-	import Toasts from '$components/toast/Toasts.svelte';
-	import Tooltips from '$components/tooltip/Tooltips.svelte';
+	import Toasts from '$lib/components/toast/Toasts.svelte';
+	import Tooltips from '$lib/components/tooltip/Tooltips.svelte';
 </script>
 
 <Toasts />

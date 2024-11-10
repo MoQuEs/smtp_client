@@ -1,6 +1,6 @@
 import { writable, type Writable } from 'svelte/store';
-import type { ToastType } from '$components/toast/Toast.svelte';
-import { RandomId } from '$utils/random';
+import type { ToastType } from '$lib/components/toast/Toast.svelte';
+import { RandomId } from '$lib/utils/random';
 
 export const toasts: Writable<ToastComponentShowed[]> = writable([]);
 

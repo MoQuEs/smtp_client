@@ -1,15 +1,15 @@
 <script lang="ts">
-	import t from '$i18n/translate';
-	import { sendMail } from '$api/tauri';
-	import { allMessages, customMessage } from '$stores/smtp_message';
-	import { allConfigurations, customConfiguration } from '$stores/smtp_configuration';
-	import Button, { ButtonMode } from '$components/form/Button.svelte';
-	import Select, { SelectDispatch } from '$components/form/Select.svelte';
-	import { addToast } from '$stores/toasts';
-	import { ToastType } from '$components/toast/Toast.svelte';
+	import t from '../../i18n/translate';
+	import { sendMail } from '../../api/tauri';
+	import { allMessages, customMessage } from '../../stores/smtp_message';
+	import { allConfigurations, customConfiguration } from '../../stores/smtp_configuration';
+	import Button, { ButtonMode } from '../../components/form/Button.svelte';
+	import Select, { SelectDispatch } from '../../components/form/Select.svelte';
+	import { addToast } from '../../stores/toasts';
+	import { ToastType } from '../../components/toast/Toast.svelte';
 	import { get } from 'svelte/store';
-	import type { NamedSMTPConfiguration, NamedSMTPMessage } from '$api/tauri_classes';
-	import { getConfigurationLabelForSelect, getMessageLabelForSelect } from '$utils/utils';
+	import type { NamedSMTPConfiguration, NamedSMTPMessage } from '../../api/tauri_classes';
+	import { getConfigurationLabelForSelect, getMessageLabelForSelect } from '../../utils/utils';
 
 	let selectedConfiguration: SelectDispatch<NamedSMTPConfiguration>;
 	$: configurations = [

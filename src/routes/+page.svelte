@@ -1,25 +1,25 @@
 <script lang="ts">
-	import Icon from 'svelte-icons-pack';
+	import { Icon } from 'svelte-icons-pack';
 
-	import t from '$i18n/translate';
+	import t from '$lib/i18n/translate';
 
-	import RiBusinessMailSendLine from 'svelte-icons-pack/ri/RiBusinessMailSendLine';
-	import RiBusinessMailSettingsLine from 'svelte-icons-pack/ri/RiBusinessMailSettingsLine';
-	import RiBusinessMailAddLine from 'svelte-icons-pack/ri/RiBusinessMailAddLine';
-	import FaSolidCogs from 'svelte-icons-pack/fa/FaSolidCogs';
+	import { RiBusinessMailSendLine } from 'svelte-icons-pack/ri';
+	import { RiBusinessMailSettingsLine } from 'svelte-icons-pack/ri';
+	import { RiBusinessMailAddLine } from 'svelte-icons-pack/ri';
+	import { ImCogs } from "svelte-icons-pack/im";
 
-	import Tabs from '$components/tab/Tabs.svelte';
-	import TabList from '$components/tab/TabList.svelte';
-	import Tab from '$components/tab/Tab.svelte';
-	import TabPanel from '$components/tab/TabPanel.svelte';
-	import Separator, { SeparatorSize } from '$components/Separator.svelte';
-	import SettingsPanel from '$components/settings/SettingsPanel.svelte';
-	import SMTPConfigurationPanel from '$components/smtp/SMTPConfigurationPanel.svelte';
-	import SMTPMessage from '$components/smtp/SMTPMessage.svelte';
-	import SMTPMessagePanel from '$components/smtp/SMTPMessagePanel.svelte';
-	import Tooltip from '$components/tooltip/Tooltip.svelte';
-	import LogoWithText from '$components/logo/LogoWithText.svelte';
-	import SMTPSendMail from '$components/smtp/SMTPSendMail.svelte';
+	import Tabs from '$lib/components/tab/Tabs.svelte';
+	import TabList from '$lib/components/tab/TabList.svelte';
+	import Tab from '$lib/components/tab/Tab.svelte';
+	import TabPanel from '$lib/components/tab/TabPanel.svelte';
+	import Separator, { SeparatorSize } from '$lib/components/Separator.svelte';
+	import SettingsPanel from '$lib/components/settings/SettingsPanel.svelte';
+	import SMTPConfigurationPanel from '$lib/components/smtp/SMTPConfigurationPanel.svelte';
+	import SMTPMessage from '$lib/components/smtp/SMTPMessage.svelte';
+	import SMTPMessagePanel from '$lib/components/smtp/SMTPMessagePanel.svelte';
+	import Tooltip from '$lib/components/tooltip/Tooltip.svelte';
+	import LogoWithText from '$lib/components/logo/LogoWithText.svelte';
+	import SMTPSendMail from '$lib/components/smtp/SMTPSendMail.svelte';
 </script>
 
 <Tabs>
@@ -47,7 +47,7 @@
 
 			<Tooltip title={$t('menu.settings')}>
 				<Tab>
-					<Icon src={FaSolidCogs} size="26" color="white" />
+					<Icon src={ImCogs} size="26" color="white" />
 				</Tab>
 			</Tooltip>
 		</TabList>

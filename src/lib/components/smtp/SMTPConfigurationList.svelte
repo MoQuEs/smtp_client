@@ -1,15 +1,15 @@
 <script lang="ts">
-	import Icon from 'svelte-icons-pack';
+	import { Icon } from 'svelte-icons-pack';
 
-	import BiRepost from 'svelte-icons-pack/bi/BiRepost';
-	import AiOutlineMinus from 'svelte-icons-pack/ai/AiOutlineMinus';
-	import RiDeviceSave3Line from 'svelte-icons-pack/ri/RiDeviceSave3Line';
-	import RiDocumentContactsBookUploadLine from 'svelte-icons-pack/ri/RiDocumentContactsBookUploadLine';
+	import { BiRepost } from 'svelte-icons-pack/bi';
+	import { AiOutlineMinus } from 'svelte-icons-pack/ai';
+	import { RiDeviceSave3Line } from 'svelte-icons-pack/ri';
+	import { RiDocumentContactsBookUploadLine } from 'svelte-icons-pack/ri';
 
-	import RiSystemFilter2Line from 'svelte-icons-pack/ri/RiSystemFilter2Line';
-	import RiSystemFilter2Fill from 'svelte-icons-pack/ri/RiSystemFilter2Fill';
+	import { RiSystemFilter2Line } from 'svelte-icons-pack/ri';
+	import { RiSystemFilter2Fill } from 'svelte-icons-pack/ri';
 
-	import t from '$i18n/translate';
+	import t from '../../i18n/translate';
 	import {
 		allConfigurations,
 		customConfiguration,
@@ -17,16 +17,16 @@
 		removeConfiguration,
 		repleaceConfiguration,
 		loadConfiguration
-	} from '$stores/smtp_configuration';
-	import Input from '$components/form/Input.svelte';
-	import Button, { ButtonTheme, ButtonPaddingSize } from '$components/form/Button.svelte';
+	} from '../../stores/smtp_configuration';
+	import Input from '../../components/form/Input.svelte';
+	import Button, { ButtonTheme, ButtonPaddingSize } from '../../components/form/Button.svelte';
 
-	import Dropdown from '$components/dropdown/Dropdown.svelte';
-	import DropdownItem from '$components/dropdown/DropdownItem.svelte';
-	import DropdownSeparator from '$components/dropdown/DropdownSeparator.svelte';
-	import Tooltip from '$components/tooltip/Tooltip.svelte';
-	import { getConfigurationLabelForSelect } from '$utils/utils';
-	import OverflowText from '$components/OverflowText.svelte';
+	import Dropdown from '../../components/dropdown/Dropdown.svelte';
+	import DropdownItem from '../../components/dropdown/DropdownItem.svelte';
+	import DropdownSeparator from '../../components/dropdown/DropdownSeparator.svelte';
+	import Tooltip from '../../components/tooltip/Tooltip.svelte';
+	import { getConfigurationLabelForSelect } from '../../utils/utils';
+	import OverflowText from '../../components/OverflowText.svelte';
 
 	let filter: boolean = false;
 	$: filtered = $allConfigurations

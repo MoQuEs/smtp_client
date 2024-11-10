@@ -1,4 +1,4 @@
-import type * as tauri from '$generated/tauri';
+import type * as tauri from '$lib/../generated/tauri';
 
 export type TauriResponse<T> = tauri.TauriResponse<T>;
 

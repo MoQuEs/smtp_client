@@ -1,6 +1,7 @@
 use crate::database::Database;
-use crate::migration::MigrationVersion;
-use rust_utils::log::LogU;
+use crate::migration::{MigrationVersion, MIGRATIONS};
+use crate::response::AnyResult;
+use rust_utils::log::LogUnwrap;
 use std::sync::Mutex;
 use tauri::{Manager, State, Wry};
 
@@ -12,14 +13,14 @@ pub struct AppState {
 
 pub trait ServiceAccess {
     fn setup(&self, app: &tauri::App<Wry>) {
-        log::trace!(target: "backend::state::AppHandle::setup", "setup");
-        log::info!(target: "backend::state::AppHandle::setup", "start setup");
+        log::trace!("setup");
+        log::info!("start setup");
 
         self.init(app);
         self.init_db(app);
         //self.migrate();
 
-        log::trace!(target: "backend::state::AppHandle::setup", "setup end");
+        log::trace!("setup end");
     }
 
     fn init(&self, app: &tauri::App<Wry>);
@@ -27,6 +28,15 @@ pub trait ServiceAccess {
     fn init_db(&self, app: &tauri::App<Wry>);
 
     fn migrate(&self);
+
+    fn run_migration<F>(
+        &self,
+        current_version: MigrationVersion,
+        migration_version: &MigrationVersion,
+        callback: F,
+    ) -> AnyResult<MigrationVersion>
+    where
+        F: FnOnce(&AppHandle) -> AnyResult<MigrationVersion>;
 
     fn db<F, TResult>(&self, operation: F) -> TResult
     where
@@ -39,16 +49,16 @@ pub trait ServiceAccess {
 
 impl ServiceAccess for AppHandle {
     fn init(&self, app: &tauri::App<Wry>) {
-        log::trace!(target: "backend::state::AppHandle::init", "init");
-        log::trace!(target: "backend::state::AppHandle::init", "init end")
+        log::trace!("init");
+        log::trace!("init end")
     }
 
     fn init_db(&self, app: &tauri::App<Wry>) {
-        log::trace!(target: "backend::state::AppHandle::init_db", "init_db");
+        log::trace!("init_db");
 
         let app_state: State<AppState> = app.state();
 
-        let db = Database::new(app.config().as_ref()).log_error_u(
+        let db = Database::new(app.config()).log_error_u(
             "backend::state::AppHandle::init_db",
             "Database initialize failed",
         );
@@ -58,13 +68,13 @@ impl ServiceAccess for AppHandle {
             "Lock database for data",
         ) = Some(db);
 
-        log::trace!(target: "backend::state::AppHandle::init_db", "init_db end");
+        log::trace!("init_db end");
     }
 
     fn migrate(&self) {
-        log::trace!(target: "backend::state::AppHandle::migrate", "migrate");
+        log::trace!("migrate");
 
-        let version = self
+        let mut current_version = self
             .db(|db| db.get_value("version"))
             .log_error_u(
                 "backend::state::AppHandle::migrate",
@@ -72,23 +82,55 @@ impl ServiceAccess for AppHandle {
             )
             .unwrap_or(MigrationVersion::default());
 
-        log::debug!(target: "backend::state::AppHandle::migrate", "migrate from version: {:?}", version);
+        log::debug!("migrate from version: {:?}", current_version);
 
-        let migrated_version = version.run(self).log_error_u(
-            "backend::state::AppHandle::migrate",
-            format!("Migration failed from version: {version}"),
-        );
+        for (migration_version, callback) in MIGRATIONS {
+            current_version = self
+                .run_migration(current_version, migration_version, callback)
+                .log_error_u("backend::state::AppHandle::migrate", "Run migration failed");
+        }
 
-        log::debug!(target: "backend::state::AppHandle::migrate", "migrated_version: {:?}", migrated_version);
+        log::trace!("migrate end")
+    }
 
-        log::trace!(target: "backend::state::AppHandle::migrate", "migrate end")
+    fn run_migration<F>(
+        &self,
+        current_version: MigrationVersion,
+        migration_version: &MigrationVersion,
+        callback: F,
+    ) -> AnyResult<MigrationVersion>
+    where
+        F: FnOnce(&AppHandle) -> AnyResult<MigrationVersion>,
+    {
+        log::trace!("run_migration");
+
+        log::info!("Current version: {:?}", current_version);
+        if migration_version <= &current_version {
+            log::info!("Skip migration: {:?}", migration_version);
+        } else {
+            log::info!("Run migration: {:?}", migration_version);
+            if let Err(e) = callback(self) {
+                log::error!("Migration to {:?} failed: {:?}", migration_version, e);
+                return Err(e);
+            }
+
+            self.db(|db| db.set_value("version", migration_version))
+                .log_error_u(
+                    "backend::state::AppHandle::migrate",
+                    "Set database version failed",
+                );
+
+            log::info!("Migration done: {:?}", migration_version);
+        }
+
+        Ok(*migration_version)
     }
 
     fn db<F, TResult>(&self, operation: F) -> TResult
     where
         F: FnOnce(&Database) -> TResult,
     {
-        log::trace!(target: "backend::state::AppHandle::db", "db");
+        log::trace!("db");
 
         let app_state: State<AppState> = self.state();
         let db_connection_guard = app_state
@@ -100,7 +142,7 @@ impl ServiceAccess for AppHandle {
             .as_ref()
             .log_error_u("backend::state::AppHandle::db", "Get database connection");
 
-        log::info!(target: "backend::state::AppHandle::db", "run operation");
+        log::info!("run operation");
 
         operation(db)
     }
@@ -109,7 +151,7 @@ impl ServiceAccess for AppHandle {
     where
         F: FnOnce(&mut Database) -> TResult,
     {
-        log::trace!(target: "backend::state::AppHandle::db_mut", "db_mut");
+        log::trace!("db_mut");
 
         let app_state: State<AppState> = self.state();
         let mut db_connection_guard = app_state
@@ -121,7 +163,7 @@ impl ServiceAccess for AppHandle {
             .as_mut()
             .log_error_u("backend::state::AppHandle::db", "Get database connection");
 
-        log::info!(target: "backend::state::AppHandle::db", "run operation");
+        log::info!("run operation");
 
         operation(db)
     }

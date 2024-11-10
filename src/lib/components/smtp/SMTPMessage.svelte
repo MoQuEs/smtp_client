@@ -1,15 +1,15 @@
 <script lang="ts">
-	import Icon from 'svelte-icons-pack';
+	import { Icon } from 'svelte-icons-pack';
 	import { convert } from 'html-to-text';
-	import AiOutlineMinus from 'svelte-icons-pack/ai/AiOutlineMinus';
-	import Button, { ButtonTheme } from '$components/form/Button.svelte';
-	import Input, { InputType } from '$components/form/Input.svelte';
-	import Textarea from '$components/form/Textarea.svelte';
-	import Badge, { BadgeColor, BadgeSize, BadgeTheme } from '$components/Badge.svelte';
-	import { SMTPMessageHeader } from '$api/tauri_classes';
-	import Checkbox from '$components/form/Checkbox.svelte';
-	import t from '$i18n/translate';
-	import { customMessage } from '$stores/smtp_message';
+	import { AiOutlineMinus } from 'svelte-icons-pack/ai';
+	import Button, { ButtonTheme } from '../../components/form/Button.svelte';
+	import Input, { InputType } from '../../components/form/Input.svelte';
+	import Textarea from '../../components/form/Textarea.svelte';
+	import Badge, { BadgeColor, BadgeSize, BadgeTheme } from '../../components/Badge.svelte';
+	import { SMTPMessageHeader } from '../../api/tauri_classes';
+	import Checkbox from '../../components/form/Checkbox.svelte';
+	import t from '../../i18n/translate';
+	import { customMessage } from '../../stores/smtp_message';
 
 	let convertHTMLToTEXT: boolean = true;
 
@@ -130,7 +130,7 @@
 			<div class="flex flex-row justify-between">
 				<div>{$t('smtp.message.body.html')}</div>
 				<Checkbox name="convertHTMLToTEXT" bind:checked={convertHTMLToTEXT}
-					>{$t('smtp.message.body.convert_html_to_text')}</Checkbox
+				>{$t('smtp.message.body.convert_html_to_text')}</Checkbox
 				>
 			</div>
 		</div>

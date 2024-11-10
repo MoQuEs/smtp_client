@@ -1,11 +1,15 @@
 import { derived, writable, type Writable, get } from 'svelte/store';
-import { setVarsInText } from '../utils/utils';
-import { ToastType } from '$components/toast/Toast.svelte';
-import { addToast } from '../stores/toasts';
-import { error } from 'tauri-plugin-log-api';
+import { setVarsInText } from '$lib/utils/utils';
+import { ToastType } from '$lib/components/toast/Toast.svelte';
+import { addToast } from '$lib/stores/toasts';
+import { error } from '@tauri-apps/plugin-log';
+
+interface Translations {
+	[key: string]: any;
+}
 
 const locales: Array<string> = [];
-const translations: object = {};
+const translations: Translations = {};
 const locale: Writable<string> = writable('en');
 
 const languagesModules: Record<string, object> = import.meta.glob('./translations/*.(js|ts)', {

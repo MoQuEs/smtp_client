@@ -172,6 +172,7 @@
 	on:mouseleave={changeColor}
 	on:mousedown={changeColor}
 	on:mouseup={changeColor}
+	role="button" tabindex="0"
 >
 	{text}
 </span>

@@ -1,4 +1,4 @@
-import { invoke, type InvokeArgs } from '@tauri-apps/api/tauri';
+import { invoke, type InvokeArgs } from '@tauri-apps/api/core';
 import type {
 	TauriResponse,
 	SMTPConfiguration,
@@ -10,7 +10,7 @@ import type {
 	Settings,
 	Secret,
 	ImportExportSettings
-} from '$api/tauri_classes';
+} from '$lib/api/tauri_classes';
 
 export type Callback<T> = (response_data: TauriResponse<T>) => Promise<void>;
 export type PTauriResponse<T> = Promise<TauriResponse<T>>;

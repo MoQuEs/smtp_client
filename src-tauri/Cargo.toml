@@ -12,27 +12,26 @@ rust-version = "1.66.0"
 readme = "README.md"
 
 [build-dependencies]
-tauri-build = { version = "1.3.0", default-features = false, features = [] }
+tauri-build = { version = "2.0.3", default-features = false, features = [] }
 
 [dependencies]
-serde_json = { version = "1.0.96", default-features = false, features = [] }
-serde = { version = "1.0.160", default-features = false, features = ["derive"] }
-tauri = { version = "1.3.0", default-features = false, features = ["compression", "wry", "dialog-open", "dialog-save", "dialog-message"] }
-anyhow = { version = "1.0.71", default-features = false, features = [] }
-tauri-runtime = { version = "0.13.0", default-features = false, features = [] }
-orion = { version = "0.17.4", default-features = false, features = ["serde", "safe_api"] }
-typeshare = { version = "1.0.1", default-features = false, features = [] }
-mail-send = { version = "0.3.3", default-features = false, features = ["builder"] }
+serde_json = { version = "1.0.132", default-features = false, features = [] }
+serde = { version = "1.0.214", default-features = false, features = ["derive"] }
+anyhow = { version = "1.0.93", default-features = false, features = [] }
+orion = { version = "0.17.7", default-features = false, features = ["serde", "safe_api"] }
+typeshare = { version = "1.0.4", default-features = false, features = [] }
+mail-send = { version = "0.4.9", default-features = false, features = ["builder"] }
 sled = { version = "0.34.7", default-features = false, features = [] }
-bincode = { version = "1.3.3", default-features = false, features = [] }
-log = { version = "0.4.17", default-features = false, features = [] }
+bincode = { version = "2.0.0-rc.3", default-features = false, features = ["alloc", "serde", "derive"] }
+log = { version = "0.4.22", default-features = false, features = [] }
 
-tauri-plugin-window-state = { git = "https://github.com/tauri-apps/plugins-workspace", branch = "v1", default-features = false, features = [] }
-tauri-plugin-persisted-scope = { git = "https://github.com/tauri-apps/plugins-workspace", branch = "v1", default-features = false, features = [] }
-tauri-plugin-store = { git = "https://github.com/tauri-apps/plugins-workspace", branch = "v1", default-features = false, features = [] }
-tauri-plugin-log = { git = "https://github.com/tauri-apps/plugins-workspace", branch = "v1", default-features = false, features = [] }
+tauri = { version = "2.1.0", default-features = false, features = ["compression", "wry"] }
+tauri-runtime = { version = "2.2.0", default-features = false, features = [] }
+tauri-plugin-store = "2.1.0"
+tauri-plugin-dialog = "2.0.3"
+tauri-plugin-log = "2.0.2"
 
-rust_utils = { git = "https://github.com/MoQuEs/rust_utils", default-features = false, features = [], branch = "main" }
+rust_utils = { git = "https://github.com/MoQuEs/rust_utils", tag = "v0.12.1", default-features = false, features = ["full"] }
 
 [features]
 default = ["custom-protocol"]

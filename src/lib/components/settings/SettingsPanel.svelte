@@ -1,15 +1,15 @@
 <script lang="ts">
-	import * as tauri from '$generated/tauri';
-	import t, { changeLocale } from '$src/lib/i18n/translate';
-	import { settings } from '$stores/settings';
-	import Select, { SelectDispatch } from '$components/form/Select.svelte';
-	import HideShow from '$components/hide_show/HideShow.svelte';
-	import Button, { ButtonPaddingSize, ButtonTheme } from '$components/form/Button.svelte';
-	import Tooltip from '$components/tooltip/Tooltip.svelte';
-	import Icon from 'svelte-icons-pack';
-	import CgImport from 'svelte-icons-pack/cg/CgImport';
-	import CgExport from 'svelte-icons-pack/cg/CgExport';
-	import type { SettingsLanguage } from '$generated/tauri';
+	import * as tauri from '../../../generated/tauri';
+	import t, { changeLocale } from '../../i18n/translate';
+	import { settings } from '../../stores/settings';
+	import Select, { SelectDispatch } from '../../components/form/Select.svelte';
+	import HideShow from '../../components/hide_show/HideShow.svelte';
+	import Button, { ButtonPaddingSize, ButtonTheme } from '../../components/form/Button.svelte';
+	import Tooltip from '../../components/tooltip/Tooltip.svelte';
+	import { Icon } from 'svelte-icons-pack';
+	import { CgImport } from 'svelte-icons-pack/cg';
+	import { CgExport } from 'svelte-icons-pack/cg';
+	import type { SettingsLanguage } from '../../../generated/tauri';
 
 	$: settingsLanguages = Object.keys(tauri.SettingsLanguage).map(
 		(language) => new SelectDispatch($t(`settings.languages.${language}`), language)

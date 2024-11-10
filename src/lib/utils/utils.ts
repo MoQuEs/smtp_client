@@ -1,4 +1,4 @@
-import type { SMTPConfiguration, SMTPMessage } from '$api/tauri_classes';
+import type { SMTPConfiguration, SMTPMessage } from '$lib/api/tauri_classes';
 
 export const clone = <T = object>(toClone: T): T => {
 	if (typeof structuredClone === 'function') {

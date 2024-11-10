@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { tooltip, tooltipTestPosition } from '$stores/tooltips';
+	import { tooltip, tooltipTestPosition } from '$lib/stores/tooltips';
 </script>
 
 <div

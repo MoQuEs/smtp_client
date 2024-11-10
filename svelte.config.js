@@ -1,34 +1,15 @@
-import staticAdapter from '@sveltejs/adapter-static';
-import { vitePreprocess } from '@sveltejs/kit/vite';
+// Tauri doesn't have a Node.js server to do proper SSR
+// so we will use adapter-static to prerender the app (SSG)
+// See: https://v2.tauri.app/start/frontend/sveltekit/ for more info
+import adapter from '@sveltejs/adapter-static';
+import { vitePreprocess } from '@sveltejs/vite-plugin-svelte';
 
 /** @type {import('@sveltejs/kit').Config} */
 const config = {
+	preprocess: vitePreprocess({ script: true }),
 	kit: {
-		adapter: staticAdapter(),
-		alias: {
-			$src: 'src',
-			'$src/*': 'src/*',
-			$assets: 'src/assets',
-			'$assets/*': 'src/assets/*',
-			$generated: 'src/generated',
-			'$generated/*': 'src/generated/*',
-			$lib: 'src/lib',
-			'$lib/*': 'src/lib/*',
-			$api: 'src/lib/api',
-			'$api/*': 'src/lib/api/*',
-			$components: 'src/lib/components',
-			'$components/*': 'src/lib/components/*',
-			$i18n: 'src/lib/i18n',
-			'$i18n/*': 'src/lib/i18n/*',
-			$stores: 'src/lib/stores',
-			'$stores/*': 'src/lib/stores/*',
-			$utils: 'src/lib/utils',
-			'$utils/*': 'src/lib/utils/*',
-			$routes: 'src/routes',
-			'$routes/*': 'src/routes/*'
-		}
-	},
-	preprocess: [vitePreprocess()]
+		adapter: adapter()
+	}
 };
 
 export default config;

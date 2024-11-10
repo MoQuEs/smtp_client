@@ -1,6 +1,6 @@
 <script lang="ts">
-	import { titleTooltip, showTooltip, positionTooltip } from '$stores/tooltips';
-	import type { SMEvent, SFEvent } from '$utils/types';
+	import { titleTooltip, showTooltip, positionTooltip } from '$lib/stores/tooltips';
+	import type { SMEvent, SFEvent } from '$lib/utils/types';
 
 	export let title = '';
 	export let className = '';
@@ -19,7 +19,8 @@
 		showTooltip(false);
 	}
 
-	function focus() {}
+	function focus() {
+	}
 </script>
 
 <div
@@ -28,6 +29,7 @@
 	on:focus={focus}
 	on:mouseleave={mouseLeave}
 	on:mousemove={mouseMove}
+	role="button" tabindex="0"
 >
 	<slot />
 </div>

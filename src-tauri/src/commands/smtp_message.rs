@@ -1,3 +1,4 @@
+use crate::dialogs::simple_error_dialog;
 use crate::response::{
     error, success, MaybeSMTPMessage, NamedSMTPMessage, SMTPMessages, TauriResponse,
 };
@@ -5,12 +6,13 @@ use crate::state::{AppHandle, ServiceAccess};
 
 #[tauri::command]
 pub fn get_messages_command(app_handle: AppHandle) -> TauriResponse<SMTPMessages> {
-    log::trace!(target: "backend::commands::smtp_message::get_messages_command", "get_messages_command");
+    log::trace!("get_messages_command");
 
     match app_handle.db(|db| db.get_messages()) {
         Ok(data) => success(None, Some(data)),
         Err(err) => {
-            log::error!(target: "backend::commands::smtp_message::get_messages_command", "Error: {:?}", err);
+            log::error!("Error: {:?}", err);
+            simple_error_dialog(&app_handle, &err);
             error(Some(format!("{:?}", err)), None)
         }
     }
@@ -21,13 +23,14 @@ pub fn save_message_command(
     app_handle: AppHandle,
     message: NamedSMTPMessage,
 ) -> TauriResponse<MaybeSMTPMessage> {
-    log::trace!(target: "backend::commands::smtp_message::save_message_command", "save_message_command");
-    log::debug!(target: "backend::commands::smtp_message::save_message_command", "message: {:?}", message);
+    log::trace!("save_message_command");
+    log::debug!("message: {:?}", message);
 
     match app_handle.db(|db| db.save_message(&message)) {
         Ok(data) => success(None, None),
         Err(err) => {
-            log::error!(target: "backend::commands::smtp_message::save_message_command", "Error: {:?}", err);
+            log::error!("Error: {:?}", err);
+            simple_error_dialog(&app_handle, &err);
             error(Some(format!("{:?}", err)), None)
         }
     }
@@ -38,13 +41,14 @@ pub fn remove_message_command(
     app_handle: AppHandle,
     message: NamedSMTPMessage,
 ) -> TauriResponse<MaybeSMTPMessage> {
-    log::trace!(target: "backend::commands::smtp_message::remove_message_command", "remove_message_command");
-    log::debug!(target: "backend::commands::smtp_message::remove_message_command", "message: {:?}", message);
+    log::trace!("remove_message_command");
+    log::debug!("message: {:?}", message);
 
     match app_handle.db(|db| db.remove_message(&message)) {
         Ok(data) => success(None, None),
         Err(err) => {
-            log::error!(target: "backend::commands::smtp_message::remove_message_command", "Error: {:?}", err);
+            log::error!("Error: {:?}", err);
+            simple_error_dialog(&app_handle, &err);
             error(Some(format!("{:?}", err)), None)
         }
     }

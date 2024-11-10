@@ -1,7 +1,7 @@
 <script lang="ts">
-	import Icon from 'svelte-icons-pack';
-	import RiSystemArrowUpSLine from 'svelte-icons-pack/ri/RiSystemArrowUpSLine';
-	import RiSystemArrowDownSLine from 'svelte-icons-pack/ri/RiSystemArrowDownSLine';
+	import { Icon } from 'svelte-icons-pack';
+	import { RiArrowsArrowUpSLine } from 'svelte-icons-pack/ri';
+	import { RiArrowsArrowDownSLine } from 'svelte-icons-pack/ri';
 
 	export let hidden = false;
 
@@ -11,7 +11,7 @@
 
 <Icon
 	className="cursor-pointer"
-	src={hidden ? RiSystemArrowDownSLine : RiSystemArrowUpSLine}
+	src={hidden ? RiArrowsArrowDownSLine : RiArrowsArrowUpSLine}
 	{color}
 	{size}
 />

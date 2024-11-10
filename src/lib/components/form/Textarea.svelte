@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte';
-	import { RandomId } from '$utils/random';
+	import { RandomId } from '../../utils/random';
 
 	export let name = RandomId();
 
@@ -22,7 +22,9 @@
 
 <div class="flex flex-col {className}">
 	{#if $$slots.label}
-		<label for={id} class="block mb-2 text-sm font-medium text-white"><slot name="label" /></label>
+		<label for={id} class="block mb-2 text-sm font-medium text-white">
+			<slot name="label" />
+		</label>
 	{/if}
 	<textarea
 		{id}

@@ -1,5 +1,5 @@
 <script context="module" lang="ts">
-	import { RandomId } from '$utils/random';
+	import { RandomId } from '../../utils/random';
 
 	export class SelectDispatch<T> {
 		text: string;
@@ -14,7 +14,7 @@
 
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte';
-	import type { SNEvent } from '$utils/types';
+	import type { SNEvent } from '../../utils/types';
 
 	export let name: string = RandomId();
 	export let disabled: boolean = false;

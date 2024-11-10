@@ -1,11 +1,12 @@
 <script lang="ts">
-	import HideShowIcon from '$src/lib/components/hide_show/HideShowIcon.svelte';
-	import Separator, { SeparatorSize } from '$components/Separator.svelte';
+	import HideShowIcon from '../../components/hide_show/HideShowIcon.svelte';
+	import Separator, { SeparatorSize } from '../../components/Separator.svelte';
 
 	export let text: string;
 	export let showHide = false;
 
-	const handleDummy = () => {};
+	const handleDummy = () => {
+	};
 </script>
 
 <div class="flex flex-col">
@@ -15,6 +16,7 @@
 		on:keydown={handleDummy}
 		on:keyup={handleDummy}
 		on:keypress={handleDummy}
+		role="button" tabindex="0"
 	>
 		<span>{text}</span>
 

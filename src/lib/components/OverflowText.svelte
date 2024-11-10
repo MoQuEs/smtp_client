@@ -1,5 +1,5 @@
 <script lang="ts">
-	import Tooltip from '$components/tooltip/Tooltip.svelte';
+	import Tooltip from '../components/tooltip/Tooltip.svelte';
 
 	export let text: string;
 	export let className = '';
