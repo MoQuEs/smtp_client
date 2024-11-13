@@ -9,7 +9,7 @@
 	import { RiSystemFilter2Line } from 'svelte-icons-pack/ri';
 	import { RiSystemFilter2Fill } from 'svelte-icons-pack/ri';
 
-	import t from '../../i18n/translate';
+	import t from '$lib/i18n/translate';
 	import {
 		allConfigurations,
 		customConfiguration,
@@ -17,17 +17,17 @@
 		removeConfiguration,
 		replaceConfiguration,
 		loadConfiguration
-	} from '../../stores/smtp_configuration';
-	import Input from '../../components/form/Input.svelte';
-	import Button, { ButtonTheme, ButtonPaddingSize } from '../../components/form/Button.svelte';
+	} from '$lib/stores/smtp_configuration';
+	import Input from '$lib/components/form/Input.svelte';
+	import Button, { ButtonTheme, ButtonPaddingSize } from '$lib/components/form/Button.svelte';
 	import { theme } from '$lib/stores/theme';
 	import { SettingsTheme } from '$lib/../generated/tauri';
-	import Dropdown from '../../components/dropdown/Dropdown.svelte';
-	import DropdownItem from '../../components/dropdown/DropdownItem.svelte';
-	import DropdownSeparator from '../../components/dropdown/DropdownSeparator.svelte';
-	import Tooltip from '../../components/tooltip/Tooltip.svelte';
-	import { getConfigurationLabelForSelect } from '../../utils/utils';
-	import OverflowText from '../../components/OverflowText.svelte';
+	import Dropdown from '$lib/components/dropdown/Dropdown.svelte';
+	import DropdownItem from '$lib/components/dropdown/DropdownItem.svelte';
+	import DropdownSeparator from '$lib/components/dropdown/DropdownSeparator.svelte';
+	import Tooltip from '$lib/components/tooltip/Tooltip.svelte';
+	import { getConfigurationLabelForSelect } from '$lib/utils/utils';
+	import OverflowText from '$lib/components/OverflowText.svelte';
 
 	let filterIconColor = $derived($theme == SettingsTheme.Dark ? 'white' : 'black');
 

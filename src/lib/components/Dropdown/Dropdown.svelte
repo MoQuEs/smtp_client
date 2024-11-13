@@ -8,11 +8,13 @@
 	import { AiFillCaretDown } from 'svelte-icons-pack/ai';
 
 	let {
+		children,
 		text = '',
 		className = ''
 	}: {
+		children: () => any,
 		text: string,
-		className: string
+		className?: string
 	} = $props();
 
 	let filterDropdownIsOpen = $state(false);
@@ -42,7 +44,7 @@
 			dark:border-gray-600 dark:bg-gray-800
 			{filterDropdownIsOpen ? '' : 'hidden'}"
 		>
-			<slot />
+			{@render children()}
 		</ul>
 	</div>
 </div>

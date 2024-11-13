@@ -9,7 +9,7 @@
 	import { RiSystemFilter2Line } from 'svelte-icons-pack/ri';
 	import { RiSystemFilter2Fill } from 'svelte-icons-pack/ri';
 
-	import t from '../../i18n/translate';
+	import t from '$lib/i18n/translate';
 	import {
 		allMessages,
 		customMessage,
@@ -17,21 +17,22 @@
 		removeMessage,
 		repleaceMessage,
 		loadMessage
-	} from '../../stores/smtp_message';
-	import Input from '../../components/form/Input.svelte';
-	import Button, { ButtonTheme, ButtonPaddingSize } from '../../components/form/Button.svelte';
+	} from '$lib/stores/smtp_message';
+	import Input from '$lib/components/form/Input.svelte';
+	import Button, { ButtonTheme, ButtonPaddingSize } from '$lib/components/form/Button.svelte';
 	import { theme } from '$lib/stores/theme';
 	import { SettingsTheme } from '$lib/../generated/tauri';
-	import Dropdown from '../../components/dropdown/Dropdown.svelte';
-	import DropdownItem from '../../components/dropdown/DropdownItem.svelte';
-	import DropdownSeparator from '../../components/dropdown/DropdownSeparator.svelte';
-	import Tooltip from '../../components/tooltip/Tooltip.svelte';
-	import { getMessageLabelForSelect } from '../../utils/utils';
-	import OverflowText from '../../components/OverflowText.svelte';
+	import Dropdown from '$lib/components/dropdown/Dropdown.svelte';
+	import DropdownItem from '$lib/components/dropdown/DropdownItem.svelte';
+	import DropdownSeparator from '$lib/components/dropdown/DropdownSeparator.svelte';
+	import Tooltip from '$lib/components/tooltip/Tooltip.svelte';
+	import { getMessageLabelForSelect } from '$lib/utils/utils';
+	import OverflowText from '$lib/components/OverflowText.svelte';
+	import Modal from '$lib/components/modal/Modal.svelte';
 
 	let filterIconColor = $derived($theme == SettingsTheme.Dark ? 'white' : 'black');
 
-	let filter: boolean = false;
+	let filter: boolean = $state(false);
 	let filtered = $derived($allMessages
 		.filter((message) => {
 			return (

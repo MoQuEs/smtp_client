@@ -1,8 +1,16 @@
-<script>
+<script lang="ts">
 	import { Icon } from 'svelte-icons-pack';
 	import { AiOutlineClose } from 'svelte-icons-pack/ai';
 
-	let { showModal = $bindable(), header, children } = $props();
+	let {
+		children,
+		header,
+		showModal = $bindable(false)
+	}: {
+		children: () => any,
+		header: () => any,
+		showModal?: boolean,
+	} = $props();
 </script>
 
 <!-- svelte-ignore a11y_click_events_have_key_events, a11y_no_static_element_interactions -->
@@ -14,7 +22,7 @@
 	<div class="rounded-lg flex flex-shrink flex-col shadow bg-gray-300 dark:bg-gray-700">
 		<div class="flex items-center justify-between p-4 border-b rounded-t border-gray-400 dark:border-gray-600">
 			<h3 class="text-xl font-medium text-white">
-				{@render header?.()}
+				{@render header()}
 			</h3>
 			<div
 				class="flex items-center"
@@ -29,7 +37,7 @@
 		</div>
 
 		<div class="p-4 space-y-4">
-			{@render children?.()}
+			{@render children()}
 		</div>
 	</div>
 </div>
