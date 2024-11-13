@@ -11,8 +11,6 @@
 	import t from '../../i18n/translate';
 	import { customMessage } from '../../stores/smtp_message';
 
-	let convertHTMLToTEXT: boolean = true;
-
 	const addHeader = () => {
 		$customMessage.message.headers = [
 			...$customMessage.message.headers,
@@ -26,7 +24,7 @@
 		));
 
 	$: {
-		if ($customMessage.message.body.html && convertHTMLToTEXT) {
+		if ($customMessage.message.body.html && $customMessage.message.body.convert_html_to_text) {
 			$customMessage.message.body.text = convert($customMessage.message.body.html);
 		}
 	}
@@ -129,13 +127,13 @@
 		<div slot="label">
 			<div class="flex flex-row justify-between">
 				<div>{$t('smtp.message.body.html')}</div>
-				<Checkbox name="convertHTMLToTEXT" bind:checked={convertHTMLToTEXT}
+				<Checkbox name="convertHTMLToTEXT" bind:checked={$customMessage.message.body.convert_html_to_text}
 				>{$t('smtp.message.body.convert_html_to_text')}</Checkbox
 				>
 			</div>
 		</div>
 	</Textarea>
-	{#if !convertHTMLToTEXT}
+	{#if !$customMessage.message.body.convert_html_to_text}
 		<Textarea
 			name="body"
 			placeholder=""

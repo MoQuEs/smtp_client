@@ -139,6 +139,7 @@ pub struct SMTPMessageHeader {
 pub struct SMTPMessageBody {
     pub html: String,
     pub text: String,
+    pub convert_html_to_text: bool,
 }
 
 #[typeshare]

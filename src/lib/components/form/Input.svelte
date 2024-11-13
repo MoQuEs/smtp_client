@@ -84,12 +84,12 @@
 				on:keypress={handleDummy}
 				role="button" tabindex="0"
 			>
-				{#if iconAfterTooltip !== ''}
+				{#if iconBeforeTooltip !== ''}
 					<Tooltip title={iconBeforeTooltip}>
-						<Icon src={iconBefore} size="22" color={iconAfterColor} />
+						<Icon src={iconBefore} size="22" color={iconBeforeColor} />
 					</Tooltip>
 				{:else}
-					<Icon src={iconBefore} size="22" color={iconAfterColor} />
+					<Icon src={iconBefore} size="22" color={iconBeforeColor} />
 				{/if}
 			</div>
 		{/if}
@@ -131,15 +131,15 @@
 						<Icon
 							src={passwordShowed ? AiOutlineEye : AiOutlineEyeInvisible}
 							size="22"
-							color={iconBeforeColor}
+							color={iconAfterColor}
 						/>
 					</Tooltip>
 				{:else if iconAfterTooltip !== ''}
 					<Tooltip title={iconAfterTooltip}>
-						<Icon src={iconAfter} size="22" color={iconBeforeColor} />
+						<Icon src={iconAfter} size="22" color={iconAfterColor} />
 					</Tooltip>
 				{:else}
-					<Icon src={iconAfter} size="22" color={iconBeforeColor} />
+					<Icon src={iconAfter} size="22" color={iconAfterColor} />
 				{/if}
 			</div>
 		{/if}

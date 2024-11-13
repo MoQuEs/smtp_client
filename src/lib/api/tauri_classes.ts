@@ -121,10 +121,12 @@ export class SMTPMessageHeader implements tauri.SMTPMessageHeader {
 export class SMTPMessageBody implements tauri.SMTPMessageBody {
 	public html: string;
 	public text: string;
+	public convert_html_to_text: boolean;
 
-	constructor(html = '', text = '') {
+	constructor(html = '', text = '', convert_html_to_text = true) {
 		this.html = html;
 		this.text = text;
+		this.convert_html_to_text = convert_html_to_text;
 	}
 }
 

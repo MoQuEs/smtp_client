@@ -1,6 +1,6 @@
 <script lang="ts">
 	import Button, { ButtonTheme } from '$lib/components/form/Button.svelte';
-	import { getTheme, theme } from '$lib/stores/theme';
+	import { theme } from '$lib/stores/theme';
 	import { SettingsTheme } from '$lib/../generated/tauri';
 
 	import { Icon } from 'svelte-icons-pack';
@@ -8,7 +8,7 @@
 	import { AiFillCaretDown } from 'svelte-icons-pack/ai';
 
 	let {
-		text,
+		text = '',
 		className = ''
 	}: {
 		text: string,
@@ -16,11 +16,7 @@
 	} = $props();
 
 	let filterDropdownIsOpen = $state(false);
-
-	let iconColor = $state(getTheme() == SettingsTheme.Dark ? 'white' : 'black');
-	$effect(() => {
-		iconColor = $theme == SettingsTheme.Dark ? 'white' : 'black';
-	});
+	let iconColor = $derived($theme == SettingsTheme.Dark ? 'white' : 'black');
 </script>
 
 <div class="flex justify-center {className}">

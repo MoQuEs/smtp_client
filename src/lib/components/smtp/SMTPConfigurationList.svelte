@@ -20,7 +20,8 @@
 	} from '../../stores/smtp_configuration';
 	import Input from '../../components/form/Input.svelte';
 	import Button, { ButtonTheme, ButtonPaddingSize } from '../../components/form/Button.svelte';
-
+	import { theme } from '$lib/stores/theme';
+	import { SettingsTheme } from '$lib/../generated/tauri';
 	import Dropdown from '../../components/dropdown/Dropdown.svelte';
 	import DropdownItem from '../../components/dropdown/DropdownItem.svelte';
 	import DropdownSeparator from '../../components/dropdown/DropdownSeparator.svelte';
@@ -28,8 +29,10 @@
 	import { getConfigurationLabelForSelect } from '../../utils/utils';
 	import OverflowText from '../../components/OverflowText.svelte';
 
-	let filter: boolean = false;
-	$: filtered = $allConfigurations
+	let filterIconColor = $derived($theme == SettingsTheme.Dark ? 'white' : 'black');
+
+	let filter: boolean = $state(false);
+	let filtered = $derived($allConfigurations
 		.filter((configuration) => {
 			return (
 				!filter ||
@@ -37,7 +40,7 @@
 				configuration.configuration.address.address.indexOf($customConfiguration.name) !== -1
 			);
 		})
-		.sort((c1, c2) => c1.name.localeCompare(c2.name));
+		.sort((c1, c2) => c1.name.localeCompare(c2.name)));
 </script>
 
 <Dropdown text={$t('smtp.configuration.name')}>
@@ -49,6 +52,7 @@
 				bind:value={$customConfiguration.name}
 				iconAfter={filter ? RiSystemFilter2Fill : RiSystemFilter2Line}
 				iconAfterInteractive={true}
+				iconAfterColor={filterIconColor}
 				on:click_after={() => (filter = !filter)}
 				iconAfterTooltip={filter ? $t('turn_off_filter') : $t('turn_on_filter')}
 			/>

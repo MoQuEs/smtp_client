@@ -20,7 +20,8 @@
 	} from '../../stores/smtp_message';
 	import Input from '../../components/form/Input.svelte';
 	import Button, { ButtonTheme, ButtonPaddingSize } from '../../components/form/Button.svelte';
-
+	import { theme } from '$lib/stores/theme';
+	import { SettingsTheme } from '$lib/../generated/tauri';
 	import Dropdown from '../../components/dropdown/Dropdown.svelte';
 	import DropdownItem from '../../components/dropdown/DropdownItem.svelte';
 	import DropdownSeparator from '../../components/dropdown/DropdownSeparator.svelte';
@@ -28,8 +29,10 @@
 	import { getMessageLabelForSelect } from '../../utils/utils';
 	import OverflowText from '../../components/OverflowText.svelte';
 
+	let filterIconColor = $derived($theme == SettingsTheme.Dark ? 'white' : 'black');
+
 	let filter: boolean = false;
-	$: filtered = $allMessages
+	let filtered = $derived($allMessages
 		.filter((message) => {
 			return (
 				!filter ||
@@ -38,7 +41,7 @@
 				message.message.to.email.indexOf($customMessage.name) !== -1
 			);
 		})
-		.sort((c1, c2) => c1.name.localeCompare(c2.name));
+		.sort((c1, c2) => c1.name.localeCompare(c2.name)));
 </script>
 
 <Dropdown text={$t('smtp.message.name')}>
@@ -50,6 +53,7 @@
 				bind:value={$customMessage.name}
 				iconAfter={filter ? RiSystemFilter2Fill : RiSystemFilter2Line}
 				iconAfterInteractive={true}
+				iconAfterColor={filterIconColor}
 				on:click_after={() => (filter = !filter)}
 				iconAfterTooltip={filter ? $t('turn_off_filter') : $t('turn_on_filter')}
 			/>
