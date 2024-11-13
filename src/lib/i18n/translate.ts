@@ -1,48 +1,88 @@
-import { writable, type Writable, get } from 'svelte/store';
-import type translate_arr from './translations/en';
+import { derived, writable, type Writable, get } from 'svelte/store';
+import { setVarsInText } from '$lib/utils/utils';
+import { ToastType } from '$lib/components/toast/Toast.svelte';
+import { addToast } from '$lib/stores/toasts';
+import { error } from '@tauri-apps/plugin-log';
+import { settings } from '$lib/stores/settings';
+import type { SettingsLanguage } from '../../generated/tauri';
+
+interface Translations {
+	[key: string]: any;
+}
+
+const locales: Array<string> = [];
+const translations: Translations = {};
 
 export const locale: Writable<string> = writable('en');
 
-export let locales: Array<string> = [];
-let translations: Map<string, Map<string, string>> = new Map();
+const languagesModules: Record<string, object> = import.meta.glob('./translations/*.(js|ts)', {
+	import: 'default',
+	eager: true
+});
 
-export function loadFilesFrompath(globPath: string) {
-	const languagesModules: any = import.meta.glob('./translations/*.(js|ts)', {
-		import: 'default',
-		eager: true
-	});
+for (const languageModule in languagesModules) {
+	const language = languageModule
+		.split('/')
+		.reverse()[0]
+		.replace(/\.[^/.]+$/, '');
 
-	for (const languageModule in languagesModules) {
-		var language = languageModule
-			.split('/')
-			.reverse()[0]
-			.replace(/\.[^/.]+$/, '');
-
-		locales.push(language);
-		translations.set(language, new Map(Object.entries(languagesModules[languageModule])));
-	}
+	locales.push(language);
+	translations[language] = languagesModules[languageModule];
 }
 
 function translate(locale: string, key: string, vars: object): string {
-	let text = translations.get(locale)?.get(key) ?? key;
-	if (!text) {
-		console.error(`No translation found for ${locale}.${key}`);
+	const translationMap = translations[locale];
+	if (translationMap === undefined) {
+		console.error(`No translations found for ${locale}`);
+		return key;
 	}
 
-	Object.entries(vars).forEach(([key, value], _) => {
-		const regex = new RegExp(`{{[ \t]*${key}[ \t]*}}`, 'g');
+	let text: string = key
+		.toLowerCase()
+		.split('.')
+		.reduce((accumulator, currentValue: string) => {
+			const translation = accumulator[currentValue];
+			if (translation === undefined) {
+				console.error(`No translation found for ${locale} for ${key}`);
+				return key;
+			}
 
-		text = text.replace(regex, value);
-	});
+			return translation;
+		}, translationMap);
+
+	text = setVarsInText(text, vars);
 
 	return text;
 }
 
-loadFilesFrompath('./translations/*.(js|ts)');
-
-export const currentLocale = () => get(locale);
 export const allowedLocales = () => locales;
-export const changeLocale = (localeToSet: (typeof locales)[number]) => locale.set(localeToSet);
 
-type TranslateKeys = keyof typeof translate_arr;
-export default (key: TranslateKeys, vars: object = {}) => translate(get(locale), key, vars);
+export const allowedLocale = (locale: string) =>
+	allowedLocales().indexOf(locale.toLowerCase()) !== -1;
+
+export const changeLocale = (localeToSet: string) => {
+	localeToSet = localeToSet.toLowerCase();
+
+	if (!allowedLocale(localeToSet)) {
+		addToast({
+			title: ts('ERROR'),
+			type: ToastType.Error,
+			text: ts('settings.locale_error')
+		});
+
+		error(`Locale ${localeToSet} is not allowed`);
+	}
+
+	locale.set(localeToSet.toLowerCase());
+
+	settings.update((settings) => {
+		settings.language = localeToSet.toUpperCase() as SettingsLanguage;
+		return settings;
+	});
+};
+
+export const getLocale = () => get(locale).toUpperCase();
+
+export const ts = (key: string, vars: object = {}) => translate(get(locale), key, vars);
+
+export default derived(locale, () => ts);

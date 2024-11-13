@@ -22,10 +22,8 @@ function range(min, max, step, sufix) {
 
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-	content: [
-		'./src/**/*.{html,js,svelte,ts}',
-		'./node_modules/flowbite-svelte/**/*.{html,js,svelte,ts}'
-	],
+	content: ['./src/**/*.{html,js,svelte,ts}'],
+	darkMode: 'selector',
 	theme: {
 		extend: {
 			zIndex: {
@@ -115,6 +113,5 @@ module.exports = {
 			bold: '700'
 		}
 	},
-	plugins: [require('tailwind-scrollbar'), require('flowbite/plugin')],
-	darkMode: 'class'
+	plugins: [require('tailwind-scrollbar')]
 };

@@ -1,12 +1,12 @@
-export let RandomId = (length: number = 10) => {
-	let possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+export const RandomId = (length = 10) => {
+	const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
 
 	function pickRandom() {
 		return possible[Math.floor(Math.random() * possible.length)];
 	}
 
-	return Array.apply(null, Array(length)).map(pickRandom).join('');
+	return Array.from({ length }, pickRandom).join('');
 };
 
-export let RandomNumber = (min: number, max: number) =>
+export const RandomNumber = (min: number, max: number) =>
 	Math.floor(Math.random() * (max - min) + min);

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { RandomId } from '$utils/random';
+	import { RandomId } from '../../utils/random';
 
 	export let name: string = RandomId();
 
@@ -22,14 +22,16 @@
 		type="radio"
 		{value}
 		{disabled}
-		class="w-4 h-4 rounded ring-offset-gray-800 focus:ring-offset-gray-800 focus:ring-2 bg-gray-700 border-gray-600
+		class="w-4 h-4 rounded focus:ring-2
+		ring-offset-gray-100 focus:ring-offset-gray-100 bg-gray-100 border-gray-200
+		dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 dark:bg-gray-700 dark:border-gray-600
 		{disabled ? 'cursor-not-allowed' : ''}"
 		on:change={handleChange}
 		{checked}
 	/>
 	<label
 		for={id}
-		class="ml-2 text-sm font-medium text-gray-200
+		class="ml-2 text-sm font-medium text-black dark:text-white
 	{disabled ? 'cursor-not-allowed' : ''}"
 	>
 		<slot />

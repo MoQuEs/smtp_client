@@ -1,17 +1,15 @@
 <script lang="ts">
-	import Icon from 'svelte-icons-pack';
+	import { Icon } from 'svelte-icons-pack';
 	import { convert } from 'html-to-text';
-	import AiOutlineMinus from 'svelte-icons-pack/ai/AiOutlineMinus';
-	import Button, { ButtonTheme } from '$components/form/Button.svelte';
-	import Input, { InputType } from '$components/form/Input.svelte';
-	import Textarea from '$components/form/Textarea.svelte';
-	import Badge, { BadgeColor, BadgeSize, BadgeTheme } from '$components/Badge.svelte';
-	import { SMTPMessageHeader } from '$api/tauri_classes';
-	import Checkbox from '$components/form/Checkbox.svelte';
-	import t from '$i18n/translate';
-	import { customMessage } from '$stores/smtp_message';
-
-	let convertHTMLToTEXT: boolean = true;
+	import { AiOutlineMinus } from 'svelte-icons-pack/ai';
+	import Button, { ButtonTheme } from '../../components/form/Button.svelte';
+	import Input, { InputType } from '../../components/form/Input.svelte';
+	import Textarea from '../../components/form/Textarea.svelte';
+	import Badge, { BadgeColor, BadgeSize, BadgeTheme } from '../../components/Badge.svelte';
+	import { SMTPMessageHeader } from '../../api/tauri_classes';
+	import Checkbox from '../../components/form/Checkbox.svelte';
+	import t from '../../i18n/translate';
+	import { customMessage } from '../../stores/smtp_message';
 
 	const addHeader = () => {
 		$customMessage.message.headers = [
@@ -26,7 +24,7 @@
 		));
 
 	$: {
-		if ($customMessage.message.body.html && convertHTMLToTEXT) {
+		if ($customMessage.message.body.html && $customMessage.message.body.convert_html_to_text) {
 			$customMessage.message.body.text = convert($customMessage.message.body.html);
 		}
 	}
@@ -37,44 +35,44 @@
 		<Input
 			name="messageToName"
 			type={InputType.Text}
-			placeholder={t('smtp.message.to.name')}
+			placeholder={$t('smtp.message.to.name')}
 			className="flex flex-grow"
 			bind:value={$customMessage.message.to.name}
 		>
-			<span slot="label">{t('smtp.message.to.name')}</span>
+			<span slot="label">{$t('smtp.message.to.name')}</span>
 		</Input>
 		<Input
 			name="messageToEmail"
 			type={InputType.Text}
-			placeholder={t('smtp.message.to.email')}
+			placeholder={$t('smtp.message.to.email')}
 			className="flex flex-grow"
 			bind:value={$customMessage.message.to.email}
 		>
-			<span slot="label">{t('smtp.message.to.email')}</span>
+			<span slot="label">{$t('smtp.message.to.email')}</span>
 		</Input>
 	</div>
 	<div class="flex place-content-between space-x-5">
 		<Input
 			name="fromName"
 			type={InputType.Text}
-			placeholder={t('smtp.message.from.name')}
+			placeholder={$t('smtp.message.from.name')}
 			className="flex flex-grow"
 			bind:value={$customMessage.message.from.name}
 		>
-			<span slot="label">{t('smtp.message.from.name')}</span>
+			<span slot="label">{$t('smtp.message.from.name')}</span>
 		</Input>
 		<Input
 			name="fromEmail"
 			type={InputType.Text}
-			placeholder={t('smtp.message.from.email')}
+			placeholder={$t('smtp.message.from.email')}
 			className="flex flex-grow"
 			bind:value={$customMessage.message.from.email}
 		>
-			<span slot="label">{t('smtp.message.from.email')}</span>
+			<span slot="label">{$t('smtp.message.from.email')}</span>
 		</Input>
 	</div>
 	<Badge
-		text={t('smtp.message.header.add')}
+		text={$t('smtp.message.header.add')}
 		size={BadgeSize.SM}
 		theme={BadgeTheme.Normal}
 		color={BadgeColor.Primary}
@@ -88,14 +86,14 @@
 					<Input
 						name="headerName_{index}"
 						type={InputType.Text}
-						placeholder={t('smtp.message.header.name')}
+						placeholder={$t('smtp.message.header.name')}
 						className="flex flex-grow"
 						bind:value={header.name}
 					/>
 					<Input
 						name="headerValue_{index}"
 						type={InputType.Text}
-						placeholder={t('smtp.message.header.value')}
+						placeholder={$t('smtp.message.header.value')}
 						className="flex flex-grow"
 						bind:value={header.value}
 					/>
@@ -114,11 +112,11 @@
 	<Input
 		name="subject"
 		type={InputType.Text}
-		placeholder={t('smtp.message.subject')}
+		placeholder={$t('smtp.message.subject')}
 		className="flex flex-grow"
 		bind:value={$customMessage.message.subject}
 	>
-		<span slot="label">{t('smtp.message.subject')}</span>
+		<span slot="label">{$t('smtp.message.subject')}</span>
 	</Input>
 	<Textarea
 		name="body"
@@ -128,21 +126,21 @@
 	>
 		<div slot="label">
 			<div class="flex flex-row justify-between">
-				<div>{t('smtp.message.body.html')}</div>
-				<Checkbox name="convertHTMLToTEXT" bind:checked={convertHTMLToTEXT}
-					>{t('smtp.message.body.convert_html_to_text')}</Checkbox
+				<div>{$t('smtp.message.body.html')}</div>
+				<Checkbox name="convertHTMLToTEXT" bind:checked={$customMessage.message.body.convert_html_to_text}
+				>{$t('smtp.message.body.convert_html_to_text')}</Checkbox
 				>
 			</div>
 		</div>
 	</Textarea>
-	{#if !convertHTMLToTEXT}
+	{#if !$customMessage.message.body.convert_html_to_text}
 		<Textarea
 			name="body"
 			placeholder=""
 			className="flex flex-grow"
 			bind:value={$customMessage.message.body.text}
 		>
-			<div slot="label">{t('smtp.message.body.text')}</div>
+			<div slot="label">{$t('smtp.message.body.text')}</div>
 		</Textarea>
 	{/if}
 </div>

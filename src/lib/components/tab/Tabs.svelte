@@ -12,7 +12,7 @@
 
 <script lang="ts">
 	import { setContext, onDestroy } from 'svelte';
-	import { writable, type Writable } from 'svelte/store';
+	import { writable } from 'svelte/store';
 
 	const tabs: object[] = [];
 	const panels: object[] = [];

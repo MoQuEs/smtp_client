@@ -22,19 +22,16 @@
 		Error,
 		Primary,
 		Secondary,
-		LightGray,
 		Gray,
-		DarkGray,
-		DarkestGray
 	}
 </script>
 
 <script lang="ts">
 	export let size: SeparatorSize = SeparatorSize.SM;
 	export let sizeMargin: SeparatorMarginSize = SeparatorMarginSize.SM;
-	export let color: SeparatorColor = SeparatorColor.LightGray;
+	export let color: SeparatorColor = SeparatorColor.Gray;
 
-	export let className: string = '';
+	export let className = '';
 
 	let sizeClass = 'border-2';
 	switch (size) {
@@ -62,23 +59,23 @@
 	let sizeMarginClass = 'my-3';
 	switch (sizeMargin) {
 		case SeparatorMarginSize.XS:
-			sizeMarginClass = 'my-2';
+			sizeMarginClass = 'my-1';
 			break;
 
 		case SeparatorMarginSize.SM:
-			sizeMarginClass = 'my-4';
+			sizeMarginClass = 'my-2';
 			break;
 
 		case SeparatorMarginSize.MD:
-			sizeMarginClass = 'my-6';
+			sizeMarginClass = 'my-3';
 			break;
 
 		case SeparatorMarginSize.LG:
-			sizeMarginClass = 'my-8';
+			sizeMarginClass = 'my-4';
 			break;
 
 		case SeparatorMarginSize.XL:
-			sizeMarginClass = 'my-10';
+			sizeMarginClass = 'my-6';
 			break;
 	}
 
@@ -102,17 +99,8 @@
 		case SeparatorColor.Error:
 			colorClass = 'border-error-500';
 			break;
-		case SeparatorColor.LightGray:
-			colorClass = 'border-gray-600';
-			break;
 		case SeparatorColor.Gray:
-			colorClass = 'border-gray-700';
-			break;
-		case SeparatorColor.DarkGray:
-			colorClass = 'border-gray-800';
-			break;
-		case SeparatorColor.DarkestGray:
-			colorClass = 'border-gray-900';
+			colorClass = 'border-gray-300 dark:border-gray-700';
 			break;
 	}
 </script>

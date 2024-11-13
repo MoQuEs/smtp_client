@@ -1,15 +1,15 @@
 <script lang="ts">
-	import Icon from 'svelte-icons-pack';
+	import { Icon } from 'svelte-icons-pack';
 
-	import BiRepost from 'svelte-icons-pack/bi/BiRepost';
-	import AiOutlineMinus from 'svelte-icons-pack/ai/AiOutlineMinus';
-	import AiOutlineDownload from 'svelte-icons-pack/ai/AiOutlineDownload';
-	import AiOutlineUpload from 'svelte-icons-pack/ai/AiOutlineUpload';
+	import { BiRepost } from 'svelte-icons-pack/bi';
+	import { AiOutlineMinus } from 'svelte-icons-pack/ai';
+	import { RiDeviceSave3Line } from 'svelte-icons-pack/ri';
+	import { RiDocumentContactsBookUploadLine } from 'svelte-icons-pack/ri';
 
-	import RiSystemFilter2Line from 'svelte-icons-pack/ri/RiSystemFilter2Line';
-	import RiSystemFilter2Fill from 'svelte-icons-pack/ri/RiSystemFilter2Fill';
+	import { RiSystemFilter2Line } from 'svelte-icons-pack/ri';
+	import { RiSystemFilter2Fill } from 'svelte-icons-pack/ri';
 
-	import t from '$i18n/translate';
+	import t from '../../i18n/translate';
 	import {
 		allMessages,
 		customMessage,
@@ -17,19 +17,22 @@
 		removeMessage,
 		repleaceMessage,
 		loadMessage
-	} from '$stores/smtp_message';
-	import Input from '$components/form/Input.svelte';
-	import Button, { ButtonTheme, ButtonPaddingSize } from '$components/form/Button.svelte';
+	} from '../../stores/smtp_message';
+	import Input from '../../components/form/Input.svelte';
+	import Button, { ButtonTheme, ButtonPaddingSize } from '../../components/form/Button.svelte';
+	import { theme } from '$lib/stores/theme';
+	import { SettingsTheme } from '$lib/../generated/tauri';
+	import Dropdown from '../../components/dropdown/Dropdown.svelte';
+	import DropdownItem from '../../components/dropdown/DropdownItem.svelte';
+	import DropdownSeparator from '../../components/dropdown/DropdownSeparator.svelte';
+	import Tooltip from '../../components/tooltip/Tooltip.svelte';
+	import { getMessageLabelForSelect } from '../../utils/utils';
+	import OverflowText from '../../components/OverflowText.svelte';
 
-	import Dropdown from '$components/dropdown/Dropdown.svelte';
-	import DropdownItem from '$components/dropdown/DropdownItem.svelte';
-	import DropdownSeparator from '$components/dropdown/DropdownSeparator.svelte';
-	import Tooltip from '$components/tooltip/Tooltip.svelte';
-	import { getMessageLabelForSelect } from '$utils/utils';
-	import OverflowText from '$components/OverflowText.svelte';
+	let filterIconColor = $derived($theme == SettingsTheme.Dark ? 'white' : 'black');
 
 	let filter: boolean = false;
-	$: filtered = $allMessages
+	let filtered = $derived($allMessages
 		.filter((message) => {
 			return (
 				!filter ||
@@ -38,24 +41,25 @@
 				message.message.to.email.indexOf($customMessage.name) !== -1
 			);
 		})
-		.sort((c1, c2) => c1.name.localeCompare(c2.name));
+		.sort((c1, c2) => c1.name.localeCompare(c2.name)));
 </script>
 
-<Dropdown text={t('smtp.message.messages')}>
+<Dropdown text={$t('smtp.message.name')}>
 	<DropdownItem>
 		<div class="flex flex-row space-x-5">
 			<Input
 				className="flex-grow"
-				placeholder="{t('smtp.message.message_name')} / {t('smtp.message.message_filter')}"
+				placeholder="{$t('smtp.message.message_name')} / {$t('smtp.message.message_filter')}"
 				bind:value={$customMessage.name}
 				iconAfter={filter ? RiSystemFilter2Fill : RiSystemFilter2Line}
 				iconAfterInteractive={true}
+				iconAfterColor={filterIconColor}
 				on:click_after={() => (filter = !filter)}
-				iconAfterTooltip={filter ? t('turn_off_filter') : t('turn_on_filter')}
+				iconAfterTooltip={filter ? $t('turn_off_filter') : $t('turn_on_filter')}
 			/>
-			<Tooltip title={t('save')}>
+			<Tooltip title={$t('save')}>
 				<Button theme={ButtonTheme.Success} text="" on:click={() => saveMessage()}>
-					<Icon src={AiOutlineDownload} size="22" color="white" slot="icon" />
+					<Icon src={RiDeviceSave3Line} size="22" color="white" slot="icon" />
 				</Button>
 			</Tooltip>
 		</div>
@@ -65,7 +69,7 @@
 
 	{#if $allMessages.length === 0}
 		<DropdownItem>
-			{t('smtp.message.no_messages_saved')}
+			{$t('smtp.message.no_messages_saved')}
 		</DropdownItem>
 	{/if}
 
@@ -77,17 +81,17 @@
 					text={getMessageLabelForSelect(message.name, message.message)}
 				/>
 				<div class="flex flex-row flex-grow justify-end self-center space-x-2">
-					<Tooltip title={t('load')}>
+					<Tooltip title={$t('load')}>
 						<Button
 							text=""
 							theme={ButtonTheme.Success}
 							padding={ButtonPaddingSize.SM}
 							on:click={() => loadMessage(message)}
 						>
-							<Icon src={AiOutlineUpload} size="22" color="white" slot="icon" />
+							<Icon src={RiDocumentContactsBookUploadLine} size="22" color="white" slot="icon" />
 						</Button>
 					</Tooltip>
-					<Tooltip title={t('repleace')}>
+					<Tooltip title={$t('repleace')}>
 						<Button
 							text=""
 							theme={ButtonTheme.Success}
@@ -97,7 +101,7 @@
 							<Icon src={BiRepost} size="22" color="white" slot="icon" />
 						</Button>
 					</Tooltip>
-					<Tooltip title={t('remove')}>
+					<Tooltip title={$t('remove')}>
 						<Button
 							text=""
 							theme={ButtonTheme.Error}

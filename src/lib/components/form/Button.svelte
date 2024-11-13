@@ -34,18 +34,15 @@
 		Success,
 		Warning,
 		Error,
-		LightGray,
 		Gray,
-		DarkGray,
-		DarkestGray
 	}
 </script>
 
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte';
-	import Icon from 'svelte-icons-pack';
-	import CgSpinnerTwoAlt from 'svelte-icons-pack/cg/CgSpinnerTwoAlt';
-	import { RandomId } from '$utils/random';
+	import { Icon } from 'svelte-icons-pack';
+	import { CgSpinnerTwoAlt } from 'svelte-icons-pack/cg';
+	import { RandomId } from '../../utils/random';
 
 	export let text: string;
 	export let name: string = RandomId();
@@ -56,6 +53,8 @@
 	export let padding: ButtonPaddingSize = ButtonPaddingSize.LG;
 	export let mode: ButtonMode = ButtonMode.Normal;
 	export let className: string = '';
+
+	let textColor = 'text-white';
 
 	let textSizeClass = 'text-base';
 	let iconSizeClass = 'text-base';
@@ -142,24 +141,21 @@
 		case ButtonTheme.Error:
 			buttonClass = 'bg-error-500';
 			break;
-		case ButtonTheme.LightGray:
-			buttonClass = 'bg-gray-600';
-			break;
 		case ButtonTheme.Gray:
-			buttonClass = 'bg-gray-700';
-			break;
-		case ButtonTheme.DarkGray:
-			buttonClass = 'bg-gray-800';
-			break;
-		case ButtonTheme.DarkestGray:
-			buttonClass = 'bg-gray-900';
+			buttonClass = 'bg-gray-200 dark:bg-gray-700';
+			textColor = 'text-black dark:text-white';
 			break;
 	}
 
 	const dispatch = createEventDispatcher();
 
 	let click = () => {
-		mode === ButtonMode.Loading || mode === ButtonMode.Disabled ? false : dispatch('click');
+		if (![ButtonMode.Loading, ButtonMode.Disabled].includes(mode)) {
+			try {
+				dispatch('click');
+			} catch (e) {
+			}
+		}
 	};
 </script>
 
@@ -167,8 +163,8 @@
 	{name}
 	{type}
 	class="relative flex flex-row flex-grow {textSizeClass}
-    whitespace-nowrap font-bold active:brightness-75
-    hover:brightness-125 text-white items-center rounded {buttonClass}  {cursor}
+    whitespace-nowrap font-bold active:brightness-125 dark:active:brightness-75
+    hover:brightness-75 dark:hover:brightness-125 {textColor} items-center rounded {buttonClass}  {cursor}
     {className}"
 	on:click={click}
 >

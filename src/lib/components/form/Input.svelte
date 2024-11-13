@@ -12,34 +12,34 @@
 
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte';
-	import Icon from 'svelte-icons-pack/Icon.svelte';
-	import AiOutlineEyeInvisible from 'svelte-icons-pack/ai/AiOutlineEyeInvisible';
-	import AiOutlineEye from 'svelte-icons-pack/ai/AiOutlineEye';
-	import t from '$i18n/translate';
-	import { RandomId } from '$utils/random';
-	import Tooltip from '$components/tooltip/Tooltip.svelte';
+	import { Icon } from 'svelte-icons-pack';
+	import { AiOutlineEyeInvisible } from 'svelte-icons-pack/ai';
+	import { AiOutlineEye } from 'svelte-icons-pack/ai';
+	import t from '../../i18n/translate';
+	import { RandomId } from '../../utils/random';
+	import Tooltip from '../../components/tooltip/Tooltip.svelte';
 
 	export let name: string = RandomId();
 
 	export let type: InputType = InputType.Text;
-	export let value: string | number = '';
-	export let placeholder: string = '';
-	export let autocomplete: string = 'off';
-	export let disabled: boolean = false;
-	export let readonly: boolean = false;
-	export let className: string = '';
+	export let value: string | number | Number = '';
+	export let placeholder = '';
+	export let autocomplete: 'on' | 'off' = 'off';
+	export let disabled = false;
+	export let readonly = false;
+	export let className = '';
 
 	export let iconBefore: any = undefined;
-	export let iconBeforeColor: string = 'white';
-	export let iconBeforeTooltip: string = '';
-	export let iconBeforeInteractive: boolean = false;
+	export let iconBeforeColor = 'white';
+	export let iconBeforeTooltip = '';
+	export let iconBeforeInteractive = false;
 
 	export let iconAfter: any = undefined;
-	export let iconAfterColor: string = 'white';
-	export let iconAfterTooltip: string = '';
-	export let iconAfterInteractive: boolean = false;
+	export let iconAfterColor = 'white';
+	export let iconAfterTooltip = '';
+	export let iconAfterInteractive = false;
 
-	let passwordShowed: boolean = false;
+	let passwordShowed = false;
 	let isPasswordinput = () =>
 		type === InputType.Password || (type === InputType.Text && passwordShowed == true);
 
@@ -48,14 +48,14 @@
 
 	const handleInput = (e: Event & { currentTarget: EventTarget & HTMLInputElement }) => {
 		value = type === InputType.Number ? Number(e.currentTarget.value) : e.currentTarget.value;
-		dispatch('input');
+		dispatch('input', value);
 	};
 
-	const handleClickBefore = (e: Event) => {
+	const handleClickBefore = () => {
 		dispatch('click_before');
 	};
 
-	const handleClickAfter = (e: Event) => {
+	const handleClickAfter = () => {
 		if (isPasswordinput()) {
 			passwordShowed = !passwordShowed;
 		}
@@ -63,12 +63,13 @@
 		dispatch('click_after');
 	};
 
-	const handleDummy = (e: Event) => {};
+	const handleDummy = () => {
+	};
 </script>
 
 <div class="flex flex-col {className}">
 	{#if $$slots.label}
-		<label for="input-group-1" class="flex flex-grow mb-2 text-sm font-medium text-white">
+		<label for="input-group-1" class="flex flex-grow mb-2 text-sm font-medium text-black dark:text-white">
 			<slot name="label" />
 		</label>
 	{/if}
@@ -81,13 +82,14 @@
 				on:keydown={handleDummy}
 				on:keyup={handleDummy}
 				on:keypress={handleDummy}
+				role="button" tabindex="0"
 			>
-				{#if iconAfterTooltip !== ''}
+				{#if iconBeforeTooltip !== ''}
 					<Tooltip title={iconBeforeTooltip}>
-						<Icon src={iconBefore} size="22" color={iconAfterColor} />
+						<Icon src={iconBefore} size="22" color={iconBeforeColor} />
 					</Tooltip>
 				{:else}
-					<Icon src={iconBefore} size="22" color={iconAfterColor} />
+					<Icon src={iconBefore} size="22" color={iconBeforeColor} />
 				{/if}
 			</div>
 		{/if}
@@ -103,7 +105,9 @@
 			{iconBefore ? 'pl-10' : ''}
 			{iconAfter ? 'pr-10' : ''}
 			{disabled ? 'cursor-not-allowed' : ''}
-			p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
+			p-2.5
+			bg-gray-100 border-gray-200 placeholder-gray-700 text-black focus:ring-blue-500 focus:border-blue-500
+			dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
 			{disabled}
 			{readonly}
 			{autocomplete}
@@ -116,25 +120,26 @@
 				on:keydown={handleDummy}
 				on:keyup={handleDummy}
 				on:keypress={handleDummy}
+				role="button" tabindex="0"
 			>
 				{#if isPasswordinput()}
 					<Tooltip
 						title={passwordShowed
-							? t('components.form.input.hide.password')
-							: t('components.form.input.show.password')}
+							? $t('components.form.input.hide_password')
+							: $t('components.form.input.show_password')}
 					>
 						<Icon
 							src={passwordShowed ? AiOutlineEye : AiOutlineEyeInvisible}
 							size="22"
-							color={iconBeforeColor}
+							color={iconAfterColor}
 						/>
 					</Tooltip>
 				{:else if iconAfterTooltip !== ''}
 					<Tooltip title={iconAfterTooltip}>
-						<Icon src={iconAfter} size="22" color={iconBeforeColor} />
+						<Icon src={iconAfter} size="22" color={iconAfterColor} />
 					</Tooltip>
 				{:else}
-					<Icon src={iconAfter} size="22" color={iconBeforeColor} />
+					<Icon src={iconAfter} size="22" color={iconAfterColor} />
 				{/if}
 			</div>
 		{/if}
