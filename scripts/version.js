@@ -5,13 +5,9 @@ let date = new Date();
 let day = date.getDate();
 let month = date.getMonth() + 1;
 let year = date.getFullYear();
-if (day < 10) {
-	day = '0' + day;
-}
 
-if (month < 10) {
-	month = '0' + month;
-}
+day = day.padStart(2, '0');
+month = month.padStart(2, '0');
 
 const currentDate = `${day}-${month}-${year}`;
 
@@ -22,9 +18,7 @@ if (typeof process.argv[2] !== 'string' || process.argv[2] === '') {
 
 const version = process.argv[2];
 
-new Promise((resolve) => {
-	resolve();
-}).then(async () => {
+new Promise(async () => {
 	// change version in tauri.conf.json
 	let tauriConfFile = './src-tauri/tauri.conf.json';
 	fs.readFile(tauriConfFile, 'utf8', function(err, data) {
@@ -48,9 +42,11 @@ new Promise((resolve) => {
 	await exec(`cd src-tauri & cargo bump ${version}`);
 
 	// change version in npm
-	await exec(
-		`npm version --allow-same-version --commit-hooks=false --git-tag-version=false ${version}`
-	);
+	try {
+		await exec(`npm version --allow-same-version=true --commit-hooks=false --git-tag-version=false ${version}`);
+	} catch (e) {
+		console.error(e);
+	}
 
 	// changelog
 	let changelogFile = './CHANGELOG.md';

@@ -29,8 +29,8 @@ SMTPclient is a simple gui smtp client, mainly used for testing smtp servers and
 
 #### Main
 
-- rust >= 1.66.0
-- node >= 18.16.0
+- rust >= 1.77.2
+- node >= 20.18.0
 
 #### Additional tools to install
 
@@ -57,7 +57,7 @@ npm run tauri build
 - `npm run format` - Reformat whole project
 - `npm run generate` - Generate typescript definitions from rust
 - `npm run logo <logo_image_name_in_logo_folder>` - Run generator on logo to generate icons
-- `npm run set_version <sver_version_to_prepare>` - Will bump version in:
+- `npm run version <sver_version_to_prepare>` - Will bump version in:
     - `package.json` - frontend
     - `cargo.toml` - backend
     - `src-tauri/tauri.conf.json` - build script

@@ -13,6 +13,7 @@ readme = "README.md"
 
 [build-dependencies]
 tauri-build = { version = "2.0.3", default-features = false, features = [] }
+typeshare-cli = { version = "1.12.0", default-features = false, features = [] }
 
 [dependencies]
 serde_json = { version = "1.0.132", default-features = false, features = [] }
