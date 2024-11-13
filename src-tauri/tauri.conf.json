@@ -55,8 +55,7 @@
       "deb": {
         "depends": []
       }
-    },
-    "createUpdaterArtifacts": "v1Compatible"
+    }
   },
   "plugins": {}
 }
