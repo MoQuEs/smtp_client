@@ -44,9 +44,9 @@ pub fn error_empty() -> TauriResponse<()> {
 }
 
 pub type MaybeSMTPConfiguration = Option<NamedSMTPConfiguration>;
-pub type SMTPConfigurations = Vec<NamedSMTPConfiguration>;
+pub type NamedSMTPConfigurations = Vec<NamedSMTPConfiguration>;
 pub type MaybeSMTPMessage = Option<NamedSMTPMessage>;
-pub type SMTPMessages = Vec<NamedSMTPMessage>;
+pub type NamedSMTPMessages = Vec<NamedSMTPMessage>;
 
 #[typeshare]
 #[derive(Deserialize, Serialize, Encode, Decode, Debug, Clone)]
@@ -167,6 +167,7 @@ pub struct Settings {
 pub enum SettingsTheme {
     #[default]
     Dark,
+    Light,
 }
 
 #[typeshare]

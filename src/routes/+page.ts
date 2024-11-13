@@ -5,9 +5,11 @@ import { loadMessages } from '$lib/stores/smtp_message';
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export const load = (async ({ params }) => {
-	loadConfigurations();
-	loadMessages();
-	loadSettings();
+	await Promise.all([
+		loadConfigurations(),
+		loadMessages(),
+		loadSettings()
+	]);
 
 	return {};
 }) satisfies PageLoad;

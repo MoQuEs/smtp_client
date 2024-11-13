@@ -1,7 +1,7 @@
 {
   "$schema": "https://schema.tauri.app/config/2",
   "productName": "SMTPclient",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "identifier": "com.moques.smtpclient",
   "build": {
     "beforeDevCommand": "npm run dev",

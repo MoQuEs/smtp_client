@@ -1,4 +1,4 @@
-use crate::backup::{Backup, BackupDataV1};
+use crate::backup::{Backup, BackupData, BackupDataV1};
 use crate::dialogs::blocking::save_file_dialog;
 use crate::dialogs::simple_error_dialog;
 use crate::file::file_put_contents;
@@ -37,6 +37,23 @@ fn export(app_handle: &AppHandle, import_export_settings: ImportExportSettings) 
         .log_error("backend::commands::export::export", "Error saving backup")
 }
 
+fn save_backup(app_handle: &AppHandle, mut serialized_backup: Vec<u8>) -> AnyResult<()> {
+    log::trace!("save_backup");
+
+    let file_path = save_file_dialog(app_handle, vec![("SMTPclient backup file", &["scb"])]);
+    if file_path.is_none() {
+        log::info!("No file selected");
+        return Ok(());
+    }
+
+    log::info!("Saving to file: {:?}", file_path);
+
+    file_put_contents(
+        file_path.unwrap().into_path()?,
+        serialized_backup.as_mut_slice(),
+    )
+}
+
 fn prepare_backup(
     app_handle: &AppHandle,
     import_export_settings: ImportExportSettings,
@@ -69,22 +86,5 @@ fn prepare_backup(
         )?);
     }
 
-    Backup::serialize_backup(import_export_settings.password, backup)
-}
-
-fn save_backup(app_handle: &AppHandle, mut serialized_backup: Vec<u8>) -> AnyResult<()> {
-    log::trace!("save_backup");
-
-    let file_path = save_file_dialog(app_handle, vec![("SMTPclient backup file", &["scb"])]);
-    if file_path.is_none() {
-        log::info!("No file selected");
-        return Ok(());
-    }
-
-    log::info!("Saving to file: {:?}", file_path);
-
-    file_put_contents(
-        file_path.unwrap().into_path()?,
-        serialized_backup.as_mut_slice(),
-    )
+    Backup::serialize_backup(import_export_settings.password, BackupData::V1(backup))
 }

@@ -34,10 +34,7 @@
 		Success,
 		Warning,
 		Error,
-		LightGray,
 		Gray,
-		DarkGray,
-		DarkestGray
 	}
 </script>
 
@@ -56,6 +53,8 @@
 	export let padding: ButtonPaddingSize = ButtonPaddingSize.LG;
 	export let mode: ButtonMode = ButtonMode.Normal;
 	export let className: string = '';
+
+	let textColor = 'text-white';
 
 	let textSizeClass = 'text-base';
 	let iconSizeClass = 'text-base';
@@ -142,17 +141,9 @@
 		case ButtonTheme.Error:
 			buttonClass = 'bg-error-500';
 			break;
-		case ButtonTheme.LightGray:
-			buttonClass = 'bg-gray-600';
-			break;
 		case ButtonTheme.Gray:
-			buttonClass = 'bg-gray-700';
-			break;
-		case ButtonTheme.DarkGray:
-			buttonClass = 'bg-gray-800';
-			break;
-		case ButtonTheme.DarkestGray:
-			buttonClass = 'bg-gray-900';
+			buttonClass = 'bg-gray-300 dark:bg-gray-700';
+			textColor = 'text-black dark:text-white';
 			break;
 	}
 
@@ -172,8 +163,8 @@
 	{name}
 	{type}
 	class="relative flex flex-row flex-grow {textSizeClass}
-    whitespace-nowrap font-bold active:brightness-75
-    hover:brightness-125 text-white items-center rounded {buttonClass}  {cursor}
+    whitespace-nowrap font-bold active:brightness-125 dark:active:brightness-75
+    hover:brightness-75 dark:hover:brightness-125 {textColor} items-center rounded {buttonClass}  {cursor}
     {className}"
 	on:click={click}
 >

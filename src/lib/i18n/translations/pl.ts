@@ -19,9 +19,6 @@ export default {
 	turn_off_filter: 'Wyłącz filter',
 	name_exists_error: 'Nazwa już istnieje',
 	name_cant_be_empty_error: 'Nazwa nie może być pusta',
-	imports_exports: 'Import/Export',
-	import: 'Import',
-	export: 'Export',
 	logo: {
 		alt: 'Logo',
 		text: 'Logo text'
@@ -42,12 +39,13 @@ export default {
 	},
 	menu: {
 		send: 'Wyślij',
+		all: 'Wszystko',
 		configurations: 'Konfiguracje',
 		messages: 'Wiadomości',
 		settings: 'Ustawienia'
 	},
 	smtp: {
-		send_mail: 'Wyślij wiadomość',
+		send_mail: 'Wyślij',
 		configuration: {
 			name: 'Konfiguracja',
 			unsaved: 'Niezapisana konfiguracja',
@@ -68,7 +66,8 @@ export default {
 			remove: 'Usunięto konfigurację',
 			remove_error: 'Nie można usunąć konfiguracji',
 			load: 'Załadowano konfigurację',
-			load_error: 'Nie można załadować konfiguracji'
+			load_error: 'Nie można załadować konfiguracji',
+			count: 'Ilość'
 		},
 		message: {
 			name: 'Wiadomość',
@@ -121,8 +120,23 @@ export default {
 		},
 		theme: 'Styl',
 		themes: {
-			dark: 'Dark'
-		}
+			dark: 'Ciemny',
+			light: 'Jasny'
+		},
+		imports_exports: 'Import/Export',
+		import: {
+			success: 'Zaimportowano',
+			error: 'Błąd podczas importowania',
+			title: 'Import',
+			import: 'Importuj'
+		},
+		export: {
+			success: 'Wyeksportowano',
+			error: 'Błąd podczas eksportowania',
+			title: 'Export',
+			export: 'Eksportuj'
+		},
+		password: 'Hasło'
 	},
 	api: {
 		error: 'Błąd podczas wywoływania api',

@@ -23,6 +23,7 @@ function range(min, max, step, sufix) {
 /** @type {import('tailwindcss').Config} */
 module.exports = {
 	content: ['./src/**/*.{html,js,svelte,ts}'],
+	darkMode: 'selector',
 	theme: {
 		extend: {
 			zIndex: {
@@ -112,6 +113,5 @@ module.exports = {
 			bold: '700'
 		}
 	},
-	plugins: [require('tailwind-scrollbar')],
-	darkMode: 'class'
+	plugins: [require('tailwind-scrollbar')]
 };

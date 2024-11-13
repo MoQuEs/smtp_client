@@ -1,5 +1,5 @@
 use crate::database::{Database, Section};
-use crate::response::{AnyResult, NamedSMTPConfiguration, SMTPConfigurations};
+use crate::response::{AnyResult, NamedSMTPConfiguration, NamedSMTPConfigurations};
 
 impl Database {
     pub fn save_configuration(&self, configuration: &NamedSMTPConfiguration) -> AnyResult<()> {
@@ -20,7 +20,7 @@ impl Database {
         self.remove(Section::SMTPConfiguration, configuration.name.as_str())
     }
 
-    pub fn get_configurations(&self) -> AnyResult<SMTPConfigurations> {
+    pub fn get_configurations(&self) -> AnyResult<NamedSMTPConfigurations> {
         log::trace!("get_configurations");
 
         self.get_all(Section::SMTPConfiguration)

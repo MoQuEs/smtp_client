@@ -3,6 +3,8 @@ import { setVarsInText } from '$lib/utils/utils';
 import { ToastType } from '$lib/components/toast/Toast.svelte';
 import { addToast } from '$lib/stores/toasts';
 import { error } from '@tauri-apps/plugin-log';
+import { settings } from '$lib/stores/settings';
+import type { SettingsLanguage } from '../../generated/tauri';
 
 interface Translations {
 	[key: string]: any;
@@ -10,7 +12,8 @@ interface Translations {
 
 const locales: Array<string> = [];
 const translations: Translations = {};
-const locale: Writable<string> = writable('en');
+
+export const locale: Writable<string> = writable('en');
 
 const languagesModules: Record<string, object> = import.meta.glob('./translations/*.(js|ts)', {
 	import: 'default',
@@ -52,8 +55,6 @@ function translate(locale: string, key: string, vars: object): string {
 	return text;
 }
 
-export const currentLocale = () => get(locale);
-
 export const allowedLocales = () => locales;
 
 export const allowedLocale = (locale: string) =>
@@ -73,7 +74,14 @@ export const changeLocale = (localeToSet: string) => {
 	}
 
 	locale.set(localeToSet.toLowerCase());
+
+	settings.update((settings) => {
+		settings.language = localeToSet.toUpperCase() as SettingsLanguage;
+		return settings;
+	});
 };
+
+export const getLocale = () => get(locale).toUpperCase();
 
 export const ts = (key: string, vars: object = {}) => translate(get(locale), key, vars);
 

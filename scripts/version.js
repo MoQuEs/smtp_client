@@ -27,7 +27,7 @@ new Promise((resolve) => {
 }).then(async () => {
 	// change version in tauri.conf.json
 	let tauriConfFile = './src-tauri/tauri.conf.json';
-	fs.readFile(tauriConfFile, 'utf8', function (err, data) {
+	fs.readFile(tauriConfFile, 'utf8', function(err, data) {
 		if (err) {
 			console.error(`Error while loading file: ${tauriConfFile}`);
 			console.error(err);
@@ -35,7 +35,7 @@ new Promise((resolve) => {
 		}
 
 		data = data.replace(/"version": "[0-9]+\.[0-9]+\.[0-9]+"/g, `"version": "${version}"`);
-		fs.writeFile(tauriConfFile, data, 'utf8', function (err) {
+		fs.writeFile(tauriConfFile, data, 'utf8', function(err) {
 			if (err) {
 				console.error(`Error while write file: ${tauriConfFile}`);
 				console.error(err);
@@ -49,12 +49,12 @@ new Promise((resolve) => {
 
 	// change version in npm
 	await exec(
-		`npm version --allow-same-version --commit-hooks false --git-tag-version false ${version}`
+		`npm version --allow-same-version --commit-hooks=false --git-tag-version=false ${version}`
 	);
 
 	// changelog
 	let changelogFile = './CHANGELOG.md';
-	fs.readFile(changelogFile, 'utf8', function (err, data) {
+	fs.readFile(changelogFile, 'utf8', function(err, data) {
 		if (err) {
 			console.error(`Error while loading file: ${changelogFile}`);
 			console.error(err);
@@ -75,7 +75,7 @@ new Promise((resolve) => {
 			`[unreleased]: https://github.com/MoQuEs/smtp_client/compare/v${version}...HEAD\r\n[${version}]: https://github.com/MoQuEs/smtp_client/compare/v$1...v${version}`
 		);
 
-		fs.writeFile(changelogFile, data, 'utf8', function (err) {
+		fs.writeFile(changelogFile, data, 'utf8', function(err) {
 			if (err) {
 				console.error(`Error while write file: ${changelogFile}`);
 				console.error(err);

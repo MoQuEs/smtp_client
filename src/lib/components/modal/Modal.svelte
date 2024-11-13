@@ -1,81 +1,35 @@
-<script context="module" lang="ts">
-	export class ModalRef {
-		[x: string]: any;
-
-		private modal: any = null;
-		private closeCallback: null | Function = null;
-
-		constructor(modal: any) {
-			this.modal = modal;
-		}
-
-		close(artifacts?: any) {
-			this.modal.$destroy();
-			if (this.closeCallback !== null) {
-				this.closeCallback(artifacts);
-			}
-		}
-
-		onClose(callback: Function) {
-			this.closeCallback = callback;
-		}
-	}
-</script>
-
-<script lang="ts">
-	import { createEventDispatcher } from 'svelte';
+<script>
 	import { Icon } from 'svelte-icons-pack';
-	import { AiOutlineCheck, AiOutlineClose } from 'svelte-icons-pack/ai';
+	import { AiOutlineClose } from 'svelte-icons-pack/ai';
 
-	const dispatch = createEventDispatcher();
-
-	export let component: any = null;
-	export let componentProps: any = {};
-
-	function handleClick(event: MouseEvent) {
-		const target = event.target as HTMLElement;
-		if (target.id === 'dark-overlay') {
-			close();
-		}
-	}
-
-	function handleKeydown(event: KeyboardEvent) {
-		if (event.key === 'Escape') {
-			close();
-		}
-	}
-
-	const close = () => dispatch('close');
-	const dummy = () => {
-	};
+	let { showModal = $bindable(), header, children } = $props();
 </script>
 
-<svelte:window on:keydown={handleKeydown}></svelte:window>
-
+<!-- svelte-ignore a11y_click_events_have_key_events, a11y_no_static_element_interactions -->
 <div
-	class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full"
+	class="fixed top-0 left-0 w-screen h-screen p-4 overflow-hidden backdrop-blur-sm backdrop-brightness-50 m-0 flex items-center justify-center z-50"
+	class:hidden={!showModal}
+	style="margin: 0 !important;"
 >
-	<div class="relative w-full max-w-7xl max-h-full">
-		<div class="relative rounded-lg shadow bg-gray-700">
-			<div class="flex items-center justify-between p-5 border-b rounded-t border-gray-600">
-				<h3 class="text-xl font-medium text-white">Extra Large modal</h3>
-				<div
-					class="flex items-center"
-					on:click={close}
-					on:keydown={dummy}
-					on:keyup={dummy}
-					on:keypress={dummy}
-				>
-					<Icon
-						src={AiOutlineClose}
-						size="20"
-						className="cursor-pointer fill-white"
-					/>
-				</div>
+	<div class="rounded-lg flex flex-shrink flex-col shadow bg-gray-300 dark:bg-gray-700">
+		<div class="flex items-center justify-between p-4 border-b rounded-t border-gray-400 dark:border-gray-600">
+			<h3 class="text-xl font-medium text-white">
+				{@render header?.()}
+			</h3>
+			<div
+				class="flex items-center"
+				onclick={() => showModal = false}
+			>
+				<Icon
+					src={AiOutlineClose}
+					size="20"
+					className="cursor-pointer fill-white"
+				/>
 			</div>
-			<div class="p-6 space-y-6">
-				<svelte:component this={component} {...componentProps} />
-			</div>
+		</div>
+
+		<div class="p-4 space-y-4">
+			{@render children?.()}
 		</div>
 	</div>
 </div>

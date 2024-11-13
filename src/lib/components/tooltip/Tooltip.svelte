@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { titleTooltip, showTooltip, positionTooltip } from '$lib/stores/tooltips';
-	import type { SMEvent, SFEvent } from '$lib/utils/types';
+	import type { SMEvent } from '$lib/utils/types';
 
 	export let title = '';
 	export let className = '';

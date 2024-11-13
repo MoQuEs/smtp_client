@@ -15,7 +15,7 @@
 		customConfiguration,
 		saveConfiguration,
 		removeConfiguration,
-		repleaceConfiguration,
+		replaceConfiguration,
 		loadConfiguration
 	} from '../../stores/smtp_configuration';
 	import Input from '../../components/form/Input.svelte';
@@ -93,7 +93,7 @@
 							text=""
 							theme={ButtonTheme.Success}
 							padding={ButtonPaddingSize.SM}
-							on:click={() => repleaceConfiguration(configuration)}
+							on:click={() => replaceConfiguration(configuration)}
 						>
 							<Icon src={BiRepost} size="22" color="white" slot="icon" />
 						</Button>

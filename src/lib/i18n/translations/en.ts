@@ -18,10 +18,7 @@ export default {
 	turn_on_filter: 'Turn on filter',
 	turn_off_filter: 'Turn off filter',
 	name_exists_error: 'Name alredy exists',
-	name_cant_be_empty_error: "Name can't be empty",
-	imports_exports: 'Imports/Exports',
-	import: 'Import',
-	export: 'Export',
+	name_cant_be_empty_error: 'Name can\'t be empty',
 	logo: {
 		alt: 'Logo',
 		text: 'Logo text'
@@ -42,12 +39,13 @@ export default {
 	},
 	menu: {
 		send: 'Send',
+		all: 'All',
 		configurations: 'Configurations',
 		messages: 'Messages',
 		settings: 'Settings'
 	},
 	smtp: {
-		send_mail: 'Send Mail',
+		send_mail: 'Send',
 		configuration: {
 			name: 'Configuration',
 			unsaved: 'Unsaved configuration',
@@ -62,13 +60,14 @@ export default {
 			configuration_name: 'Configuration name',
 			configuration_filter: 'Configuration filter',
 			saved: 'Saved configuration',
-			save_error: "Can't save configuration",
+			save_error: 'Can\'t save configuration',
 			repleace: 'Repleaced configuration',
-			repleace_error: "Can't repleace configuration",
+			repleace_error: 'Can\'t repleace configuration',
 			remove: 'Removed configuration',
-			remove_error: "Can't remove configuration",
+			remove_error: 'Can\'t remove configuration',
 			load: 'Loaded configuration',
-			load_error: "Can't load configuration"
+			load_error: 'Can\'t load configuration',
+			count: 'Ilość'
 		},
 		message: {
 			name: 'Message',
@@ -102,20 +101,20 @@ export default {
 			message_name: 'Message name',
 			message_filter: 'Message filter',
 			saved: 'Saved message',
-			save_error: "Can't save message",
+			save_error: 'Can\'t save message',
 			repleace: 'Repleaced message',
-			repleace_error: "Can't repleace message",
+			repleace_error: 'Can\'t repleace message',
 			remove: 'Removed message',
-			remove_error: "Can't remove message",
+			remove_error: 'Can\'t remove message',
 			load: 'Loaded message',
-			load_error: "Can't load message"
+			load_error: 'Can\'t load message'
 		}
 	},
 	settings: {
 		save_success: 'Settings saved',
-		save_error: "Can't save settings",
-		load_error: "Can't load settings",
-		locale_error: "Can't load language",
+		save_error: 'Can\'t save settings',
+		load_error: 'Can\'t load settings',
+		locale_error: 'Can\'t load language',
 		language: 'Language',
 		languages: {
 			en: 'English',
@@ -123,8 +122,23 @@ export default {
 		},
 		theme: 'Theme',
 		themes: {
-			dark: 'Dark'
-		}
+			dark: 'Dark',
+			light: 'Light'
+		},
+		imports_exports: 'Import/Export',
+		import: {
+			success: 'Imported',
+			error: 'Error while importing',
+			title: 'Import',
+			import: 'Import'
+		},
+		export: {
+			success: 'Exported',
+			error: 'Error while exporting',
+			title: 'Export',
+			export: 'Export'
+		},
+		password: 'Password'
 	},
 	api: {
 		error: 'Error while calling api',

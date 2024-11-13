@@ -6,6 +6,7 @@ impl Database {
         log::trace!("get_settings");
 
         let settings = self.get(Section::Settings, "settings");
+        log::debug!("settings: {:?}", settings);
         if let Ok(Some(settings)) = settings {
             log::debug!("settings: {:?}", settings);
             return Ok(settings);
@@ -15,6 +16,14 @@ impl Database {
 
         let default = Settings::default();
         self.save_settings(&default)?;
+
+        let settings = self.get(Section::Settings, "settings");
+        log::debug!("settings: {:?}", settings);
+        if let Ok(Some(settings)) = settings {
+            log::debug!("settings: {:?}", settings);
+            return Ok(settings);
+        }
+
         Ok(default)
     }
 

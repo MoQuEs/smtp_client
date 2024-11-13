@@ -10,6 +10,7 @@ import { addToast } from '$lib/stores/toasts';
 import { ToastType } from '$lib/components/toast/Toast.svelte';
 import { ts } from '$lib/i18n/translate';
 import { error } from '@tauri-apps/plugin-log';
+import type { PTauriResponse } from '$lib/api/tauri';
 
 export const customConfiguration: Writable<NamedSMTPConfiguration> = writable(
 	new NamedSMTPConfiguration('')
@@ -24,22 +25,22 @@ export const setConfigurations = (configurations: NamedSMTPConfigurations) => {
 	allConfigurations.set([...configurations]);
 };
 
-export const loadConfigurations = () => {
-	tauriApi
-		.getConfigurations()
-		.then((configurations: TauriResponse<NamedSMTPConfigurations>) => {
-			if (configurations.data !== undefined) {
-				setConfigurations(configurations.data);
-			}
-		})
-		.catch(() => {
-			addToast({
-				title: ts('ERROR'),
-				type: ToastType.Error,
-				text: ts('smtp.configuration.load_error')
-			});
-			error('Error loading configurations');
+export const loadConfigurations = async () => {
+	try {
+		const configurations = await tauriApi.getConfigurations();
+		if (!configurations.success || configurations.data === undefined) {
+			throw new Error('Error loading configurations');
+		}
+
+		setConfigurations(configurations.data);
+	} catch (e) {
+		addToast({
+			title: ts('ERROR'),
+			type: ToastType.Error,
+			text: ts('smtp.configuration.load_error')
 		});
+		await error('Error loading configurations');
+	}
 };
 
 export const saveConfiguration = () => {
@@ -78,23 +79,20 @@ export const saveConfiguration = () => {
 		});
 };
 
-export const repleaceConfiguration = (configurationToRepleace: NamedSMTPConfiguration) => {
+export const replaceConfiguration = (configurationToReplace: NamedSMTPConfiguration) => {
 	const cloned = cloneCustom();
 
-	get(allConfigurations).forEach((configuration) => {
-		if (configuration.name !== configurationToRepleace.name) {
-			cloned.name = configuration.name;
-		}
-	});
+	cloned.name = configurationToReplace.name;
 
 	tauriApi
 		.saveConfiguration(cloned)
 		.then(() => {
 			allConfigurations.update((all) =>
 				all.map((configuration) => {
-					if (configuration.name !== configurationToRepleace.name) {
+					if (configuration.name === configurationToReplace.name) {
 						return cloned;
 					}
+
 					return configuration;
 				})
 			);

@@ -1,11 +1,11 @@
 use crate::dialogs::simple_error_dialog;
 use crate::response::{
-    error, success, MaybeSMTPMessage, NamedSMTPMessage, SMTPMessages, TauriResponse,
+    error, success, MaybeSMTPMessage, NamedSMTPMessage, NamedSMTPMessages, TauriResponse,
 };
 use crate::state::{AppHandle, ServiceAccess};
 
 #[tauri::command]
-pub fn get_messages_command(app_handle: AppHandle) -> TauriResponse<SMTPMessages> {
+pub fn get_messages_command(app_handle: AppHandle) -> TauriResponse<NamedSMTPMessages> {
     log::trace!("get_messages_command");
 
     match app_handle.db(|db| db.get_messages()) {

@@ -22,9 +22,9 @@
 	export let name: string = RandomId();
 
 	export let type: InputType = InputType.Text;
-	export let value: string | number = '';
+	export let value: string | number | Number = '';
 	export let placeholder = '';
-	export let autocomplete = 'off';
+	export let autocomplete: 'on' | 'off' = 'off';
 	export let disabled = false;
 	export let readonly = false;
 	export let className = '';
@@ -48,7 +48,7 @@
 
 	const handleInput = (e: Event & { currentTarget: EventTarget & HTMLInputElement }) => {
 		value = type === InputType.Number ? Number(e.currentTarget.value) : e.currentTarget.value;
-		dispatch('input');
+		dispatch('input', value);
 	};
 
 	const handleClickBefore = () => {
@@ -69,7 +69,7 @@
 
 <div class="flex flex-col {className}">
 	{#if $$slots.label}
-		<label for="input-group-1" class="flex flex-grow mb-2 text-sm font-medium text-white">
+		<label for="input-group-1" class="flex flex-grow mb-2 text-sm font-medium text-black dark:text-white">
 			<slot name="label" />
 		</label>
 	{/if}
@@ -105,7 +105,9 @@
 			{iconBefore ? 'pl-10' : ''}
 			{iconAfter ? 'pr-10' : ''}
 			{disabled ? 'cursor-not-allowed' : ''}
-			p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
+			p-2.5
+			bg-gray-300 border-gray-400 placeholder-gray-600 text-black focus:ring-blue-500 focus:border-blue-500
+			dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
 			{disabled}
 			{readonly}
 			{autocomplete}
@@ -123,8 +125,8 @@
 				{#if isPasswordinput()}
 					<Tooltip
 						title={passwordShowed
-							? $t('components.form.input.hide.password')
-							: $t('components.form.input.show.password')}
+							? $t('components.form.input.hide_password')
+							: $t('components.form.input.show_password')}
 					>
 						<Icon
 							src={passwordShowed ? AiOutlineEye : AiOutlineEyeInvisible}

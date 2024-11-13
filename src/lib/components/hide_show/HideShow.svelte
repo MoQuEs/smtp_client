@@ -4,18 +4,13 @@
 
 	export let text: string;
 	export let showHide = false;
-
-	const handleDummy = () => {
-	};
 </script>
 
 <div class="flex flex-col">
+	<!-- svelte-ignore a11y_click_events_have_key_events, a11y_no_static_element_interactions -->
 	<div
-		class="flex flex-row justify-between cursor-pointer text-white"
+		class="flex flex-row justify-between cursor-pointer text-black dark:text-white"
 		on:click={() => (showHide = !showHide)}
-		on:keydown={handleDummy}
-		on:keyup={handleDummy}
-		on:keypress={handleDummy}
 		role="button" tabindex="0"
 	>
 		<span>{text}</span>

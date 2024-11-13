@@ -6,7 +6,7 @@
 	import { RiBusinessMailSendLine } from 'svelte-icons-pack/ri';
 	import { RiBusinessMailSettingsLine } from 'svelte-icons-pack/ri';
 	import { RiBusinessMailAddLine } from 'svelte-icons-pack/ri';
-	import { ImCogs } from "svelte-icons-pack/im";
+	import { BiSolidCog } from 'svelte-icons-pack/bi';
 
 	import Tabs from '$lib/components/tab/Tabs.svelte';
 	import TabList from '$lib/components/tab/TabList.svelte';
@@ -20,6 +20,13 @@
 	import Tooltip from '$lib/components/tooltip/Tooltip.svelte';
 	import LogoWithText from '$lib/components/logo/LogoWithText.svelte';
 	import SMTPSendMail from '$lib/components/smtp/SMTPSendMail.svelte';
+	import { getTheme, theme } from '$lib/stores/theme';
+	import { SettingsTheme } from '../generated/tauri';
+
+	let iconColor = $state(getTheme() == SettingsTheme.Dark ? 'white' : 'black');
+	$effect(() => {
+		iconColor = $theme == SettingsTheme.Dark ? 'white' : 'black';
+	});
 </script>
 
 <Tabs>
@@ -29,25 +36,25 @@
 		<TabList className="flex-grow justify-end">
 			<Tooltip title={$t('menu.send')}>
 				<Tab>
-					<Icon src={RiBusinessMailSendLine} size="26" color="white" />
+					<Icon src={RiBusinessMailSendLine} size="26" color={iconColor} />
 				</Tab>
 			</Tooltip>
 
 			<Tooltip title={$t('menu.configurations')}>
 				<Tab>
-					<Icon src={RiBusinessMailSettingsLine} size="26" color="white" />
+					<Icon src={RiBusinessMailSettingsLine} size="26" color={iconColor} />
 				</Tab>
 			</Tooltip>
 
 			<Tooltip title={$t('menu.messages')}>
 				<Tab>
-					<Icon src={RiBusinessMailAddLine} size="26" color="white" />
+					<Icon src={RiBusinessMailAddLine} size="26" color={iconColor} />
 				</Tab>
 			</Tooltip>
 
 			<Tooltip title={$t('menu.settings')}>
 				<Tab>
-					<Icon src={ImCogs} size="26" color="white" />
+					<Icon src={BiSolidCog} size="26" color={iconColor} />
 				</Tab>
 			</Tooltip>
 		</TabList>

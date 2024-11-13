@@ -1,6 +1,6 @@
 [package]
 name = "smtp_client"
-version = "0.3.0"
+version = "0.4.0"
 description = "SMTP Client"
 keywords = ["aplication", "smtp", "client", "devtools"]
 authors = ["Sebastian Kaźmierczak <moques93@gmail.com>"]
@@ -8,7 +8,7 @@ license = "MIT|Apache-2.0"
 homepage = "https://github.com/MoQuEs/smtp_client"
 repository = "https://github.com/MoQuEs/smtp_client"
 edition = "2021"
-rust-version = "1.66.0"
+rust-version = "1.76.0"
 readme = "README.md"
 
 [build-dependencies]
@@ -18,18 +18,21 @@ tauri-build = { version = "2.0.3", default-features = false, features = [] }
 serde_json = { version = "1.0.132", default-features = false, features = [] }
 serde = { version = "1.0.214", default-features = false, features = ["derive"] }
 anyhow = { version = "1.0.93", default-features = false, features = [] }
-orion = { version = "0.17.7", default-features = false, features = ["serde", "safe_api"] }
+orion = { version = "0.17.7", default-features = false, features = ["safe_api"] }
 typeshare = { version = "1.0.4", default-features = false, features = [] }
-mail-send = { version = "0.4.9", default-features = false, features = ["builder"] }
+mail-send = { version = "0.4.9", default-features = false, features = ["default", "builder", "parser"] }
 sled = { version = "0.34.7", default-features = false, features = [] }
 bincode = { version = "2.0.0-rc.3", default-features = false, features = ["alloc", "serde", "derive"] }
 log = { version = "0.4.22", default-features = false, features = [] }
+age = { version = "0.11.0", default-features = false, features = [] }
+async-scoped = { version = "0.9.0", default-features = false, features = ["use-tokio"] }
+tokio = { version = "1.41.1", default-features = false, features = [] }
 
 tauri = { version = "2.1.0", default-features = false, features = ["compression", "wry"] }
 tauri-runtime = { version = "2.2.0", default-features = false, features = [] }
-tauri-plugin-store = "2.1.0"
-tauri-plugin-dialog = "2.0.3"
-tauri-plugin-log = "2.0.2"
+tauri-plugin-store = { version = "2.1.0", default-features = false, features = [] }
+tauri-plugin-dialog = { version = "2.0.3", default-features = false, features = [] }
+tauri-plugin-log = { version = "2.0.2", default-features = false, features = [] }
 
 rust_utils = { git = "https://github.com/MoQuEs/rust_utils", tag = "v0.12.1", default-features = false, features = ["full"] }
 

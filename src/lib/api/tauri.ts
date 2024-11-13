@@ -17,9 +17,10 @@ export type PTauriResponse<T> = Promise<TauriResponse<T>>;
 
 export const sendMail = (
 	configuration: SMTPConfiguration,
-	message: SMTPMessage
+	message: SMTPMessage,
+	count: number | Number
 ): PTauriResponse<null> => {
-	return callTauri('send_mail_command', { configuration, message });
+	return callTauri('send_mail_command', { configuration, message, count });
 };
 
 export const getConfigurations = (): PTauriResponse<NamedSMTPConfigurations> => {
@@ -68,17 +69,18 @@ export const saveSettings = (settings: Settings): PTauriResponse<null> => {
 	return callTauri('save_settings_command', { settings });
 };
 
-export const importData = (settings: ImportExportSettings): PTauriResponse<null> => {
-	return callTauri('import_command', { settings });
+export const importFile = (importExportSettings: ImportExportSettings): PTauriResponse<null> => {
+	return callTauri('import_command', { importExportSettings });
 };
 
-export const exportFile = (settings: ImportExportSettings): PTauriResponse<null> => {
-	return callTauri('export_command', { settings });
+export const exportFile = (importExportSettings: ImportExportSettings): PTauriResponse<null> => {
+	return callTauri('export_command', { importExportSettings });
 };
 
 export async function callTauri<T>(
 	function_name: string,
 	data: InvokeArgs = {}
 ): PTauriResponse<T> {
-	return (await invoke<TauriResponse<T>>(function_name, data)) as TauriResponse<T>;
+	let ret = await invoke<TauriResponse<T>>(function_name, data);
+	return ret as TauriResponse<T>;
 }

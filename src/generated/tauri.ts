@@ -73,12 +73,13 @@ export interface Secret<T> {
 }
 
 export enum SettingsTheme {
-	Dark = 'Dark'
+	Dark = "Dark",
+	Light = "Light",
 }
 
 export enum SettingsLanguage {
-	EN = 'EN',
-	PL = 'PL'
+	EN = "EN",
+	PL = "PL",
 }
 
 export interface Settings {
@@ -92,3 +93,4 @@ export interface ImportExportSettings {
 	smtp_messages: boolean;
 	settings: boolean;
 }
+

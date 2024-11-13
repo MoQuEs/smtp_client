@@ -22,14 +22,14 @@
 		type="checkbox"
 		{value}
 		{disabled}
-		class="w-4 h-4 rounded ring-offset-gray-800 focus:ring-offset-gray-800 focus:ring-2 bg-gray-700 border-gray-600
+		class="w-4 h-4 rounded ring-offset-gray-200 dark:ring-offset-gray-800 focus:ring-offset-gray-200 dark:focus:ring-offset-gray-800 focus:ring-2 bg-gray-300 dark:bg-gray-700 border-gray-400 dark:border-gray-600
 		{disabled ? 'cursor-not-allowed' : ''}"
 		on:change={handleChange}
 		{checked}
 	/>
 	<label
 		for={id}
-		class="ml-2 text-sm font-medium text-gray-200
+		class="ml-2 text-sm font-medium text-gray-800 dark:text-gray-200
 	{disabled ? 'cursor-not-allowed' : ''}"
 	>
 		<slot />

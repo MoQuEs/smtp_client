@@ -9,6 +9,7 @@ use crate::response::AnyResult;
 use crate::serialize::{decode, encode, Decode, Encode};
 use sled::Tree;
 use std::fmt::Debug;
+use std::ops::Deref;
 use std::path::Path;
 use tauri::Config;
 
@@ -76,10 +77,14 @@ impl Database {
         log::debug!("section: {}", section.as_ref());
         log::debug!("key: {}", key.as_ref());
 
-        match self.section(section)?.get(key.as_ref())? {
-            Some(bytes) => Ok(decode(&bytes)?),
-            None => Ok(None),
+        for (key, bytes) in self.section(section)?.iter().flatten() {
+            let key: String = decode(&bytes)?;
+            if key == key.deref() {
+                return Ok(Some(decode(&bytes)?));
+            }
         }
+
+        Ok(None)
     }
 
     fn remove(&self, section: impl AsRef<str>, key: impl AsRef<str>) -> AnyResult<()> {

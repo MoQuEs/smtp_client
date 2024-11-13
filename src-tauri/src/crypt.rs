@@ -4,61 +4,55 @@ use crate::response::AnyResult;
 
 pub mod encrypt {
     use super::*;
-    use orion::aead::{open, seal};
+    use age::scrypt::{Identity, Recipient};
+    use age::secrecy::SecretString;
+    use age::{decrypt, encrypt};
 
-    pub use orion::aead::SecretKey;
-
-    pub fn generate_crypt_key() -> AnyResult<SecretKey> {
-        log::trace!("generate_crypt_key");
-        Ok(SecretKey::generate(32)?)
-    }
-
-    pub fn generate_crypt_key_from_string(password: impl AsRef<str>) -> AnyResult<SecretKey> {
+    pub fn generate_crypt_key_from_string(
+        password: impl AsRef<str>,
+    ) -> AnyResult<(Recipient, Identity)> {
         log::trace!("generate_crypt_key_from_string");
-        log::debug!("password: ***OMITTED***");
 
-        Ok(SecretKey::from_slice(password.as_ref().as_bytes())?)
+        let passphrase = SecretString::from(password.as_ref().to_string());
+
+        Ok((
+            Recipient::new(passphrase.clone()),
+            Identity::new(passphrase),
+        ))
     }
 
-    pub fn encrypt_text(key: &SecretKey, text: impl AsRef<str>) -> AnyResult<Vec<u8>> {
+    pub fn encrypt_text(key: &Recipient, text: impl AsRef<str>) -> AnyResult<Vec<u8>> {
         log::trace!("encrypt_text");
-        log::debug!("key: {:?}", key);
-        log::debug!("text: ***OMITTED***");
 
-        Ok(encrypt_data(key, text.as_ref().as_bytes())?)
+        encrypt_data(key, text.as_ref().as_bytes())
     }
 
-    pub fn encrypt_data(key: &SecretKey, data: &[u8]) -> AnyResult<Vec<u8>> {
+    pub fn encrypt_data(key: &Recipient, data: &[u8]) -> AnyResult<Vec<u8>> {
         log::trace!("encrypt_data");
-        log::debug!("key: {:?}", key);
-        log::debug!("data: ***OMITTED***");
 
-        Ok(seal(key, data)?)
+        Ok(encrypt(key, data)?)
     }
 
-    pub fn decrypt_text(key: &SecretKey, text: Vec<u8>) -> AnyResult<String> {
+    pub fn decrypt_text(key: &Identity, text: Vec<u8>) -> AnyResult<String> {
         log::trace!("decrypt_text");
-        log::debug!("key: {:?}", key);
-        log::debug!("text: ***OMITTED***");
 
         let decrypted_text = decrypt_data(key, text.as_slice())?;
         Ok(std::str::from_utf8(decrypted_text.as_slice())?.to_string())
     }
 
-    pub fn decrypt_data(key: &SecretKey, data: &[u8]) -> AnyResult<Vec<u8>> {
+    pub fn decrypt_data(key: &Identity, data: &[u8]) -> AnyResult<Vec<u8>> {
         log::trace!("decrypt_data");
-        log::debug!("key: {:?}", key);
-        log::debug!("data: ***OMITTED***");
 
-        Ok(open(key, data)?)
+        Ok(decrypt(key, data)?)
     }
 }
 
 pub mod password {
     use super::*;
-    use orion::{pwhash, pwhash::Password};
-
-    pub use orion::pwhash::PasswordHash;
+    use orion::{
+        pwhash,
+        pwhash::{Password, PasswordHash},
+    };
 
     fn to_password(password: impl AsRef<str>) -> AnyResult<Password> {
         log::trace!("to_password");

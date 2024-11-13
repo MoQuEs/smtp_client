@@ -22,7 +22,7 @@
 
 <div class="flex flex-col {className}">
 	{#if $$slots.label}
-		<label for={id} class="block mb-2 text-sm font-medium text-white">
+		<label for={id} class="block mb-2 text-sm font-medium text-black dark:text-white">
 			<slot name="label" />
 		</label>
 	{/if}
@@ -30,7 +30,9 @@
 		{id}
 		{name}
 		{rows}
-		class="block p-2.5 w-full text-sm rounded border bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500
+		class="block p-2.5 w-full text-sm rounded border
+		bg-gray-300 border-gray-400 placeholder-gray-600 text-black focus:ring-blue-500 focus:border-blue-500
+		dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white
 		{disabled ? 'cursor-not-allowed' : ''}"
 		{placeholder}
 		{disabled}

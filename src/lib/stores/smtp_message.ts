@@ -6,6 +6,7 @@ import { addToast } from '$lib/stores/toasts';
 import { ToastType } from '$lib/components/toast/Toast.svelte';
 import { ts } from '$lib/i18n/translate';
 import { error } from '@tauri-apps/plugin-log';
+import { setConfigurations } from '$lib/stores/smtp_configuration';
 
 export const customMessage: Writable<NamedSMTPMessage> = writable(new NamedSMTPMessage(''));
 export const allMessages: Writable<NamedSMTPMessage[]> = writable([]);
@@ -18,22 +19,22 @@ export const setMessages = (messages: NamedSMTPMessages) => {
 	allMessages.set([...messages]);
 };
 
-export const loadMessages = () => {
-	tauriApi
-		.getMessages()
-		.then((messages: TauriResponse<NamedSMTPMessages>) => {
-			if (messages.data !== undefined) {
-				setMessages(messages.data);
-			}
-		})
-		.catch(() => {
-			addToast({
-				title: ts('ERROR'),
-				type: ToastType.Error,
-				text: ts('smtp.message.load_error')
-			});
-			error('Error loading messages');
+export const loadMessages = async () => {
+	try {
+		const messages = await tauriApi.getMessages();
+		if (!messages.success || messages.data === undefined) {
+			throw new Error('Error loading messages');
+		}
+
+		setMessages(messages.data);
+	} catch (e) {
+		addToast({
+			title: ts('ERROR'),
+			type: ToastType.Error,
+			text: ts('smtp.configuration.load_error')
 		});
+		await error('Error loading messages');
+	}
 };
 
 export const saveMessage = () => {

@@ -14,6 +14,7 @@ export declare type ToastComponent = {
 
 type ToastComponentShowed = ToastComponent & {
 	id: number | string;
+	// @ts-ignore
 	timeOut: NodeJS.Timeout;
 };
 

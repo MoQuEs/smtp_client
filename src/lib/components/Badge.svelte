@@ -59,64 +59,64 @@
 	}
 
 	let colorClass = 'bg-primary-500';
-	let textColorClass = theme == BadgeTheme.Normal ? 'text-white' : 'text-primary-900';
-	let hoverColorClass = 'bg-primary-400';
-	let hoverTextColorClass = theme == BadgeTheme.Normal ? 'text-white' : 'text-primary-800';
-	let activeColorClass = 'bg-primary-600';
-	let activeTextColorClass = theme == BadgeTheme.Normal ? 'text-white' : 'text-primary-900';
+	let textColorClass = theme == BadgeTheme.Normal ? 'text-white' : 'text-primary-100 dark:text-primary-900';
+	let hoverColorClass = 'bg-primary-600 dark:bg-primary-400';
+	let hoverTextColorClass = theme == BadgeTheme.Normal ? 'text-white' : 'text-primary-200 dark:text-primary-800';
+	let activeColorClass = 'bg-primary-400 dark:bg-primary-600';
+	let activeTextColorClass = theme == BadgeTheme.Normal ? 'text-white' : 'text-primary-100 dark:text-primary-900';
 	switch (color) {
 		case BadgeColor.Primary:
 			colorClass = 'bg-primary-500';
-			textColorClass = theme == BadgeTheme.Normal ? 'text-white' : 'text-primary-900';
-			hoverColorClass = 'bg-primary-400';
-			hoverTextColorClass = theme == BadgeTheme.Normal ? 'text-white' : 'text-primary-800';
-			activeColorClass = 'bg-primary-600';
-			activeTextColorClass = theme == BadgeTheme.Normal ? 'text-white' : 'text-primary-900';
+			textColorClass = theme == BadgeTheme.Normal ? 'text-white' : 'text-primary-100 dark:text-primary-900';
+			hoverColorClass = 'bg-primary-600 dark:bg-primary-400';
+			hoverTextColorClass = theme == BadgeTheme.Normal ? 'text-white' : 'text-primary-200 dark:text-primary-800';
+			activeColorClass = 'bg-primary-400 dark:bg-primary-600';
+			activeTextColorClass = theme == BadgeTheme.Normal ? 'text-white' : 'text-primary-100 dark:text-primary-900';
 			break;
 
 		case BadgeColor.Secondary:
 			colorClass = 'bg-secondary-500';
-			textColorClass = theme == BadgeTheme.Normal ? 'text-white' : 'text-secondary-900';
-			hoverColorClass = 'bg-secondary-400';
-			hoverTextColorClass = theme == BadgeTheme.Normal ? 'text-white' : 'text-secondary-800';
-			activeColorClass = 'bg-secondary-600';
-			activeTextColorClass = theme == BadgeTheme.Normal ? 'text-white' : 'text-secondary-900';
+			textColorClass = theme == BadgeTheme.Normal ? 'text-white' : 'text-secondary-100 dark:text-secondary-900';
+			hoverColorClass = 'bg-secondary-600 dark:bg-secondary-400';
+			hoverTextColorClass = theme == BadgeTheme.Normal ? 'text-white' : 'text-secondary-200 dark:text-secondary-800';
+			activeColorClass = 'bg-secondary-400 dark:bg-secondary-600';
+			activeTextColorClass = theme == BadgeTheme.Normal ? 'text-white' : 'text-secondary-100 dark:text-secondary-900';
 			break;
 
 		case BadgeColor.Info:
 			colorClass = 'bg-info-500';
-			textColorClass = theme == BadgeTheme.Normal ? 'text-white' : 'text-info-900';
-			hoverColorClass = 'bg-info-400';
-			hoverTextColorClass = theme == BadgeTheme.Normal ? 'text-white' : 'text-info-800';
-			activeColorClass = 'bg-info-600';
-			activeTextColorClass = theme == BadgeTheme.Normal ? 'text-white' : 'text-info-900';
+			textColorClass = theme == BadgeTheme.Normal ? 'text-white' : 'text-info-100 dark:text-info-900';
+			hoverColorClass = 'bg-info-600 dark:bg-info-400';
+			hoverTextColorClass = theme == BadgeTheme.Normal ? 'text-white' : 'text-info-200 dark:text-info-800';
+			activeColorClass = 'bg-info-400 dark:bg-info-600';
+			activeTextColorClass = theme == BadgeTheme.Normal ? 'text-white' : 'text-info-100 dark:text-info-900';
 			break;
 
 		case BadgeColor.Success:
 			colorClass = 'bg-success-500';
-			textColorClass = theme == BadgeTheme.Normal ? 'text-white' : 'text-success-900';
-			hoverColorClass = 'bg-success-400';
-			hoverTextColorClass = theme == BadgeTheme.Normal ? 'text-white' : 'text-success-800';
-			activeColorClass = 'bg-success-600';
-			activeTextColorClass = theme == BadgeTheme.Normal ? 'text-white' : 'text-success-900';
+			textColorClass = theme == BadgeTheme.Normal ? 'text-white' : 'text-success-100 dark:text-success-900';
+			hoverColorClass = 'bg-success-600 dark:bg-success-400';
+			hoverTextColorClass = theme == BadgeTheme.Normal ? 'text-white' : 'text-success-200 dark:text-success-800';
+			activeColorClass = 'bg-success-400 dark:bg-success-600';
+			activeTextColorClass = theme == BadgeTheme.Normal ? 'text-white' : 'text-success-100 dark:text-success-900';
 			break;
 
 		case BadgeColor.Warning:
 			colorClass = 'bg-warning-500';
-			textColorClass = theme == BadgeTheme.Normal ? 'text-white' : 'text-warning-900';
-			hoverColorClass = 'bg-warning-400';
-			hoverTextColorClass = theme == BadgeTheme.Normal ? 'text-white' : 'text-warning-800';
-			activeColorClass = 'bg-warning-600';
-			activeTextColorClass = theme == BadgeTheme.Normal ? 'text-white' : 'text-warning-900';
+			textColorClass = theme == BadgeTheme.Normal ? 'text-white' : 'text-warning-100 dark:text-warning-900';
+			hoverColorClass = 'bg-warning-600 dark:bg-warning-400';
+			hoverTextColorClass = theme == BadgeTheme.Normal ? 'text-white' : 'text-warning-200 dark:text-warning-800';
+			activeColorClass = 'bg-warning-400 dark:bg-warning-600';
+			activeTextColorClass = theme == BadgeTheme.Normal ? 'text-white' : 'text-warning-100 dark:text-warning-900';
 			break;
 
 		case BadgeColor.Error:
 			colorClass = 'bg-error-500';
-			textColorClass = theme == BadgeTheme.Normal ? 'text-white' : 'text-error-900';
-			hoverColorClass = 'bg-error-400';
-			hoverTextColorClass = theme == BadgeTheme.Normal ? 'text-white' : 'text-error-800';
-			activeColorClass = 'bg-error-600';
-			activeTextColorClass = theme == BadgeTheme.Normal ? 'text-white' : 'text-error-900';
+			textColorClass = theme == BadgeTheme.Normal ? 'text-white' : 'text-error-100 dark:text-error-900';
+			hoverColorClass = 'bg-error-600 dark:bg-error-400';
+			hoverTextColorClass = theme == BadgeTheme.Normal ? 'text-white' : 'text-error-200 dark:text-error-800';
+			activeColorClass = 'bg-error-400 dark:bg-error-600';
+			activeTextColorClass = theme == BadgeTheme.Normal ? 'text-white' : 'text-error-100 dark:text-error-900';
 			break;
 	}
 
