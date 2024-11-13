@@ -5,5 +5,5 @@
 </script>
 
 <DropdownItem alowHover={false}>
-	<hr class="h-0 my-1 border border-solid border-gray-700 dark:border-gray-300 opacity-25 {className}" />
+	<hr class="h-0 my-1 border border-solid border-gray-800 dark:border-gray-300 opacity-25 {className}" />
 </DropdownItem>

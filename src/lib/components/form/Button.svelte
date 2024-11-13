@@ -142,7 +142,7 @@
 			buttonClass = 'bg-error-500';
 			break;
 		case ButtonTheme.Gray:
-			buttonClass = 'bg-gray-300 dark:bg-gray-700';
+			buttonClass = 'bg-gray-200 dark:bg-gray-700';
 			textColor = 'text-black dark:text-white';
 			break;
 	}

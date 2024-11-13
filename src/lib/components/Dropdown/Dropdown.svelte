@@ -17,11 +17,9 @@
 
 	let filterDropdownIsOpen = $state(false);
 
-	let buttonTheme = $state(ButtonTheme.Gray);
 	let iconColor = $state(getTheme() == SettingsTheme.Dark ? 'white' : 'black');
 	$effect(() => {
 		iconColor = $theme == SettingsTheme.Dark ? 'white' : 'black';
-		buttonTheme = $theme == SettingsTheme.Dark ? ButtonTheme.Gray : ButtonTheme.LightGray;
 	});
 </script>
 
@@ -30,7 +28,7 @@
 		<Button
 			name="dropdown"
 			{text}
-			theme={buttonTheme}
+			theme={ButtonTheme.Gray}
 			className="w-full"
 			on:click={() => (filterDropdownIsOpen = !filterDropdownIsOpen)}
 		>
@@ -42,8 +40,10 @@
 		</Button>
 
 		<ul
-			class="w-full max-h-96 overflow-auto absolute text-base z-10 float-left py-2 list-none text-left rounded shadow-lg mt-1 border-1
-			border-gray-400 dark:border-gray-600 flex-grow m-0 bg-clip-padding bg-gray-200 dark:bg-gray-800 scrollbar
+			class="w-full max-h-96 overflow-auto absolute text-base z-10 float-left py-2 list-none text-left
+			rounded shadow-lg mt-1 border-1 flex-grow m-0 bg-clip-padding scrollbar
+			border-gray-200 bg-gray-100
+			dark:border-gray-600 dark:bg-gray-800
 			{filterDropdownIsOpen ? '' : 'hidden'}"
 		>
 			<slot />

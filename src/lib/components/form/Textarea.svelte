@@ -31,7 +31,7 @@
 		{name}
 		{rows}
 		class="block p-2.5 w-full text-sm rounded border
-		bg-gray-300 border-gray-400 placeholder-gray-600 text-black focus:ring-blue-500 focus:border-blue-500
+		bg-gray-100 border-gray-200 placeholder-gray-700 text-black focus:ring-blue-500 focus:border-blue-500
 		dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white
 		{disabled ? 'cursor-not-allowed' : ''}"
 		{placeholder}

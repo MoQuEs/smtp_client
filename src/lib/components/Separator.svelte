@@ -22,17 +22,14 @@
 		Error,
 		Primary,
 		Secondary,
-		LightGray,
 		Gray,
-		DarkGray,
-		DarkestGray
 	}
 </script>
 
 <script lang="ts">
 	export let size: SeparatorSize = SeparatorSize.SM;
 	export let sizeMargin: SeparatorMarginSize = SeparatorMarginSize.SM;
-	export let color: SeparatorColor = SeparatorColor.LightGray;
+	export let color: SeparatorColor = SeparatorColor.Gray;
 
 	export let className = '';
 
@@ -102,17 +99,8 @@
 		case SeparatorColor.Error:
 			colorClass = 'border-error-500';
 			break;
-		case SeparatorColor.LightGray:
-			colorClass = 'border-gray-600';
-			break;
 		case SeparatorColor.Gray:
-			colorClass = 'border-gray-700';
-			break;
-		case SeparatorColor.DarkGray:
-			colorClass = 'border-gray-800';
-			break;
-		case SeparatorColor.DarkestGray:
-			colorClass = 'border-gray-900';
+			colorClass = 'border-gray-300 dark:border-gray-700';
 			break;
 	}
 </script>

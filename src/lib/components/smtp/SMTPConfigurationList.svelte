@@ -45,9 +45,7 @@
 		<div class="flex flex-row space-x-5">
 			<Input
 				className="flex-grow"
-				placeholder="{$t('smtp.configuration.configuration_name')} / {$t(
-					'smtp.configuration.configuration_filter'
-				)}"
+				placeholder="{$t('smtp.configuration.configuration_name')} / {$t('smtp.configuration.configuration_filter')}"
 				bind:value={$customConfiguration.name}
 				iconAfter={filter ? RiSystemFilter2Fill : RiSystemFilter2Line}
 				iconAfterInteractive={true}
