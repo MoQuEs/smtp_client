@@ -31,6 +31,23 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Get latest tag
+        id: get-latest-tag
+        uses: actions-ecosystem/action-get-latest-tag@v1
+        with:
+          semver_only: true
+
+      - name: Fix get latest tag
+        id: fix-get-latest-tag
+        run: |
+          echo "current_version=`cut -c2- <<< "${{ steps.get-latest-tag.outputs.tag }}"`" >> $GITHUB_OUTPUT
+
+      - name: Read the changelog
+        id: read-the-changelog
+        uses: 3liz/changelog-release@0.2.0
+        with:
+          tag_name: ${{ steps.fix-get-latest-tag.outputs.current_version }}
+
       - name: Rust cache
         uses: swatinem/rust-cache@v2
 
@@ -55,7 +72,7 @@ jobs:
         with:
           tagName: ${{ github.ref_name }}
           releaseName: 'SMTP Client v__VERSION__'
-          releaseBody: 'See the assets to download this version and install.'
+          releaseBody: ${{ steps.read-the-changelog.outputs.markdown }}
           releaseDraft: true
           prerelease: false
           args: ${{ matrix.args }}

@@ -10,9 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased] - Unreleased
 
-## [0.4.0] - XX-XX-2024
-
-Add settings tab and import/export options + multiple messages, linux release (test) and PL language
+## [0.4.0] - 14-11-2024
 
 ### Added
 
@@ -37,8 +35,6 @@ Add settings tab and import/export options + multiple messages, linux release (t
 
 ## [0.3.0] - 10-05-2023
 
-Make project look better and add save/load configurations/messages
-
 ### Added
 
     - Added changelog with older releases/tags
@@ -53,24 +49,28 @@ Make project look better and add save/load configurations/messages
 ### Changed
 
     - Changed frontend to use tabs
+
+### Fixed
+
     - Small frontend fixes
 
 ## [0.2.9] - 23.04.2023
 
-Small fixes to autorelease
-
 ### Fixed
 
-Small changes to auto deploy
+    - Small changes to auto deploy
 
 ## [0.2.5] - 23.04.2023
 
-First auto release from tag
+### Fixed
+
+    - First auto release from tag
 
 ## [0.2.0] - 22.04.2023
 
-Initial public release
+### Added
 
+    - Initial public release
 
 [unreleased]: https://github.com/MoQuEs/smtp_client/compare/v0.4.0...HEAD
 
