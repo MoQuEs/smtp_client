@@ -1,0 +1,78 @@
+name: 'Release test'
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+  workflow_dispatch:
+
+jobs:
+  publish-tauri:
+    permissions:
+      contents: write
+
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - platform: 'macos-latest' # for Arm based macs (M1 and above).
+            args: '--target aarch64-apple-darwin'
+
+          - platform: 'macos-latest' # for Intel based macs.
+            args: '--target x86_64-apple-darwin'
+
+          - platform: 'ubuntu-22.04' # for Tauri v1 you could replace this with ubuntu-20.04.
+            args: ''
+
+          - platform: 'windows-latest'
+            args: ''
+
+    runs-on: ${{ matrix.platform }}
+
+    steps:
+      - name: checkout-code
+        uses: actions/checkout@v2
+
+      - name: get-latest-tag
+        run: |
+          echo "ref_name ${{ github.ref_name }}"
+          echo "action ${{ github.action }}"
+          echo "action_path ${{ github.action_path }}"
+          echo "action_ref ${{ github.action_ref }}"
+          echo "action_repository ${{ github.action_repository }}"
+          echo "action_status ${{ github.action_status }}"
+          echo "actor ${{ github.actor }}"
+          echo "actor_id ${{ github.actor_id }}"
+          echo "api_url ${{ github.api_url }}"
+          echo "base_ref ${{ github.base_ref }}"
+          echo "env ${{ github.env }}"
+          echo "event ${{ github.event }}"
+          echo "event_name ${{ github.event_name }}"
+          echo "event_path ${{ github.event_path }}"
+          echo "graphql_url ${{ github.graphql_url }}"
+          echo "head_ref ${{ github.head_ref }}"
+          echo "job ${{ github.job }}"
+          echo "path ${{ github.path }}"
+          echo "ref ${{ github.ref }}"
+          echo "ref_name ${{ github.ref_name }}"
+          echo "ref_protected ${{ github.ref_protected }}"
+          echo "ref_type ${{ github.ref_type }}"
+          echo "repository ${{ github.repository }}"
+          echo "repository_id ${{ github.repository_id }}"
+          echo "repository_owner ${{ github.repository_owner }}"
+          echo "repository_owner_id ${{ github.repository_owner_id }}"
+          echo "repositoryUrl ${{ github.repositoryUrl }}"
+          echo "retention_days ${{ github.retention_days }}"
+          echo "run_attempt ${{ github.run_attempt }}"
+          echo "run_id ${{ github.run_id }}"
+          echo "run_number ${{ github.run_number }}"
+          echo "secret_source ${{ github.secret_source }}"
+          echo "server_url ${{ github.server_url }}"
+          echo "sha ${{ github.sha }}"
+          echo "token ${{ github.token }}"
+          echo "triggering_actor ${{ github.triggering_actor }}"
+          echo "workflow ${{ github.workflow }}"
+          echo "workflow_ref ${{ github.workflow_ref }}"
+          echo "workflow_sha ${{ github.workflow_sha }}"
+          echo "workspace ${{ github.workspace }}"
