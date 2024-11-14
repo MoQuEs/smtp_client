@@ -23,6 +23,9 @@ jobs:
         run: |
           echo "current_version=${GITHUB_REF#refs/tags/v}" >> $GITHUB_OUTPUT
 
+      - name: Checkout code
+        uses: actions/checkout@v2
+
       - name: Get Changelog Entry
         id: changelog_reader
         uses: mindsers/changelog-reader-action@v2
