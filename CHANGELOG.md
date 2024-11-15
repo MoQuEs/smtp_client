@@ -10,7 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased] - Unreleased
 
-## [0.4.0] - 14-11-2024
+## [v0.4.0] - 15-11-2024
 
 ### Added
 
@@ -26,6 +26,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
     - Changed icons for save/load buttons for messages and configurations
+    - Changed GitHub actions to include linux, changelog generation, split macOS build to aarch64 and x86_64
 
 ### Fixed
 
@@ -33,7 +34,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     - Fixed keeping selected options on main tab when switching between tabs
     - Fixed sending messages with TLS and SSL
 
-## [0.3.0] - 10-05-2023
+## [v0.3.0] - 10-05-2023
 
 ### Added
 
@@ -54,19 +55,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
     - Small frontend fixes
 
-## [0.2.9] - 23.04.2023
+## [v0.2.9] - 23.04.2023
 
 ### Fixed
 
     - Small changes to auto deploy
 
-## [0.2.5] - 23.04.2023
+## [v0.2.5] - 23.04.2023
 
 ### Fixed
 
     - First auto release from tag
 
-## [0.2.0] - 22.04.2023
+## [v0.2.0] - 22.04.2023
 
 ### Added
 
@@ -74,12 +75,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 [unreleased]: https://github.com/MoQuEs/smtp_client/compare/v0.4.0...HEAD
 
-[0.4.0]: https://github.com/MoQuEs/smtp_client/compare/v0.3.0...v0.4.0
+[v0.4.0]: https://github.com/MoQuEs/smtp_client/compare/v0.3.0...v0.4.0
 
-[0.3.0]: https://github.com/MoQuEs/smtp_client/compare/v0.2.9...v0.3.0
+[v0.3.0]: https://github.com/MoQuEs/smtp_client/compare/v0.2.9...v0.3.0
 
-[0.2.9]: https://github.com/MoQuEs/smtp_client/compare/v0.2.5...v0.2.9
+[v0.2.9]: https://github.com/MoQuEs/smtp_client/compare/v0.2.5...v0.2.9
 
-[0.2.5]: https://github.com/MoQuEs/smtp_client/compare/v0.2.0...v0.2.5
+[v0.2.5]: https://github.com/MoQuEs/smtp_client/compare/v0.2.0...v0.2.5
 
-[0.2.0]: https://github.com/MoQuEs/smtp_client/compare/v0.0.0...v0.2.0
+[v0.2.0]: https://github.com/MoQuEs/smtp_client/compare/v0.0.0...v0.2.0

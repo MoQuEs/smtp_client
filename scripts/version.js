@@ -6,8 +6,8 @@ let day = date.getDate();
 let month = date.getMonth() + 1;
 let year = date.getFullYear();
 
-day = day.padStart(2, '0');
-month = month.padStart(2, '0');
+day = day.toString().padStart(2, '0');
+month = month.toString().padStart(2, '0');
 
 const currentDate = `${day}-${month}-${year}`;
 
