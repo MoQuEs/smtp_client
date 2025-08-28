@@ -58,7 +58,7 @@ impl ServiceAccess for AppHandle {
 
         let app_state: State<AppState> = app.state();
 
-        let db = Database::new(app.config()).log_error_u(
+        let db = Database::new().log_error_u(
             "backend::state::AppHandle::init_db",
             "Database initialize failed",
         );

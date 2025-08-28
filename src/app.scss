@@ -1,9 +1,10 @@
 @use "sass:meta";
 @use "styles/fonts";
+@use 'tailwindcss';
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@config "../tailwind.config.cjs";
+
+@plugin 'tailwind-scrollbar';
 
 @include meta.load-css("styles/custom");
 

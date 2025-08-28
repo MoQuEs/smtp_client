@@ -11,7 +11,6 @@ use sled::Tree;
 use std::fmt::Debug;
 use std::ops::Deref;
 use std::path::Path;
-use tauri::Config;
 
 #[derive(Debug, Clone, Copy)]
 enum Section {
@@ -37,9 +36,8 @@ pub struct Database {
 }
 
 impl Database {
-    pub fn new(config: &Config) -> AnyResult<Self> {
+    pub fn new() -> AnyResult<Self> {
         log::trace!("new");
-        log::debug!("config: {:?}", config);
 
         Ok(Self {
             db: sled::open(Path::new(".").join("data.sled"))?,
@@ -68,7 +66,7 @@ impl Database {
         Ok(())
     }
 
-    fn get<T: Decode + Debug>(
+    fn get<T: Decode<()> + Debug>(
         &self,
         section: impl AsRef<str>,
         key: impl AsRef<str>,
@@ -96,7 +94,7 @@ impl Database {
         Ok(())
     }
 
-    fn get_all<T: Decode + Debug>(&self, section: impl AsRef<str>) -> AnyResult<Vec<T>> {
+    fn get_all<T: Decode<()> + Debug>(&self, section: impl AsRef<str>) -> AnyResult<Vec<T>> {
         log::trace!("get_all");
         log::debug!("section: {}", section.as_ref());
 

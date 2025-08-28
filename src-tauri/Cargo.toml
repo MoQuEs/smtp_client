@@ -12,28 +12,28 @@ rust-version = "1.76.0"
 readme = "README.md"
 
 [build-dependencies]
-tauri-build = { version = "2.0.3", default-features = false, features = [] }
-typeshare-cli = { version = "1.12.0", default-features = false, features = [] }
+tauri-build = { version = "2", default-features = false, features = [] }
+typeshare-cli = { version = "1", default-features = false, features = [] }
 
 [dependencies]
-serde_json = { version = "1.0.132", default-features = false, features = [] }
-serde = { version = "1.0.214", default-features = false, features = ["derive"] }
-anyhow = { version = "1.0.93", default-features = false, features = [] }
-orion = { version = "0.17.7", default-features = false, features = ["safe_api"] }
-typeshare = { version = "1.0.4", default-features = false, features = [] }
-mail-send = { version = "0.4.9", default-features = false, features = ["default", "builder", "parser"] }
-sled = { version = "0.34.7", default-features = false, features = [] }
-bincode = { version = "2.0.0-rc.3", default-features = false, features = ["alloc", "serde", "derive"] }
-log = { version = "0.4.22", default-features = false, features = [] }
-age = { version = "0.11.0", default-features = false, features = [] }
+serde_json = { version = "1", default-features = false, features = [] }
+serde = { version = "1", default-features = false, features = ["derive"] }
+anyhow = { version = "1", default-features = false, features = [] }
+orion = { version = "0.17", default-features = false, features = ["safe_api"] }
+typeshare = { version = "1", default-features = false, features = [] }
+mail-send = { version = "0.5", default-features = false, features = ["default", "builder", "parser"] }
+sled = { version = "0.34", default-features = false, features = [] }
+bincode = { version = "2", default-features = false, features = ["alloc", "serde", "derive"] }
+log = { version = "0.4", default-features = false, features = [] }
+age = { version = "0.11", default-features = false, features = [] }
 async-scoped = { version = "0.9.0", default-features = false, features = ["use-tokio"] }
-tokio = { version = "1.41.1", default-features = false, features = [] }
+tokio = { version = "1", default-features = false, features = [] }
 
-tauri = { version = "2.1.0", default-features = false, features = ["compression", "wry"] }
-tauri-runtime = { version = "2.2.0", default-features = false, features = [] }
-tauri-plugin-store = { version = "2.1.0", default-features = false, features = [] }
-tauri-plugin-dialog = { version = "2.0.3", default-features = false, features = [] }
-tauri-plugin-log = { version = "2.0.2", default-features = false, features = [] }
+tauri = { version = "2", default-features = false, features = ["compression", "wry", "specta"] }
+tauri-runtime = { version = "2", default-features = false, features = [] }
+tauri-plugin-store = { version = "2", default-features = false, features = [] }
+tauri-plugin-dialog = { version = "2", default-features = false, features = [] }
+tauri-plugin-log = { version = "2", default-features = false, features = [] }
 
 rust_utils = { git = "https://github.com/MoQuEs/rust_utils", tag = "v0.12.1", default-features = false, features = ["full"] }
 

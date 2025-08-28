@@ -4,7 +4,6 @@ use bincode::{decode_from_slice, encode_to_vec};
 pub use bincode::{Decode, Encode};
 use rust_utils::log::Log;
 use std::fmt::Debug;
-
 pub fn encode<T: Encode + Debug>(data: &T) -> AnyResult<Vec<u8>> {
     log::trace!("serialize");
     log::debug!("data: ***OMITTED***");
@@ -20,7 +19,7 @@ pub fn encode<T: Encode + Debug>(data: &T) -> AnyResult<Vec<u8>> {
     Ok(s)
 }
 
-pub fn decode<T: Decode + Debug>(data: &[u8]) -> AnyResult<T> {
+pub fn decode<T: Decode<()> + Debug>(data: &[u8]) -> AnyResult<T> {
     log::trace!("deserialize");
     log::debug!("data: ***OMITTED***");
     log::debug!("data: {:?}", data);

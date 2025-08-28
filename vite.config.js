@@ -1,6 +1,7 @@
 import { createLogger } from 'vite';
 import { sveltekit } from '@sveltejs/kit/vite';
 import { defineConfig } from 'vitest/config';
+import tailwindcss from '@tailwindcss/vite';
 
 const logger = createLogger();
 
@@ -21,19 +22,20 @@ const host = process.env.TAURI_DEV_HOST;
 // https://vitejs.dev/config/
 /** @type {import('vite').UserConfig} */
 export default defineConfig({
-	customLogger: logger, plugins: [sveltekit()], clearScreen: false, server: {
-		port: 1420, strictPort: true, host: host || false, hmr: host ? {
-			protocol: 'ws', host, port: 1421
-		} : undefined, watch: {
+	customLogger: logger,
+	plugins: [tailwindcss(), sveltekit()],
+	clearScreen: false,
+	server: {
+		port: 1420,
+		strictPort: true,
+		host: host || false,
+		hmr: host ? { protocol: 'ws', host, port: 1421 } : undefined,
+		watch: {
 			ignored: ['**/src-tauri/**']
 		}
-	}, envPrefix: ['VITE_', 'TAURI_'], css: {
-		preprocessorOptions: {
-			scss: {
-				api: 'modern'
-			}
-		}
-	}, build: {
+	},
+	envPrefix: ['VITE_', 'TAURI_'],
+	build: {
 		// @ts-ignore
 		target: process.env.TAURI_PLATFORM === 'windows' ? 'chrome105' : 'safari13',
 
@@ -42,7 +44,8 @@ export default defineConfig({
 
 		// @ts-ignore
 		sourcemap: !!process.env.TAURI_DEBUG
-	}, test: {
+	},
+	test: {
 		include: ['src/**/*.{test,spec}.{js,ts}']
 	}
 });

@@ -34,7 +34,7 @@ impl Backup {
         encode(data)
     }
 
-    fn deserialize_data<T: self::Decode + Debug>(data: &[u8]) -> AnyResult<T> {
+    fn deserialize_data<T: self::Decode<()> + Debug>(data: &[u8]) -> AnyResult<T> {
         log::trace!("deserialize_data");
         log::debug!("data: ***OMITTED***");
 

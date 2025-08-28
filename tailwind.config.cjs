@@ -113,5 +113,5 @@ module.exports = {
 			bold: '700'
 		}
 	},
-	plugins: [require('tailwind-scrollbar')]
+	plugins: []
 };

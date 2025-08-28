@@ -15,6 +15,7 @@ const translations: Translations = {};
 
 export const locale: Writable<string> = writable('en');
 
+// @ts-ignore
 const languagesModules: Record<string, object> = import.meta.glob('./translations/*.(js|ts)', {
 	import: 'default',
 	eager: true
