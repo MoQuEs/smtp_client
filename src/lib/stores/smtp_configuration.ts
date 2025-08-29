@@ -101,7 +101,7 @@ export const replaceConfiguration = (configurationToReplace: NamedSMTPConfigurat
 			addToast({
 				title: ts('ERROR'),
 				type: ToastType.Error,
-				text: ts('smtp.configuration.repleace_error')
+				text: ts('smtp.configuration.replace_error')
 			});
 			error('Error repleacing configuration');
 		});

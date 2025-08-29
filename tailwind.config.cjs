@@ -1,4 +1,5 @@
 const colors = require('tailwindcss/colors');
+const plugin = require('tailwindcss/plugin');
 
 function keyValueRange(min, max, step, sufixOnValue) {
 	const obj = {};
@@ -113,5 +114,40 @@ module.exports = {
 			bold: '700'
 		}
 	},
-	plugins: []
+	plugins: [
+		plugin(function({ addUtilities, theme }) {
+			const colors = theme('colors');
+			const newFill = {};
+			const newStroke = {};
+
+			function addColorUtilities(obj, prefix = '') {
+				for (const [key, value] of Object.entries(obj)) {
+					if (typeof value === 'string') {
+						const fillClassName = `.icon-fill-${prefix}${key}`;
+						newFill[fillClassName] = {
+							fill: `${value} !important`
+						};
+						newFill[`${fillClassName} path`] = {
+							fill: `${value} !important`
+						};
+
+						const strokeClassName = `.icon-stroke-${prefix}${key}`;
+						newStroke[strokeClassName] = {
+							stroke: `${value} !important`
+						};
+						newStroke[`${strokeClassName} path`] = {
+							stroke: `${value} !important`
+						};
+					} else {
+						addColorUtilities(value, `${prefix}${key}-`);
+					}
+				}
+			}
+
+			addColorUtilities(colors);
+
+			addUtilities(newFill);
+			addUtilities(newStroke);
+		})
+	]
 };

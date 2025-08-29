@@ -1,8 +1,13 @@
-use crate::database::{Database, Section};
+use crate::database::{Database, DatabaseTrait, Section};
 use crate::response::{AnyResult, Settings};
 
-impl Database {
-    pub fn get_settings(&self) -> AnyResult<Settings> {
+pub trait SettingsDatabase {
+    fn get_settings(&self) -> AnyResult<Settings>;
+    fn save_settings(&self, settings: &Settings) -> AnyResult<()>;
+}
+
+impl SettingsDatabase for Database {
+    fn get_settings(&self) -> AnyResult<Settings> {
         log::trace!("get_settings");
 
         let settings = self.get(Section::Settings, "settings");
@@ -27,7 +32,7 @@ impl Database {
         Ok(default)
     }
 
-    pub fn save_settings(&self, settings: &Settings) -> AnyResult<()> {
+    fn save_settings(&self, settings: &Settings) -> AnyResult<()> {
         log::trace!("save_settings");
         log::debug!("settings: {:?}", settings);
 

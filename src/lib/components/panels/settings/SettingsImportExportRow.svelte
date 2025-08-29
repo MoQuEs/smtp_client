@@ -1,7 +1,7 @@
 <script lang="ts">
-	import t from '../../i18n/translate';
-	import Button, { ButtonPaddingSize, ButtonTheme } from '../../components/form/Button.svelte';
-	import Tooltip from '../../components/tooltip/Tooltip.svelte';
+	import t from '../../../i18n/translate';
+	import Button, { ButtonPaddingSize, ButtonTheme } from '../../form/Button.svelte';
+	import Tooltip from '../../tooltip/Tooltip.svelte';
 	import { Icon } from 'svelte-icons-pack';
 	import { CgImport } from 'svelte-icons-pack/cg';
 	import { CgExport } from 'svelte-icons-pack/cg';

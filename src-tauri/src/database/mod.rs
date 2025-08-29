@@ -1,10 +1,14 @@
 #![allow(dead_code)]
 
+mod configuration;
 mod key_value;
+mod message;
 mod settings;
-mod smtp_configuration;
-mod smtp_message;
 
+use crate::database::configuration::ConfigurationDatabase;
+use crate::database::key_value::KeyValueDatabase;
+use crate::database::message::MessageDatabase;
+use crate::database::settings::SettingsDatabase;
 use crate::response::AnyResult;
 use crate::serialize::{decode, encode, Decode, Encode};
 use sled::Tree;
@@ -13,9 +17,14 @@ use std::ops::Deref;
 use std::path::Path;
 
 #[derive(Debug, Clone, Copy)]
-enum Section {
+pub enum Section {
+    // Backwards compatibility, do not remove, used in v0.1.0 - v0.4.0
     SMTPConfiguration,
     SMTPMessage,
+
+    // Current
+    Configuration,
+    Message,
     Settings,
     KeyValue,
 }
@@ -25,6 +34,8 @@ impl AsRef<str> for Section {
         match self {
             Self::SMTPConfiguration => "smtp_configuration",
             Self::SMTPMessage => "smtp_message",
+            Self::Configuration => "configuration",
+            Self::Message => "message",
             Self::Settings => "settings",
             Self::KeyValue => "key_value",
         }
@@ -35,20 +46,76 @@ pub struct Database {
     db: sled::Db,
 }
 
-impl Database {
-    pub fn new() -> AnyResult<Self> {
-        log::trace!("new");
+pub trait DatabaseTrait:
+    KeyValueDatabase + SettingsDatabase + ConfigurationDatabase + MessageDatabase
+{
+    fn new() -> AnyResult<Database>;
 
-        Ok(Self {
-            db: sled::open(Path::new(".").join("data.sled"))?,
-        })
+    fn insert<T: Encode + Debug>(
+        &self,
+        section: impl AsRef<str>,
+        key: impl AsRef<str>,
+        data: &T,
+    ) -> AnyResult<()>;
+
+    fn insert_all<T: Encode + Debug>(&self, section: impl AsRef<str>, data: &[T]) -> AnyResult<()>
+    where
+        T: AsRef<str>,
+    {
+        log::trace!("insert_all");
+        log::debug!("section: {}", section.as_ref());
+        log::debug!("data count: {}", data.len());
+
+        for item in data {
+            self.insert(section.as_ref(), item.as_ref(), item)?;
+        }
+        Ok(())
     }
 
+    fn get<T: Decode<()> + Debug>(
+        &self,
+        section: impl AsRef<str>,
+        key: impl AsRef<str>,
+    ) -> AnyResult<Option<T>>;
+
+    fn remove(&self, section: impl AsRef<str>, key: impl AsRef<str>) -> AnyResult<()>;
+
+    fn remove_all<T: AsRef<str>>(&self, section: impl AsRef<str>, keys: &[T]) -> AnyResult<()> {
+        log::trace!("remove_all");
+        log::debug!("section: {}", section.as_ref());
+        log::debug!("keys count: {}", keys.len());
+
+        for key in keys {
+            self.remove(section.as_ref(), key.as_ref())?;
+        }
+        Ok(())
+    }
+
+    fn get_all<T: Decode<()> + Debug>(&self, section: impl AsRef<str>) -> AnyResult<Vec<T>>;
+
+    fn contains(&self, section: impl AsRef<str>, key: impl AsRef<str>) -> AnyResult<bool>;
+
+    fn section_exists(&self, section: impl AsRef<str>) -> AnyResult<bool>;
+
+    fn remove_section(&self, section: impl AsRef<str>) -> AnyResult<()>;
+}
+
+impl Database {
     fn section(&self, section: impl AsRef<str>) -> AnyResult<Tree> {
         log::trace!("section");
         log::debug!("section: {}", section.as_ref());
 
         Ok(self.db.open_tree(section.as_ref())?)
+    }
+}
+
+impl DatabaseTrait for Database {
+    fn new() -> AnyResult<Self> {
+        log::trace!("new");
+
+        Ok(Self {
+            db: sled::open(Path::new(".").join("data.sled"))?,
+        })
     }
 
     fn insert<T: Encode + Debug>(
@@ -113,5 +180,24 @@ impl Database {
         log::debug!("key: {}", key.as_ref());
 
         Ok(self.section(section)?.contains_key(key.as_ref())?)
+    }
+
+    fn section_exists(&self, section: impl AsRef<str>) -> AnyResult<bool> {
+        log::trace!("section_exists");
+        log::debug!("section: {}", section.as_ref());
+
+        Ok(self
+            .db
+            .tree_names()
+            .iter()
+            .any(|name| String::from_utf8_lossy(name.as_ref()) == section.as_ref()))
+    }
+
+    fn remove_section(&self, section: impl AsRef<str>) -> AnyResult<()> {
+        log::trace!("remove_section");
+        log::debug!("section: {}", section.as_ref());
+
+        self.db.drop_tree(section.as_ref())?;
+        Ok(())
     }
 }

@@ -21,7 +21,7 @@
 	import Input from '$lib/components/form/Input.svelte';
 	import Button, { ButtonTheme, ButtonPaddingSize } from '$lib/components/form/Button.svelte';
 	import { theme } from '$lib/stores/theme';
-	import { SettingsTheme } from '$lib/../generated/tauri';
+	import { SettingsTheme } from '../../../../generated/tauri';
 	import Dropdown from '$lib/components/dropdown/Dropdown.svelte';
 	import DropdownItem from '$lib/components/dropdown/DropdownItem.svelte';
 	import DropdownSeparator from '$lib/components/dropdown/DropdownSeparator.svelte';
@@ -90,7 +90,7 @@
 							<Icon src={RiDocumentContactsBookUploadLine} size="22" color="white" slot="icon" />
 						</Button>
 					</Tooltip>
-					<Tooltip title={$t('repleace')}>
+					<Tooltip title={$t('replace')}>
 						<Button
 							text=""
 							theme={ButtonTheme.Success}

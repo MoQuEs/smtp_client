@@ -43,14 +43,14 @@ pub fn error_empty() -> TauriResponse<()> {
     TauriResponse::new(false, None, None)
 }
 
-pub type MaybeSMTPConfiguration = Option<NamedSMTPConfiguration>;
-pub type NamedSMTPConfigurations = Vec<NamedSMTPConfiguration>;
-pub type MaybeSMTPMessage = Option<NamedSMTPMessage>;
-pub type NamedSMTPMessages = Vec<NamedSMTPMessage>;
+pub type MaybeConfiguration = Option<NamedConfiguration>;
+pub type NamedConfigurations = Vec<NamedConfiguration>;
+pub type MaybeMessage = Option<NamedMessage>;
+pub type NamedMessages = Vec<NamedMessage>;
 
 #[typeshare]
 #[derive(Deserialize, Serialize, Encode, Decode, Debug, Clone)]
-pub struct NamedSMTPConfiguration {
+pub struct NamedConfiguration {
     pub name: String,
     pub configuration: SMTPConfiguration,
 }
@@ -91,7 +91,7 @@ impl Debug for SMTPConfigurationAuth {
 
 #[typeshare]
 #[derive(Deserialize, Serialize, Encode, Decode, Debug, Clone)]
-pub struct NamedSMTPMessage {
+pub struct NamedMessage {
     pub name: String,
     pub message: SMTPMessage,
 }

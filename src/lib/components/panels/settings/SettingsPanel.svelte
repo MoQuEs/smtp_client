@@ -1,12 +1,12 @@
 <script lang="ts">
-	import * as tauri from '../../../generated/tauri';
-	import t, { changeLocale, getLocale } from '../../i18n/translate';
-	import { loadSettings, settings } from '../../stores/settings';
-	import Select, { SelectDispatch } from '../../components/form/Select.svelte';
-	import HideShow from '../../components/hide_show/HideShow.svelte';
+	import * as tauri from '../../../../generated/tauri';
+	import t, { changeLocale, getLocale } from '../../../i18n/translate';
+	import { loadSettings, settings } from '../../../stores/settings';
+	import Select, { SelectDispatch } from '../../form/Select.svelte';
+	import HideShow from '../../hide_show/HideShow.svelte';
 	import { exportFile, importFile } from '$lib/api/tauri';
 	import { ImportExportSettings } from '$lib/api/tauri_classes';
-	import SettingsImportExportRow from '$lib/components/settings/SettingsImportExportRow.svelte';
+	import SettingsImportExportRow from '$lib/components/panels/settings/SettingsImportExportRow.svelte';
 	import { loadConfigurations } from '$lib/stores/smtp_configuration';
 	import { loadMessages } from '$lib/stores/smtp_message';
 	import { addToast } from '$lib/stores/toasts';

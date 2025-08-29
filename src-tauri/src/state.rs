@@ -1,7 +1,6 @@
-use crate::database::Database;
+use crate::database::{Database, DatabaseTrait};
 use crate::migration::{MigrationVersion, MIGRATIONS};
 use crate::response::AnyResult;
-use rust_utils::log::LogUnwrap;
 use std::sync::Mutex;
 use tauri::{Manager, State, Wry};
 
@@ -18,7 +17,7 @@ pub trait ServiceAccess {
 
         self.init(app);
         self.init_db(app);
-        //self.migrate();
+        self.migrate();
 
         log::trace!("setup end");
     }
@@ -34,6 +33,7 @@ pub trait ServiceAccess {
         current_version: MigrationVersion,
         migration_version: &MigrationVersion,
         callback: F,
+        undo: F,
     ) -> AnyResult<MigrationVersion>
     where
         F: FnOnce(&AppHandle) -> AnyResult<MigrationVersion>;
@@ -58,15 +58,15 @@ impl ServiceAccess for AppHandle {
 
         let app_state: State<AppState> = app.state();
 
-        let db = Database::new().log_error_u(
-            "backend::state::AppHandle::init_db",
-            "Database initialize failed",
-        );
+        let db = Database::new()
+            .inspect_err(|e| log::error!("Database initialize failed '{:?}'"))
+            .unwrap();
 
-        *app_state.db.lock().log_error_u(
-            "backend::state::AppHandle::init_db",
-            "Lock database for data",
-        ) = Some(db);
+        *app_state
+            .db
+            .lock()
+            .inspect_err(|e| log::error!("Lock database for data failed '{:?}'"))
+            .unwrap() = Some(db);
 
         log::trace!("init_db end");
     }
@@ -76,18 +76,17 @@ impl ServiceAccess for AppHandle {
 
         let mut current_version = self
             .db(|db| db.get_value("version"))
-            .log_error_u(
-                "backend::state::AppHandle::migrate",
-                "Get database version failed",
-            )
+            .inspect_err(|e| log::error!("Get database version failed '{:?}'"))
+            .unwrap()
             .unwrap_or(MigrationVersion::default());
 
         log::debug!("migrate from version: {:?}", current_version);
 
-        for (migration_version, callback) in MIGRATIONS {
+        for (migration_version, callback, undo) in MIGRATIONS {
             current_version = self
-                .run_migration(current_version, migration_version, callback)
-                .log_error_u("backend::state::AppHandle::migrate", "Run migration failed");
+                .run_migration(current_version, migration_version, callback, undo)
+                .inspect_err(|e| log::error!("Run migration failed '{:?}'"))
+                .unwrap();
         }
 
         log::trace!("migrate end")
@@ -98,11 +97,14 @@ impl ServiceAccess for AppHandle {
         current_version: MigrationVersion,
         migration_version: &MigrationVersion,
         callback: F,
+        undo: F,
     ) -> AnyResult<MigrationVersion>
     where
         F: FnOnce(&AppHandle) -> AnyResult<MigrationVersion>,
     {
         log::trace!("run_migration");
+
+        let mut err = None;
 
         log::info!("Current version: {:?}", current_version);
         if migration_version <= &current_version {
@@ -111,14 +113,20 @@ impl ServiceAccess for AppHandle {
             log::info!("Run migration: {:?}", migration_version);
             if let Err(e) = callback(self) {
                 log::error!("Migration to {:?} failed: {:?}", migration_version, e);
-                return Err(e);
+                err = Some(e);
+
+                log::warn!("Undo migration: {:?}", migration_version);
+                if let Err(e) = undo(self) {
+                    log::error!("Undo migration to {:?} failed: {:?}", migration_version, e);
+                }
             }
 
             self.db(|db| db.set_value("version", migration_version))
-                .log_error_u(
-                    "backend::state::AppHandle::migrate",
-                    "Set database version failed",
-                );
+                .inspect_err(|e| log::error!("Set database version failed '{:?}'"))?;
+
+            if let Some(e) = err {
+                return Err(e);
+            }
 
             log::info!("Migration done: {:?}", migration_version);
         }
@@ -136,11 +144,11 @@ impl ServiceAccess for AppHandle {
         let db_connection_guard = app_state
             .db
             .lock()
-            .log_error_u("backend::state::AppHandle::db", "Lock database");
+            .inspect_err(|e| log::error!("Lock database failed '{:?}'"))?;
 
         let db = db_connection_guard
             .as_ref()
-            .log_error_u("backend::state::AppHandle::db", "Get database connection");
+            .inspect_err(|e| log::error!("Get database connection failed '{:?}'"))?;
 
         log::info!("run operation");
 
@@ -157,11 +165,11 @@ impl ServiceAccess for AppHandle {
         let mut db_connection_guard = app_state
             .db
             .lock()
-            .log_error_u("backend::state::AppHandle::db_mut", "Lock database");
+            .inspect_err(|e| log::error!("Lock database failed '{:?}'"))?;
 
         let db = db_connection_guard
             .as_mut()
-            .log_error_u("backend::state::AppHandle::db", "Get database connection");
+            .inspect_err(|e| log::error!("Get database connection failed '{:?}'"))?;
 
         log::info!("run operation");
 

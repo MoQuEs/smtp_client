@@ -5,7 +5,6 @@ use crate::file::file_get_contents;
 use crate::response::{error, success_empty, AnyResult, ImportExportSettings, TauriResponse};
 use crate::state::{AppHandle, ServiceAccess};
 use anyhow::anyhow;
-use rust_utils::log::Log;
 
 #[tauri::command]
 pub fn import_command(
@@ -30,13 +29,11 @@ fn import(app_handle: &AppHandle, import_export_settings: ImportExportSettings) 
     log::trace!("import");
 
     let backup_data = load_backup(app_handle)
-        .log_error("backend::commands::export::export", "Error saving backup")?
+        .inspect_err(|e| log::error!("Error saving backup '{:?}'"))?
         .ok_or(anyhow!("No backup data"))?;
 
-    import_backup(app_handle, import_export_settings, backup_data).log_error(
-        "backend::commands::export::export",
-        "Error preparing backup",
-    )
+    import_backup(app_handle, import_export_settings, backup_data)
+        .inspect_err(|e| log::error!("Error preparing backup '{:?}'"))
 }
 
 fn load_backup(app_handle: &AppHandle) -> AnyResult<Option<Vec<u8>>> {

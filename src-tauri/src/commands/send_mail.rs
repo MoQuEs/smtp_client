@@ -7,7 +7,6 @@ use mail_send::mail_builder::headers::address::Address;
 use mail_send::mail_builder::headers::HeaderType;
 use mail_send::mail_builder::MessageBuilder;
 use mail_send::{Error, SmtpClientBuilder};
-use rust_utils::log::Log;
 
 #[tauri::command]
 pub async fn send_mail_command(
@@ -64,10 +63,11 @@ pub async fn send_mail(
                 smtp_builder = smtp_builder.allow_invalid_certs();
             }
 
-            let mut connection = match smtp_builder.connect().await.log_error(
-                "backend::commands::send_mail::send_mail",
-                "Error connecting to SMTP server",
-            ) {
+            let mut connection = match smtp_builder
+                .connect()
+                .await
+                .inspect_err(|e| log::error!("Error connecting to SMTP server '{:?}'"))
+            {
                 Ok(v) => v,
                 Err(e) => return Err(e),
             };
@@ -106,10 +106,11 @@ pub async fn send_mail(
             let mut max_retries = 5;
             let mut last_res = Ok(());
             while max_retries > 0 {
-                match connection.send(message_builder.clone()).await.log_error(
-                    "backend::commands::send_mail::send_mail",
-                    "Error sending mail",
-                ) {
+                match connection
+                    .send(message_builder.clone())
+                    .await
+                    .inspect_err(|e| log::error!("Error sending mail '{:?}'"))
+                {
                     Ok(v) => {
                         last_res = Ok(());
                         break;

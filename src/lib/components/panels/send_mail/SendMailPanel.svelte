@@ -1,16 +1,16 @@
 <script lang="ts">
-	import t from '../../i18n/translate';
-	import { sendMail } from '../../api/tauri';
-	import { allMessages, customMessage } from '../../stores/smtp_message';
-	import { allConfigurations, customConfiguration } from '../../stores/smtp_configuration';
-	import Button, { ButtonMode } from '../../components/form/Button.svelte';
-	import Select, { SelectDispatch } from '../../components/form/Select.svelte';
-	import { addToast } from '../../stores/toasts';
-	import { ToastType } from '../../components/toast/Toast.svelte';
+	import t from '$lib/i18n/translate';
+	import { sendMail } from '$lib/api/tauri';
+	import { allMessages, customMessage } from '$lib/stores/smtp_message';
+	import { allConfigurations, customConfiguration } from '$lib/stores/smtp_configuration';
+	import Button, { ButtonMode } from '$lib/components/form/Button.svelte';
+	import Select, { SelectDispatch } from '$lib/components/form/Select.svelte';
+	import { addToast } from '$lib/stores/toasts';
+	import { ToastType } from '$lib/components/toast/Toast.svelte';
 	import { get } from 'svelte/store';
-	import { getConfigurationLabelForSelect, getMessageLabelForSelect } from '../../utils/utils';
+	import { getConfigurationLabelForSelect, getMessageLabelForSelect } from '$lib/utils/utils';
 	import Input, { InputType } from '$lib/components/form/Input.svelte';
-	import * as cache from '$lib/stores/cache.svelte';
+	import * as cache from '$lib/stores/cache.svelte.js';
 
 	let cc = cache.getSelectedConfiguration();
 	let cm = cache.getSelectedMessage();
@@ -37,7 +37,7 @@
 
 	let messages = [
 		new SelectDispatch(
-			getMessageLabelForSelect($t('smtp.configuration.unsaved'), $customMessage.message),
+			getMessageLabelForSelect($t('smtp.message.unsaved'), $customMessage.message),
 			$customMessage,
 			cm === undefined
 		),

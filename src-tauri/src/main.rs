@@ -8,7 +8,6 @@ extern crate core;
 
 use crate::state::{AppState, ServiceAccess};
 use commands::*;
-use rust_utils::log::Log;
 use std::sync::Mutex;
 
 mod backup;
@@ -61,6 +60,6 @@ fn main() {
             import_command,
         ])
         .run(tauri::generate_context!())
-        .log_error("backend::main", "Tauri application failed")
+        .inspect_err(|e| log::error!("Tauri application failed '{:?}'", e))
         .unwrap()
 }

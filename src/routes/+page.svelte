@@ -3,58 +3,93 @@
 
 	import t from '$lib/i18n/translate';
 
-	import { RiBusinessMailSendLine } from 'svelte-icons-pack/ri';
-	import { RiBusinessMailSettingsLine } from 'svelte-icons-pack/ri';
-	import { RiBusinessMailAddLine } from 'svelte-icons-pack/ri';
+	import {
+		RiBusinessMailSettingsLine,
+		RiBusinessMailAddLine,
+		RiBusinessMailLockLine
+	} from 'svelte-icons-pack/ri';
+	import { BsSend } from 'svelte-icons-pack/bs';
 	import { BiSolidCog } from 'svelte-icons-pack/bi';
+	import { ImTable } from 'svelte-icons-pack/im';
+	import { IoAttachOutline } from 'svelte-icons-pack/io';
+
 
 	import Tabs from '$lib/components/tab/Tabs.svelte';
 	import TabList from '$lib/components/tab/TabList.svelte';
 	import Tab from '$lib/components/tab/Tab.svelte';
 	import TabPanel from '$lib/components/tab/TabPanel.svelte';
 	import Separator, { SeparatorSize } from '$lib/components/Separator.svelte';
-	import SettingsPanel from '$lib/components/settings/SettingsPanel.svelte';
-	import SMTPConfigurationPanel from '$lib/components/smtp/SMTPConfigurationPanel.svelte';
-	import SMTPMessage from '$lib/components/smtp/SMTPMessage.svelte';
-	import SMTPMessagePanel from '$lib/components/smtp/SMTPMessagePanel.svelte';
+	import SettingsPanel from '$lib/components/panels/settings/SettingsPanel.svelte';
+	import ConfigurationPanel from '$lib/components/panels/configuration/ConfigurationPanel.svelte';
+	import Message from '$lib/components/panels/message/Message.svelte';
+	import MessagePanel from '$lib/components/panels/message/MessagePanel.svelte';
 	import Tooltip from '$lib/components/tooltip/Tooltip.svelte';
 	import LogoWithText from '$lib/components/logo/LogoWithText.svelte';
-	import SMTPSendMail from '$lib/components/smtp/SMTPSendMail.svelte';
+	import SendMailPanel from '$lib/components/panels/send_mail/SendMailPanel.svelte';
+	import AttachmentPanel from '$lib/components/panels/attachment/AttachmentPanel.svelte';
+	import PersonalizationPanel from '$lib/components/panels/personalization/PersonalizationPanel.svelte';
+	import SMIMEPanel from '$lib/components/panels/smime/SMIMEPanel.svelte';
 	import { getTheme, theme } from '$lib/stores/theme';
-	import { SettingsTheme } from '../generated/tauri';
+	import { SettingsTheme } from '$lib/../generated/tauri';
 
-	let iconColor = $state(getTheme() == SettingsTheme.Dark ? 'white' : 'black');
+	const getIconClass = (settingsTheme: SettingsTheme, light: string, dark: string): string => settingsTheme == SettingsTheme.Dark ? light : dark;
+
+	const getFillIconClass = (settingsTheme: SettingsTheme): string => getIconClass(settingsTheme, 'icon-fill-gray-200', 'icon-fill-gray-800');
+	const getStrokeIconClass = (settingsTheme: SettingsTheme): string => getIconClass(settingsTheme, 'icon-stroke-gray-200', 'icon-stroke-gray-800');
+
+	let fillIconClass = $state(getFillIconClass(getTheme()));
+	let strokeIconClass = $state(getStrokeIconClass(getTheme()));
+
 	$effect(() => {
-		iconColor = $theme == SettingsTheme.Dark ? 'white' : 'black';
+		fillIconClass = getFillIconClass($theme);
+		strokeIconClass = getStrokeIconClass($theme);
 	});
 </script>
 
 <Tabs>
-	<div class="flex flex-row">
+	<div class="flex flex-row justify-between flex-wrap mb-1">
 		<LogoWithText />
 
-		<TabList className="flex-grow justify-end">
+		<TabList>
 			<Tooltip title={$t('menu.send')}>
 				<Tab>
-					<Icon src={RiBusinessMailSendLine} size="26" color={iconColor} />
+					<Icon src={BsSend} size="26" className={fillIconClass} />
 				</Tab>
 			</Tooltip>
 
 			<Tooltip title={$t('menu.configurations')}>
 				<Tab>
-					<Icon src={RiBusinessMailSettingsLine} size="26" color={iconColor} />
+					<Icon src={RiBusinessMailSettingsLine} size="26" className={fillIconClass} />
 				</Tab>
 			</Tooltip>
 
 			<Tooltip title={$t('menu.messages')}>
 				<Tab>
-					<Icon src={RiBusinessMailAddLine} size="26" color={iconColor} />
+					<Icon src={RiBusinessMailAddLine} size="26" className={fillIconClass} />
+				</Tab>
+			</Tooltip>
+
+			<Tooltip title={$t('menu.smime')}>
+				<Tab>
+					<Icon src={RiBusinessMailLockLine} size="26" className={fillIconClass} />
+				</Tab>
+			</Tooltip>
+
+			<Tooltip title={$t('menu.attachments')}>
+				<Tab>
+					<Icon src={IoAttachOutline} size="26" className={strokeIconClass} />
+				</Tab>
+			</Tooltip>
+
+			<Tooltip title={$t('menu.personalizations')}>
+				<Tab>
+					<Icon src={ImTable} size="26" className={fillIconClass} />
 				</Tab>
 			</Tooltip>
 
 			<Tooltip title={$t('menu.settings')}>
 				<Tab>
-					<Icon src={BiSolidCog} size="26" color={iconColor} />
+					<Icon src={BiSolidCog} size="26" className={fillIconClass} />
 				</Tab>
 			</Tooltip>
 		</TabList>
@@ -64,20 +99,32 @@
 
 	<TabPanel>
 		<div class="flex flex-col space-y-5">
-			<SMTPSendMail />
+			<SendMailPanel />
 
 			<Separator size={SeparatorSize.XS} />
 
-			<SMTPMessage />
+			<Message />
 		</div>
 	</TabPanel>
 
 	<TabPanel>
-		<SMTPConfigurationPanel />
+		<ConfigurationPanel />
 	</TabPanel>
 
 	<TabPanel>
-		<SMTPMessagePanel />
+		<MessagePanel />
+	</TabPanel>
+
+	<TabPanel>
+		<SMIMEPanel />
+	</TabPanel>
+
+	<TabPanel>
+		<AttachmentPanel />
+	</TabPanel>
+
+	<TabPanel>
+		<PersonalizationPanel />
 	</TabPanel>
 
 	<TabPanel>

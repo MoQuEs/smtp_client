@@ -1,4 +1,6 @@
 <script context="module" lang="ts">
+	import type { Writable } from 'svelte/store';
+
 	export type Tabs = {
 		registerTab: (tab: object) => void;
 		registerPanel: (panel: object) => void;

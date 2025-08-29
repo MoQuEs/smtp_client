@@ -1,7 +1,7 @@
 #![allow(dead_code)]
 
 use crate::crypt::encrypt::{decrypt_data, encrypt_data, generate_crypt_key_from_string};
-use crate::response::{AnyResult, NamedSMTPConfigurations, NamedSMTPMessages, Settings};
+use crate::response::{AnyResult, NamedConfigurations, NamedMessages, Settings};
 use crate::serialize::{decode, encode};
 use bincode::{Decode, Encode};
 use serde::{Deserialize, Serialize};
@@ -22,8 +22,8 @@ pub enum BackupData {
 #[derive(Serialize, Deserialize, Encode, Decode, Default, Debug)]
 pub struct BackupDataV1 {
     pub settings: Option<Settings>,
-    pub configurations: Option<NamedSMTPConfigurations>,
-    pub messages: Option<NamedSMTPMessages>,
+    pub configurations: Option<NamedConfigurations>,
+    pub messages: Option<NamedMessages>,
 }
 
 impl Backup {

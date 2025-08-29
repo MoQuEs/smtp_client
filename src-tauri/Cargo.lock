@@ -5204,6 +5204,7 @@ dependencies = [
  "async-scoped",
  "bincode",
  "log",
+ "mail-parser",
  "mail-send",
  "orion",
  "rust_utils",

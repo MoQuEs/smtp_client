@@ -1,8 +1,8 @@
 <script lang="ts">
-	import t from '../../i18n/translate';
-	import Checkbox from '../../components/form/Checkbox.svelte';
-	import Input, { InputType } from '../../components/form/Input.svelte';
-	import { customConfiguration } from '../../stores/smtp_configuration';
+	import t from '../../../i18n/translate';
+	import Checkbox from '../../form/Checkbox.svelte';
+	import Input, { InputType } from '../../form/Input.svelte';
+	import { customConfiguration } from '../../../stores/smtp_configuration';
 </script>
 
 <div class="flex flex-col space-y-5">

@@ -12,8 +12,9 @@ macro_rules! migration_version {
         pub const MIGRATIONS: &[(
             MigrationVersion,
             fn(&AppHandle) -> $crate::response::AnyResult<MigrationVersion>,
+            fn(&AppHandle) -> $crate::response::AnyResult<MigrationVersion>,
         )] = &[
-            $( (MigrationVersion::$version, versions::$module_version::run), )*
+            $( (MigrationVersion::$version, versions::$module_version::run, versions::$module_version::undo), )*
         ];
 
         impl From<&str> for MigrationVersion {

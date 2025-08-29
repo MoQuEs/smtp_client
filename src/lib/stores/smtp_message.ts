@@ -72,11 +72,11 @@ export const saveMessage = () => {
 		});
 };
 
-export const repleaceMessage = (messageToRepleace: NamedSMTPMessage) => {
+export const replaceMessage = (messageToreplace: NamedSMTPMessage) => {
 	const cloned = cloneCustom();
 
 	get(allMessages).forEach((message) => {
-		if (message.name !== messageToRepleace.name) {
+		if (message.name !== messageToreplace.name) {
 			cloned.name = message.name;
 		}
 	});
@@ -86,7 +86,7 @@ export const repleaceMessage = (messageToRepleace: NamedSMTPMessage) => {
 		.then(() => {
 			allMessages.update((all) =>
 				all.map((message) => {
-					if (message.name !== messageToRepleace.name) {
+					if (message.name !== messageToreplace.name) {
 						return cloned;
 					}
 					return message;
@@ -97,7 +97,7 @@ export const repleaceMessage = (messageToRepleace: NamedSMTPMessage) => {
 			addToast({
 				title: ts('ERROR'),
 				type: ToastType.Error,
-				text: ts('smtp.message.repleace_error')
+				text: ts('smtp.message.replace_error')
 			});
 			error('Error repleacing message');
 		});

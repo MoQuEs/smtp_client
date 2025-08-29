@@ -9,3 +9,11 @@ pub fn run(app_handle: &AppHandle) -> AnyResult<MigrationVersion> {
 
     Ok(MigrationVersion::V0_4_0)
 }
+
+pub fn undo(_app_handle: &AppHandle) -> AnyResult<MigrationVersion> {
+    log::trace!("undo");
+
+    log::trace!("end undo");
+
+    Ok(MigrationVersion::V0_0_0)
+}
