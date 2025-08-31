@@ -1,4 +1,5 @@
 use crate::backup::{Backup, BackupData, BackupDataV1};
+use crate::database::{ConfigurationDatabase, MessageDatabase, SettingsDatabase};
 use crate::dialogs::blocking::save_file_dialog;
 use crate::dialogs::simple_error_dialog;
 use crate::file::file_put_contents;
@@ -28,10 +29,10 @@ fn export(app_handle: &AppHandle, import_export_settings: ImportExportSettings) 
     log::trace!("export");
 
     let serialized_backup = prepare_backup(app_handle, import_export_settings)
-        .inspect_err(|e| log::error!("Error preparing backup '{:?}'"))?;
+        .inspect_err(|e| log::error!("Error preparing backup '{e:?}'"))?;
 
     save_backup(app_handle, serialized_backup)
-        .inspect_err(|e| log::error!("Error saving backup '{:?}'"))
+        .inspect_err(|e| log::error!("Error saving backup '{e:?}'"))
 }
 
 fn save_backup(app_handle: &AppHandle, mut serialized_backup: Vec<u8>) -> AnyResult<()> {
@@ -64,25 +65,25 @@ fn prepare_backup(
         backup.settings = Some(
             app_handle
                 .db(|db| db.get_settings())
-                .inspect_err(|e| log::error!("Error getting settings '{:?}'"))?,
+                .inspect_err(|e| log::error!("Error getting settings '{e:?}'"))?,
         );
     }
 
-    if import_export_settings.smtp_messages {
+    if import_export_settings.messages {
         log::info!("Added messages");
         backup.messages = Some(
             app_handle
                 .db(|db| db.get_messages())
-                .inspect_err(|e| log::error!("Error getting messages '{:?}'"))?,
+                .inspect_err(|e| log::error!("Error getting messages '{e:?}'"))?,
         );
     }
 
-    if import_export_settings.smtp_configurations {
+    if import_export_settings.configurations {
         log::info!("Added configurations");
         backup.configurations = Some(
             app_handle
                 .db(|db| db.get_configurations())
-                .inspect_err(|e| log::error!("Error getting configurations '{:?}'"))?,
+                .inspect_err(|e| log::error!("Error getting configurations '{e:?}'"))?,
         );
     }
 

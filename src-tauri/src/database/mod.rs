@@ -1,20 +1,23 @@
 #![allow(dead_code)]
 
-mod configuration;
-mod key_value;
-mod message;
-mod settings;
-
-use crate::database::configuration::ConfigurationDatabase;
-use crate::database::key_value::KeyValueDatabase;
-use crate::database::message::MessageDatabase;
-use crate::database::settings::SettingsDatabase;
-use crate::response::AnyResult;
+use crate::response::{AnyResult, Named};
 use crate::serialize::{decode, encode, Decode, Encode};
 use sled::Tree;
 use std::fmt::Debug;
 use std::ops::Deref;
 use std::path::Path;
+
+mod attachment;
+mod configuration;
+mod key_value;
+mod message;
+mod settings;
+
+pub use attachment::AttachmentDatabase;
+pub use configuration::ConfigurationDatabase;
+pub use key_value::KeyValueDatabase;
+pub use message::MessageDatabase;
+pub use settings::SettingsDatabase;
 
 #[derive(Debug, Clone, Copy)]
 pub enum Section {
@@ -23,6 +26,7 @@ pub enum Section {
     SMTPMessage,
 
     // Current
+    Attachment,
     Configuration,
     Message,
     Settings,
@@ -34,6 +38,8 @@ impl AsRef<str> for Section {
         match self {
             Self::SMTPConfiguration => "smtp_configuration",
             Self::SMTPMessage => "smtp_message",
+
+            Self::Attachment => "attachment",
             Self::Configuration => "configuration",
             Self::Message => "message",
             Self::Settings => "settings",
@@ -47,10 +53,8 @@ pub struct Database {
 }
 
 pub trait DatabaseTrait:
-    KeyValueDatabase + SettingsDatabase + ConfigurationDatabase + MessageDatabase
+    KeyValueDatabase + SettingsDatabase + ConfigurationDatabase + MessageDatabase + AttachmentDatabase
 {
-    fn new() -> AnyResult<Database>;
-
     fn insert<T: Encode + Debug>(
         &self,
         section: impl AsRef<str>,
@@ -60,14 +64,14 @@ pub trait DatabaseTrait:
 
     fn insert_all<T: Encode + Debug>(&self, section: impl AsRef<str>, data: &[T]) -> AnyResult<()>
     where
-        T: AsRef<str>,
+        T: Named,
     {
         log::trace!("insert_all");
         log::debug!("section: {}", section.as_ref());
         log::debug!("data count: {}", data.len());
 
         for item in data {
-            self.insert(section.as_ref(), item.as_ref(), item)?;
+            self.insert(section.as_ref(), item.name(), item)?;
         }
         Ok(())
     }
@@ -101,6 +105,14 @@ pub trait DatabaseTrait:
 }
 
 impl Database {
+    pub fn new() -> AnyResult<Self> {
+        log::trace!("new");
+
+        Ok(Self {
+            db: sled::open(Path::new(".").join("data.sled"))?,
+        })
+    }
+
     fn section(&self, section: impl AsRef<str>) -> AnyResult<Tree> {
         log::trace!("section");
         log::debug!("section: {}", section.as_ref());
@@ -110,14 +122,6 @@ impl Database {
 }
 
 impl DatabaseTrait for Database {
-    fn new() -> AnyResult<Self> {
-        log::trace!("new");
-
-        Ok(Self {
-            db: sled::open(Path::new(".").join("data.sled"))?,
-        })
-    }
-
     fn insert<T: Encode + Debug>(
         &self,
         section: impl AsRef<str>,

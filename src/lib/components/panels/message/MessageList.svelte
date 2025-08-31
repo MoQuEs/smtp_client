@@ -17,7 +17,7 @@
 		removeMessage,
 		replaceMessage,
 		loadMessage
-	} from '$lib/stores/smtp_message';
+	} from '$lib/stores/message';
 	import Input from '$lib/components/form/Input.svelte';
 	import Button, { ButtonTheme, ButtonPaddingSize } from '$lib/components/form/Button.svelte';
 	import { theme } from '$lib/stores/theme';

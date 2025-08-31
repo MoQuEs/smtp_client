@@ -17,7 +17,7 @@
 		removeConfiguration,
 		replaceConfiguration,
 		loadConfiguration
-	} from '$lib/stores/smtp_configuration';
+	} from '$lib/stores/configuration';
 	import Input from '$lib/components/form/Input.svelte';
 	import Button, { ButtonTheme, ButtonPaddingSize } from '$lib/components/form/Button.svelte';
 	import { theme } from '$lib/stores/theme';

@@ -1,10 +1,7 @@
 use crate::commands::db_to_response;
-use crate::dialogs::simple_error_dialog;
-use crate::response::{
-    error, success, AnyResult, MaybeConfiguration, NamedConfiguration, NamedConfigurations,
-    TauriResponse,
-};
-use crate::state::{AppHandle, ServiceAccess};
+use crate::database::ConfigurationDatabase;
+use crate::response::{NamedConfiguration, NamedConfigurations, TauriResponse};
+use crate::state::AppHandle;
 
 #[tauri::command]
 pub fn get_configurations_command(app_handle: AppHandle) -> TauriResponse<NamedConfigurations> {
@@ -17,7 +14,7 @@ pub fn get_configurations_command(app_handle: AppHandle) -> TauriResponse<NamedC
 pub fn save_configuration_command(
     app_handle: AppHandle,
     configuration: NamedConfiguration,
-) -> TauriResponse<MaybeConfiguration> {
+) -> TauriResponse<()> {
     log::trace!("save_configuration_command");
     log::debug!("configuration: {:?}", configuration);
 
@@ -28,7 +25,7 @@ pub fn save_configuration_command(
 pub fn remove_configuration_command(
     app_handle: AppHandle,
     configuration: NamedConfiguration,
-) -> TauriResponse<MaybeConfiguration> {
+) -> TauriResponse<()> {
     log::trace!("remove_configuration_command");
     log::debug!("configuration: {:?}", configuration);
 

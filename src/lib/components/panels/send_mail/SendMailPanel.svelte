@@ -1,8 +1,8 @@
 <script lang="ts">
 	import t from '$lib/i18n/translate';
 	import { sendMail } from '$lib/api/tauri';
-	import { allMessages, customMessage } from '$lib/stores/smtp_message';
-	import { allConfigurations, customConfiguration } from '$lib/stores/smtp_configuration';
+	import { allMessages, customMessage } from '$lib/stores/message';
+	import { allConfigurations, customConfiguration } from '$lib/stores/configuration';
 	import Button, { ButtonMode } from '$lib/components/form/Button.svelte';
 	import Select, { SelectDispatch } from '$lib/components/form/Select.svelte';
 	import { addToast } from '$lib/stores/toasts';

@@ -1,7 +1,5 @@
 use crate::dialogs::simple_error_dialog;
-use crate::response::{
-    error, success_empty, AnyResult, SMTPConfiguration, SMTPMessage, TauriResponse,
-};
+use crate::response::{error, success_empty, AnyResult, Configuration, Message, TauriResponse};
 use crate::state::AppHandle;
 use mail_send::mail_builder::headers::address::Address;
 use mail_send::mail_builder::headers::HeaderType;
@@ -11,8 +9,8 @@ use mail_send::{Error, SmtpClientBuilder};
 #[tauri::command]
 pub async fn send_mail_command(
     app_handle: AppHandle,
-    configuration: SMTPConfiguration,
-    message: SMTPMessage,
+    configuration: Configuration,
+    message: Message,
     count: usize,
 ) -> TauriResponse<()> {
     log::trace!("send_mail_command");
@@ -34,8 +32,8 @@ pub async fn send_mail_command(
 }
 
 pub async fn send_mail(
-    configuration: SMTPConfiguration,
-    message: SMTPMessage,
+    configuration: Configuration,
+    message: Message,
     count: usize,
 ) -> AnyResult<()> {
     log::trace!("send_mail");
@@ -66,7 +64,7 @@ pub async fn send_mail(
             let mut connection = match smtp_builder
                 .connect()
                 .await
-                .inspect_err(|e| log::error!("Error connecting to SMTP server '{:?}'"))
+                .inspect_err(|e| log::error!("Error connecting to SMTP server '{e:?}'"))
             {
                 Ok(v) => v,
                 Err(e) => return Err(e),
@@ -109,7 +107,7 @@ pub async fn send_mail(
                 match connection
                     .send(message_builder.clone())
                     .await
-                    .inspect_err(|e| log::error!("Error sending mail '{:?}'"))
+                    .inspect_err(|e| log::error!("Error sending mail '{e:?}'"))
                 {
                     Ok(v) => {
                         last_res = Ok(());

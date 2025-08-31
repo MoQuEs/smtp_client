@@ -6,15 +6,15 @@
 	import Input, { InputType } from '../../form/Input.svelte';
 	import Textarea from '../../form/Textarea.svelte';
 	import Badge, { BadgeColor, BadgeSize, BadgeTheme } from '../../Badge.svelte';
-	import { SMTPMessageHeader } from '../../../api/tauri_classes';
+	import { MessageHeader } from '../../../api/tauri_classes';
 	import Checkbox from '../../form/Checkbox.svelte';
 	import t from '../../../i18n/translate';
-	import { customMessage } from '../../../stores/smtp_message';
+	import { customMessage } from '../../../stores/message';
 
 	const addHeader = () => {
 		$customMessage.message.headers = [
 			...$customMessage.message.headers,
-			new SMTPMessageHeader('', '')
+			new MessageHeader('', '')
 		];
 	};
 

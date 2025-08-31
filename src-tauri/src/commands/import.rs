@@ -1,4 +1,5 @@
 use crate::backup::{Backup, BackupData};
+use crate::database::{ConfigurationDatabase, MessageDatabase, SettingsDatabase};
 use crate::dialogs::blocking::pick_file_dialog;
 use crate::dialogs::simple_error_dialog;
 use crate::file::file_get_contents;
@@ -29,11 +30,11 @@ fn import(app_handle: &AppHandle, import_export_settings: ImportExportSettings) 
     log::trace!("import");
 
     let backup_data = load_backup(app_handle)
-        .inspect_err(|e| log::error!("Error saving backup '{:?}'"))?
+        .inspect_err(|e| log::error!("Error saving backup '{e:?}'"))?
         .ok_or(anyhow!("No backup data"))?;
 
     import_backup(app_handle, import_export_settings, backup_data)
-        .inspect_err(|e| log::error!("Error preparing backup '{:?}'"))
+        .inspect_err(|e| log::error!("Error preparing backup '{e:?}'"))
 }
 
 fn load_backup(app_handle: &AppHandle) -> AnyResult<Option<Vec<u8>>> {

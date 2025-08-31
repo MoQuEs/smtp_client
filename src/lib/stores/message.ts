@@ -1,21 +1,21 @@
 import * as tauriApi from '$lib/api/tauri';
 import { get, writable, type Writable } from 'svelte/store';
-import { NamedSMTPMessage, type NamedSMTPMessages, type TauriResponse } from '$lib/api/tauri_classes';
+import { NamedMessage, type NamedMessages, type TauriResponse } from '$lib/api/tauri_classes';
 import { clone } from '$lib/utils/utils';
 import { addToast } from '$lib/stores/toasts';
 import { ToastType } from '$lib/components/toast/Toast.svelte';
 import { ts } from '$lib/i18n/translate';
 import { error } from '@tauri-apps/plugin-log';
-import { setConfigurations } from '$lib/stores/smtp_configuration';
+import { setConfigurations } from '$lib/stores/configuration';
 
-export const customMessage: Writable<NamedSMTPMessage> = writable(new NamedSMTPMessage(''));
-export const allMessages: Writable<NamedSMTPMessage[]> = writable([]);
+export const customMessage: Writable<NamedMessage> = writable(new NamedMessage(''));
+export const allMessages: Writable<NamedMessage[]> = writable([]);
 
-export const setCustomMessages = (message: NamedSMTPMessage) => {
+export const setCustomMessages = (message: NamedMessage) => {
 	customMessage.set(message);
 };
 
-export const setMessages = (messages: NamedSMTPMessages) => {
+export const setMessages = (messages: NamedMessages) => {
 	allMessages.set([...messages]);
 };
 
@@ -72,7 +72,7 @@ export const saveMessage = () => {
 		});
 };
 
-export const replaceMessage = (messageToreplace: NamedSMTPMessage) => {
+export const replaceMessage = (messageToreplace: NamedMessage) => {
 	const cloned = cloneCustom();
 
 	get(allMessages).forEach((message) => {
@@ -103,7 +103,7 @@ export const replaceMessage = (messageToreplace: NamedSMTPMessage) => {
 		});
 };
 
-export const removeMessage = (messageToRemove: NamedSMTPMessage) => {
+export const removeMessage = (messageToRemove: NamedMessage) => {
 	tauriApi
 		.removeMessage(messageToRemove)
 		.then(() => {
@@ -127,12 +127,12 @@ export const removeMessage = (messageToRemove: NamedSMTPMessage) => {
 		});
 };
 
-export const loadMessage = (messageToLoad: NamedSMTPMessage) => {
+export const loadMessage = (messageToLoad: NamedMessage) => {
 	const cloned = clone(messageToLoad);
 	cloned.name = get(customMessage).name;
 	customMessage.set(cloned);
 };
 
-const cloneCustom = (): NamedSMTPMessage => {
+const cloneCustom = (): NamedMessage => {
 	return clone(get(customMessage));
 };

@@ -19,6 +19,7 @@ mod file;
 mod migration;
 mod response;
 mod serialize;
+mod smime;
 mod state;
 
 fn main() {
@@ -58,6 +59,9 @@ fn main() {
             save_settings_command,
             export_command,
             import_command,
+            get_attachments_command,
+            add_attachment_command,
+            remove_attachment_command,
         ])
         .run(tauri::generate_context!())
         .inspect_err(|e| log::error!("Tauri application failed '{:?}'", e))

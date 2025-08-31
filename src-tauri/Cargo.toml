@@ -1,6 +1,6 @@
 [package]
 name = "smtp_client"
-version = "0.4.0"
+version = "0.5.0"
 description = "SMTP Client"
 keywords = ["aplication", "smtp", "client", "devtools"]
 authors = ["Sebastian Kaźmierczak <moques93@gmail.com>"]
@@ -13,7 +13,6 @@ readme = "README.md"
 
 [build-dependencies]
 tauri-build = { version = "2", default-features = false, features = [] }
-typeshare-cli = { version = "1", default-features = false, features = [] }
 
 [dependencies]
 serde_json = { version = "1", default-features = false, features = [] }
@@ -28,7 +27,11 @@ bincode = { version = "2", default-features = false, features = ["alloc", "serde
 log = { version = "0.4", default-features = false, features = [] }
 age = { version = "0.11", default-features = false, features = [] }
 async-scoped = { version = "0.9.0", default-features = false, features = ["use-tokio"] }
-tokio = { version = "1", default-features = false, features = [] }
+tokio = { version = "1", features = ["process", "io-util", "macros"] }
+mime_guess = { version = "2", default-features = false, features = [] }
+mime = { version = "0.3", default-features = false, features = [] }
+openssl-sys = { version = "0.9", default-features = false, features = [] }
+openssl = { version = "0.10", default-features = false, features = ["default"] }
 
 tauri = { version = "2", default-features = false, features = ["compression", "wry", "specta"] }
 tauri-runtime = { version = "2", default-features = false, features = [] }
@@ -37,6 +40,7 @@ tauri-plugin-dialog = { version = "2", default-features = false, features = [] }
 tauri-plugin-log = { version = "2", default-features = false, features = [] }
 
 rust_utils = { git = "https://github.com/MoQuEs/rust_utils", tag = "v0.12.1", default-features = false, features = ["full"] }
+target = "2.1.0"
 
 [features]
 default = ["custom-protocol"]

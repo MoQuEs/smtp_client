@@ -1,7 +1,7 @@
 use crate::commands::db_to_response;
-use crate::dialogs::simple_error_dialog;
-use crate::response::{error, success, Settings, TauriResponse};
-use crate::state::{AppHandle, ServiceAccess};
+use crate::database::SettingsDatabase;
+use crate::response::{Settings, TauriResponse};
+use crate::state::AppHandle;
 
 #[tauri::command]
 pub fn get_settings_command(app_handle: AppHandle) -> TauriResponse<Settings> {
@@ -11,7 +11,7 @@ pub fn get_settings_command(app_handle: AppHandle) -> TauriResponse<Settings> {
 }
 
 #[tauri::command]
-pub fn save_settings_command(app_handle: AppHandle, settings: Settings) -> TauriResponse<Settings> {
+pub fn save_settings_command(app_handle: AppHandle, settings: Settings) -> TauriResponse<()> {
     log::trace!("save_settings_command");
     log::debug!("settings: {:?}", settings);
 

@@ -1,4 +1,4 @@
-use crate::database::{Database, DatabaseTrait};
+use crate::database::{Database, KeyValueDatabase};
 use crate::migration::{MigrationVersion, MIGRATIONS};
 use crate::response::AnyResult;
 use std::sync::Mutex;
@@ -59,13 +59,13 @@ impl ServiceAccess for AppHandle {
         let app_state: State<AppState> = app.state();
 
         let db = Database::new()
-            .inspect_err(|e| log::error!("Database initialize failed '{:?}'"))
+            .inspect_err(|e| log::error!("Database initialize failed '{e:?}'"))
             .unwrap();
 
         *app_state
             .db
             .lock()
-            .inspect_err(|e| log::error!("Lock database for data failed '{:?}'"))
+            .inspect_err(|e| log::error!("Lock database for data failed '{e:?}'"))
             .unwrap() = Some(db);
 
         log::trace!("init_db end");
@@ -76,7 +76,7 @@ impl ServiceAccess for AppHandle {
 
         let mut current_version = self
             .db(|db| db.get_value("version"))
-            .inspect_err(|e| log::error!("Get database version failed '{:?}'"))
+            .inspect_err(|e| log::error!("Get database version failed '{e:?}'"))
             .unwrap()
             .unwrap_or(MigrationVersion::default());
 
@@ -85,7 +85,7 @@ impl ServiceAccess for AppHandle {
         for (migration_version, callback, undo) in MIGRATIONS {
             current_version = self
                 .run_migration(current_version, migration_version, callback, undo)
-                .inspect_err(|e| log::error!("Run migration failed '{:?}'"))
+                .inspect_err(|e| log::error!("Run migration failed '{e:?}'"))
                 .unwrap();
         }
 
@@ -122,7 +122,7 @@ impl ServiceAccess for AppHandle {
             }
 
             self.db(|db| db.set_value("version", migration_version))
-                .inspect_err(|e| log::error!("Set database version failed '{:?}'"))?;
+                .inspect_err(|e| log::error!("Set database version failed '{e:?}'"))?;
 
             if let Some(e) = err {
                 return Err(e);
@@ -144,11 +144,12 @@ impl ServiceAccess for AppHandle {
         let db_connection_guard = app_state
             .db
             .lock()
-            .inspect_err(|e| log::error!("Lock database failed '{:?}'"))?;
+            .inspect_err(|e| log::error!("Lock database failed '{e:?}'"))
+            .expect("Lock database failed");
 
         let db = db_connection_guard
             .as_ref()
-            .inspect_err(|e| log::error!("Get database connection failed '{:?}'"))?;
+            .expect("Get database connection failed");
 
         log::info!("run operation");
 
@@ -165,11 +166,12 @@ impl ServiceAccess for AppHandle {
         let mut db_connection_guard = app_state
             .db
             .lock()
-            .inspect_err(|e| log::error!("Lock database failed '{:?}'"))?;
+            .inspect_err(|e| log::error!("Lock database failed '{e:?}'"))
+            .expect("Lock database failed");
 
         let db = db_connection_guard
             .as_mut()
-            .inspect_err(|e| log::error!("Get database connection failed '{:?}'"))?;
+            .expect("Get database connection failed");
 
         log::info!("run operation");
 

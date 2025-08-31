@@ -10,7 +10,7 @@ pub fn encode<T: Encode + Debug>(data: &T) -> AnyResult<Vec<u8>> {
     log::debug!("data: {:?}", data);
 
     let s =
-        encode_to_vec(data, standard()).inspect_err(|e| log::error!("Error serialize '{:?}'"))?;
+        encode_to_vec(data, standard()).inspect_err(|e| log::error!("Error serialize '{e:?}'"))?;
 
     log::debug!("s: {:?}", s);
 
@@ -23,7 +23,7 @@ pub fn decode<T: Decode<()> + Debug>(data: &[u8]) -> AnyResult<T> {
     log::debug!("data: {:?}", data);
 
     let d = decode_from_slice(data, standard())
-        .inspect_err(|e| log::error!("Error deserialize '{:?}'"))?;
+        .inspect_err(|e| log::error!("Error deserialize '{e:?}'"))?;
 
     log::debug!("s: {:?}", d);
 

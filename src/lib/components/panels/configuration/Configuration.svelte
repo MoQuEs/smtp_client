@@ -2,7 +2,7 @@
 	import t from '../../../i18n/translate';
 	import Checkbox from '../../form/Checkbox.svelte';
 	import Input, { InputType } from '../../form/Input.svelte';
-	import { customConfiguration } from '../../../stores/smtp_configuration';
+	import { customConfiguration } from '$lib/stores/configuration';
 </script>
 
 <div class="flex flex-col space-y-5">

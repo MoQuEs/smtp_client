@@ -7,8 +7,8 @@
 	import { exportFile, importFile } from '$lib/api/tauri';
 	import { ImportExportSettings } from '$lib/api/tauri_classes';
 	import SettingsImportExportRow from '$lib/components/panels/settings/SettingsImportExportRow.svelte';
-	import { loadConfigurations } from '$lib/stores/smtp_configuration';
-	import { loadMessages } from '$lib/stores/smtp_message';
+	import { loadConfigurations } from '$lib/stores/configuration';
+	import { loadMessages } from '$lib/stores/message';
 	import { addToast } from '$lib/stores/toasts';
 	import { ToastType } from '$lib/components/toast/Toast.svelte';
 	import Modal from '$lib/components/modal/Modal.svelte';
@@ -41,14 +41,14 @@
 	let importFnModal: () => void = () => {
 	};
 	const importFn = (
-		smtp_configurations: boolean,
-		smtp_messages: boolean,
+		configurations: boolean,
+		messages: boolean,
 		settings: boolean
 	) => {
 		return () => {
 			importModal = true;
 			importFnModal = () => {
-				importFile(new ImportExportSettings(importPassword, smtp_configurations, smtp_messages, settings))
+				importFile(new ImportExportSettings(importPassword, configurations, messages, settings))
 					.then(() => {
 						loadConfigurations();
 						loadMessages();
@@ -77,14 +77,14 @@
 	let exportFnModal: () => void = () => {
 	};
 	const exportFn = (
-		smtp_configurations: boolean,
-		smtp_messages: boolean,
+		configurations: boolean,
+		messages: boolean,
 		settings: boolean
 	) => {
 		return () => {
 			exportModal = true;
 			exportFnModal = () => {
-				exportFile(new ImportExportSettings(exportPassword, smtp_configurations, smtp_messages, settings))
+				exportFile(new ImportExportSettings(exportPassword, configurations, messages, settings))
 					.then(() => {
 						exportModal = false;
 						exportPassword = '';

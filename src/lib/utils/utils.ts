@@ -1,4 +1,4 @@
-import type { SMTPConfiguration, SMTPMessage } from '$lib/api/tauri_classes';
+import type { Configuration, Message } from '$lib/api/tauri_classes';
 
 export const clone = <T = object>(toClone: T): T => {
 	if (typeof structuredClone === 'function') {
@@ -19,7 +19,7 @@ export const setVarsInText = (text: string, vars: object): string => {
 
 export const getConfigurationLabelForSelect = (
 	name: string,
-	configuration: SMTPConfiguration
+	configuration: Configuration
 ): string => {
 	if (configuration.auth.use_auth) {
 		return setVarsInText('{{name}}\n[{{login}}:***@{{address}}:{{port}}]', {
@@ -37,7 +37,7 @@ export const getConfigurationLabelForSelect = (
 	});
 };
 
-export const getMessageLabelForSelect = (name: string, message: SMTPMessage): string => {
+export const getMessageLabelForSelect = (name: string, message: Message): string => {
 	if (message.to.name !== '') {
 		return setVarsInText('{{name}}\n["{{to_name}}" <{{to_email}}>]', {
 			name: name,

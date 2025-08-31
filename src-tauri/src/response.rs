@@ -9,6 +9,10 @@ use typeshare::typeshare;
 
 pub type AnyResult<T> = anyhow::Result<T>;
 
+pub trait Named {
+    fn name(&self) -> &str;
+}
+
 #[typeshare]
 #[derive(Deserialize, Serialize, Encode, Decode, Debug, Clone)]
 pub struct TauriResponse<T> {
@@ -43,45 +47,52 @@ pub fn error_empty() -> TauriResponse<()> {
     TauriResponse::new(false, None, None)
 }
 
+#[typeshare]
 pub type MaybeConfiguration = Option<NamedConfiguration>;
+
+#[typeshare]
 pub type NamedConfigurations = Vec<NamedConfiguration>;
-pub type MaybeMessage = Option<NamedMessage>;
-pub type NamedMessages = Vec<NamedMessage>;
 
 #[typeshare]
 #[derive(Deserialize, Serialize, Encode, Decode, Debug, Clone)]
 pub struct NamedConfiguration {
     pub name: String,
-    pub configuration: SMTPConfiguration,
+    pub configuration: Configuration,
+}
+
+impl Named for NamedConfiguration {
+    fn name(&self) -> &str {
+        &self.name
+    }
 }
 
 #[typeshare]
 #[derive(Deserialize, Serialize, Encode, Decode, Debug, Clone)]
-pub struct SMTPConfiguration {
-    pub address: SMTPConfigurationAddress,
-    pub auth: SMTPConfigurationAuth,
+pub struct Configuration {
+    pub address: ConfigurationAddress,
+    pub auth: ConfigurationAuth,
     pub require_ssl: bool,
     pub verify_certificates: bool,
 }
 
 #[typeshare]
 #[derive(Deserialize, Serialize, Encode, Decode, Debug, Clone)]
-pub struct SMTPConfigurationAddress {
+pub struct ConfigurationAddress {
     pub address: String,
     pub port: u16,
 }
 
 #[typeshare]
 #[derive(Deserialize, Serialize, Encode, Decode, Clone)]
-pub struct SMTPConfigurationAuth {
+pub struct ConfigurationAuth {
     pub use_auth: bool,
     pub user: String,
     pub password: String,
 }
 
-impl Debug for SMTPConfigurationAuth {
+impl Debug for ConfigurationAuth {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        f.debug_struct("SMTPConfigurationAuth")
+        f.debug_struct("ConfigurationAuth")
             .field("use_auth", &self.use_auth)
             .field("user", &self.user)
             .field("password", &"***OMITTED***")
@@ -90,37 +101,49 @@ impl Debug for SMTPConfigurationAuth {
 }
 
 #[typeshare]
+pub type MaybeMessage = Option<NamedMessage>;
+
+#[typeshare]
+pub type NamedMessages = Vec<NamedMessage>;
+
+#[typeshare]
 #[derive(Deserialize, Serialize, Encode, Decode, Debug, Clone)]
 pub struct NamedMessage {
     pub name: String,
-    pub message: SMTPMessage,
+    pub message: Message,
+}
+
+impl Named for NamedMessage {
+    fn name(&self) -> &str {
+        &self.name
+    }
 }
 
 #[typeshare]
 #[derive(Deserialize, Serialize, Encode, Decode, Debug, Clone)]
-pub struct SMTPMessage {
-    pub to: SMTPMessageAddress,
-    pub from: SMTPMessageAddress,
-    pub reply_to: SMTPMessageAddress,
-    pub cc: SMTPMessageAddress,
-    pub bcc: SMTPMessageAddress,
-    pub headers: Vec<SMTPMessageHeader>,
+pub struct Message {
+    pub to: MessageAddress,
+    pub from: MessageAddress,
+    pub reply_to: MessageAddress,
+    pub cc: MessageAddress,
+    pub bcc: MessageAddress,
+    pub headers: Vec<MessageHeader>,
     pub subject: String,
-    pub body: SMTPMessageBody,
+    pub body: MessageBody,
 }
 
 #[typeshare]
 #[derive(Deserialize, Serialize, Encode, Decode, Clone)]
-pub struct SMTPMessageAddress {
+pub struct MessageAddress {
     pub name: Option<String>,
     pub email: String,
 }
 
-impl Debug for SMTPMessageAddress {
+impl Debug for MessageAddress {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         let name = self.name.as_ref().map(mask_if_email);
 
-        f.debug_struct("SMTPMessageAddress")
+        f.debug_struct("MessageAddress")
             .field("name", &name)
             .field("email", &mask_if_email(&self.email))
             .finish()
@@ -129,14 +152,14 @@ impl Debug for SMTPMessageAddress {
 
 #[typeshare]
 #[derive(Deserialize, Serialize, Encode, Decode, Debug, Clone)]
-pub struct SMTPMessageHeader {
+pub struct MessageHeader {
     pub name: String,
     pub value: String,
 }
 
 #[typeshare]
 #[derive(Deserialize, Serialize, Encode, Decode, Debug, Clone)]
-pub struct SMTPMessageBody {
+pub struct MessageBody {
     pub html: String,
     pub text: String,
     pub convert_html_to_text: bool,
@@ -149,11 +172,23 @@ pub struct KeyValue<T> {
     pub value: T,
 }
 
+impl<T> Named for KeyValue<T> {
+    fn name(&self) -> &str {
+        &self.name
+    }
+}
+
 #[typeshare]
 #[derive(Deserialize, Serialize, Encode, Decode, Debug, Clone)]
 pub struct Secret<T> {
     pub name: String,
     pub value: T,
+}
+
+impl<T> Named for Secret<T> {
+    fn name(&self) -> &str {
+        &self.name
+    }
 }
 
 #[typeshare]
@@ -183,8 +218,8 @@ pub enum SettingsLanguage {
 #[derive(Deserialize, Serialize, Encode, Decode, Clone)]
 pub struct ImportExportSettings {
     pub password: String,
-    pub smtp_configurations: bool,
-    pub smtp_messages: bool,
+    pub configurations: bool,
+    pub messages: bool,
     pub settings: bool,
 }
 
@@ -192,9 +227,55 @@ impl Debug for ImportExportSettings {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         f.debug_struct("ImportExportSettings")
             .field("password", &"***OMITTED***")
-            .field("smtp_configurations", &self.smtp_configurations)
-            .field("smtp_messages", &self.smtp_messages)
+            .field("configurations", &self.configurations)
+            .field("messages", &self.messages)
             .field("settings", &self.settings)
+            .finish()
+    }
+}
+
+#[typeshare]
+pub type MaybeAttachment = Option<NamedAttachment>;
+
+#[typeshare]
+pub type NamedAttachments = Vec<NamedAttachment>;
+
+#[typeshare]
+#[derive(Deserialize, Serialize, Encode, Decode, Debug, Clone)]
+pub struct ToSaveAttachment {
+    pub name: String,
+}
+
+#[typeshare]
+#[derive(Deserialize, Serialize, Encode, Decode, Debug, Clone)]
+pub struct NamedAttachment {
+    pub name: String,
+    pub attachment: Attachment,
+}
+
+impl Named for NamedAttachment {
+    fn name(&self) -> &str {
+        &self.name
+    }
+}
+
+#[typeshare]
+#[derive(Deserialize, Serialize, Encode, Decode, Clone)]
+pub struct Attachment {
+    pub path: String,
+    pub mime: String,
+    pub binary: Vec<u8>,
+}
+
+impl Debug for Attachment {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.debug_struct("Attachment")
+            .field("path", &self.path)
+            .field("mime", &self.mime)
+            .field(
+                "binary",
+                &format!("***OMITTED*** ({} bytes)", self.binary.len()),
+            )
             .finish()
     }
 }

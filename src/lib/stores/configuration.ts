@@ -1,8 +1,8 @@
 import * as tauriApi from '$lib/api/tauri';
 import { get, writable, type Writable } from 'svelte/store';
 import {
-	NamedSMTPConfiguration,
-	type NamedSMTPConfigurations,
+	NamedConfiguration,
+	type NamedConfigurations,
 	type TauriResponse
 } from '$lib/api/tauri_classes';
 import { clone } from '$lib/utils/utils';
@@ -12,16 +12,16 @@ import { ts } from '$lib/i18n/translate';
 import { error } from '@tauri-apps/plugin-log';
 import type { PTauriResponse } from '$lib/api/tauri';
 
-export const customConfiguration: Writable<NamedSMTPConfiguration> = writable(
-	new NamedSMTPConfiguration('')
+export const customConfiguration: Writable<NamedConfiguration> = writable(
+	new NamedConfiguration('')
 );
-export const allConfigurations: Writable<NamedSMTPConfiguration[]> = writable([]);
+export const allConfigurations: Writable<NamedConfiguration[]> = writable([]);
 
-export const setCustomConfigurations = (configuration: NamedSMTPConfiguration) => {
+export const setCustomConfigurations = (configuration: NamedConfiguration) => {
 	customConfiguration.set(configuration);
 };
 
-export const setConfigurations = (configurations: NamedSMTPConfigurations) => {
+export const setConfigurations = (configurations: NamedConfigurations) => {
 	allConfigurations.set([...configurations]);
 };
 
@@ -79,7 +79,7 @@ export const saveConfiguration = () => {
 		});
 };
 
-export const replaceConfiguration = (configurationToReplace: NamedSMTPConfiguration) => {
+export const replaceConfiguration = (configurationToReplace: NamedConfiguration) => {
 	const cloned = cloneCustom();
 
 	cloned.name = configurationToReplace.name;
@@ -107,7 +107,7 @@ export const replaceConfiguration = (configurationToReplace: NamedSMTPConfigurat
 		});
 };
 
-export const removeConfiguration = (configurationToRemove: NamedSMTPConfiguration) => {
+export const removeConfiguration = (configurationToRemove: NamedConfiguration) => {
 	tauriApi
 		.removeConfiguration(configurationToRemove)
 		.then(() => {
@@ -131,12 +131,12 @@ export const removeConfiguration = (configurationToRemove: NamedSMTPConfiguratio
 		});
 };
 
-export const loadConfiguration = (configurationToLoad: NamedSMTPConfiguration) => {
+export const loadConfiguration = (configurationToLoad: NamedConfiguration) => {
 	const cloned = clone(configurationToLoad);
 	cloned.name = get(customConfiguration).name;
 	customConfiguration.set(cloned);
 };
 
-const cloneCustom = (): NamedSMTPConfiguration => {
+const cloneCustom = (): NamedConfiguration => {
 	return clone(get(customConfiguration));
 };

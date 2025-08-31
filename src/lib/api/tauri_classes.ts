@@ -2,27 +2,27 @@ import type * as tauri from '$lib/../generated/tauri';
 
 export type TauriResponse<T> = tauri.TauriResponse<T>;
 
-export type NamedSMTPConfigurations = NamedSMTPConfiguration[];
+export type NamedConfigurations = NamedConfiguration[];
 
-export class NamedSMTPConfiguration implements tauri.NamedSMTPConfiguration {
+export class NamedConfiguration implements tauri.NamedConfiguration {
 	public name: string;
-	public configuration: SMTPConfiguration;
+	public configuration: Configuration;
 
-	constructor(name: string, configuration: SMTPConfiguration = new SMTPConfiguration()) {
+	constructor(name: string, configuration: Configuration = new Configuration()) {
 		this.name = name;
 		this.configuration = configuration;
 	}
 }
 
-export class SMTPConfiguration implements tauri.SMTPConfiguration {
-	public address: SMTPConfigurationAddress;
-	public auth: SMTPConfigurationAuth;
+export class Configuration implements tauri.Configuration {
+	public address: ConfigurationAddress;
+	public auth: ConfigurationAuth;
 	public require_ssl: boolean;
 	public verify_certificates: boolean;
 
 	constructor(
-		address: SMTPConfigurationAddress = new SMTPConfigurationAddress(),
-		auth: SMTPConfigurationAuth = new SMTPConfigurationAuth(),
+		address: ConfigurationAddress = new ConfigurationAddress(),
+		auth: ConfigurationAuth = new ConfigurationAuth(),
 		require_ssl = false,
 		verify_certificates = false
 	) {
@@ -33,7 +33,7 @@ export class SMTPConfiguration implements tauri.SMTPConfiguration {
 	}
 }
 
-export class SMTPConfigurationAddress implements tauri.SMTPConfigurationAddress {
+export class ConfigurationAddress implements tauri.ConfigurationAddress {
 	public address: string;
 	public port: number;
 
@@ -43,7 +43,7 @@ export class SMTPConfigurationAddress implements tauri.SMTPConfigurationAddress 
 	}
 }
 
-export class SMTPConfigurationAuth implements tauri.SMTPConfigurationAuth {
+export class ConfigurationAuth implements tauri.ConfigurationAuth {
 	public use_auth: boolean;
 	public user: string;
 	public password: string;
@@ -55,37 +55,37 @@ export class SMTPConfigurationAuth implements tauri.SMTPConfigurationAuth {
 	}
 }
 
-export type NamedSMTPMessages = NamedSMTPMessage[];
+export type NamedMessages = NamedMessage[];
 
-export class NamedSMTPMessage implements tauri.NamedSMTPMessage {
+export class NamedMessage implements tauri.NamedMessage {
 	public name: string;
-	public message: SMTPMessage;
+	public message: Message;
 
-	constructor(name: string, message: SMTPMessage = new SMTPMessage()) {
+	constructor(name: string, message: Message = new Message()) {
 		this.name = name;
 		this.message = message;
 	}
 }
 
-export class SMTPMessage implements tauri.SMTPMessage {
-	public to: SMTPMessageAddress;
-	public from: SMTPMessageAddress;
-	public reply_to: SMTPMessageAddress;
-	public cc: SMTPMessageAddress;
-	public bcc: SMTPMessageAddress;
-	public headers: SMTPMessageHeader[];
+export class Message implements tauri.Message {
+	public to: MessageAddress;
+	public from: MessageAddress;
+	public reply_to: MessageAddress;
+	public cc: MessageAddress;
+	public bcc: MessageAddress;
+	public headers: MessageHeader[];
 	public subject: string;
-	public body: SMTPMessageBody;
+	public body: MessageBody;
 
 	constructor(
-		to: SMTPMessageAddress = new SMTPMessageAddress(),
-		from: SMTPMessageAddress = new SMTPMessageAddress(),
-		reply_to: SMTPMessageAddress = new SMTPMessageAddress(),
-		cc: SMTPMessageAddress = new SMTPMessageAddress(),
-		bcc: SMTPMessageAddress = new SMTPMessageAddress(),
-		headers: SMTPMessageHeader[] = [],
+		to: MessageAddress = new MessageAddress(),
+		from: MessageAddress = new MessageAddress(),
+		reply_to: MessageAddress = new MessageAddress(),
+		cc: MessageAddress = new MessageAddress(),
+		bcc: MessageAddress = new MessageAddress(),
+		headers: MessageHeader[] = [],
 		subject = '',
-		body: SMTPMessageBody = new SMTPMessageBody()
+		body: MessageBody = new MessageBody()
 	) {
 		this.to = to;
 		this.from = from;
@@ -98,7 +98,7 @@ export class SMTPMessage implements tauri.SMTPMessage {
 	}
 }
 
-export class SMTPMessageAddress implements tauri.SMTPMessageAddress {
+export class MessageAddress implements tauri.MessageAddress {
 	public name: string | undefined;
 	public email: string;
 
@@ -108,7 +108,7 @@ export class SMTPMessageAddress implements tauri.SMTPMessageAddress {
 	}
 }
 
-export class SMTPMessageHeader implements tauri.SMTPMessageHeader {
+export class MessageHeader implements tauri.MessageHeader {
 	public name: string;
 	public value: string;
 
@@ -118,7 +118,7 @@ export class SMTPMessageHeader implements tauri.SMTPMessageHeader {
 	}
 }
 
-export class SMTPMessageBody implements tauri.SMTPMessageBody {
+export class MessageBody implements tauri.MessageBody {
 	public html: string;
 	public text: string;
 	public convert_html_to_text: boolean;
@@ -156,19 +156,51 @@ export class Settings implements tauri.Settings {
 
 export class ImportExportSettings implements tauri.ImportExportSettings {
 	public password: string;
-	public smtp_configurations: boolean;
-	public smtp_messages: boolean;
+	public configurations: boolean;
+	public messages: boolean;
 	public settings: boolean;
 
 	constructor(
 		password: string,
-		smtp_configurations: boolean,
-		smtp_messages: boolean,
+		configurations: boolean,
+		messages: boolean,
 		settings: boolean
 	) {
 		this.password = password;
-		this.smtp_configurations = smtp_configurations;
-		this.smtp_messages = smtp_messages;
+		this.configurations = configurations;
+		this.messages = messages;
 		this.settings = settings;
+	}
+}
+
+export type NamedAttachments = NamedAttachment[];
+
+export class Attachment implements tauri.Attachment {
+	public path: string;
+	public mime: string;
+	public binary: number[];
+
+	constructor(path = '', mime = '', binary: number[] = []) {
+		this.path = path;
+		this.mime = mime;
+		this.binary = binary;
+	}
+}
+
+export class NamedAttachment implements tauri.NamedAttachment {
+	public name: string;
+	public attachment: Attachment;
+
+	constructor(name: string, attachment: Attachment = new Attachment()) {
+		this.name = name;
+		this.attachment = attachment;
+	}
+}
+
+export class ToSaveAttachment implements tauri.ToSaveAttachment {
+	public name: string;
+
+	constructor(name: string) {
+		this.name = name;
 	}
 }
