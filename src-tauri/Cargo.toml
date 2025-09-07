@@ -32,6 +32,8 @@ mime_guess = { version = "2", default-features = false, features = [] }
 mime = { version = "0.3", default-features = false, features = [] }
 openssl-sys = { version = "0.9", default-features = false, features = [] }
 openssl = { version = "0.10", default-features = false, features = ["default"] }
+url = { version = "2", default-features = false, features = ["serde"] }
+reqwest = { version = "0.12", default-features = false, features = ["default", "blocking"] }
 
 tauri = { version = "2", default-features = false, features = ["compression", "wry", "specta"] }
 tauri-runtime = { version = "2", default-features = false, features = [] }

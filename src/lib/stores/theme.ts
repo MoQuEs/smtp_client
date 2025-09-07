@@ -3,6 +3,19 @@ import { SettingsTheme } from '../../generated/tauri';
 
 export const theme: Writable<SettingsTheme> = writable(SettingsTheme.Dark);
 
+export const getIconClass = (settingsTheme: SettingsTheme, light: string, dark: string): string => settingsTheme == SettingsTheme.Dark ? light : dark;
+
+export const getFillIconClass = (settingsTheme: SettingsTheme): string => getIconClass(settingsTheme, 'icon-fill-gray-200', 'icon-fill-gray-800');
+export const getStrokeIconClass = (settingsTheme: SettingsTheme): string => getIconClass(settingsTheme, 'icon-stroke-gray-200', 'icon-stroke-gray-800');
+
+export const fillIconClass: Writable<string> = writable(getFillIconClass(get(theme)));
+export const strokeIconClass: Writable<string> = writable(getStrokeIconClass(get(theme)));
+
+theme.subscribe((newTheme) => {
+	fillIconClass.set(getFillIconClass(newTheme));
+	strokeIconClass.set(getStrokeIconClass(newTheme));
+});
+
 export const setTheme = (newTheme: SettingsTheme) => {
 	if (newTheme === get(theme)) {
 		return;

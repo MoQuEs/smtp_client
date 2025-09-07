@@ -7,7 +7,6 @@ use std::fmt::Debug;
 pub fn encode<T: Encode + Debug>(data: &T) -> AnyResult<Vec<u8>> {
     log::trace!("serialize");
     log::debug!("data: ***OMITTED***");
-    log::debug!("data: {:?}", data);
 
     let s =
         encode_to_vec(data, standard()).inspect_err(|e| log::error!("Error serialize '{e:?}'"))?;
@@ -20,7 +19,6 @@ pub fn encode<T: Encode + Debug>(data: &T) -> AnyResult<Vec<u8>> {
 pub fn decode<T: Decode<()> + Debug>(data: &[u8]) -> AnyResult<T> {
     log::trace!("deserialize");
     log::debug!("data: ***OMITTED***");
-    log::debug!("data: {:?}", data);
 
     let d = decode_from_slice(data, standard())
         .inspect_err(|e| log::error!("Error deserialize '{e:?}'"))?;

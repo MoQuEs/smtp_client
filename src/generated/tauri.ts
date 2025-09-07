@@ -4,7 +4,10 @@
 
 export interface Attachment {
 	path: string;
+	name: string;
+	extension: string;
 	mime: string;
+	size: number;
 	binary: number[];
 }
 
@@ -80,6 +83,17 @@ export type NamedConfigurations = NamedConfiguration[];
 
 export type NamedMessages = NamedMessage[];
 
+export enum AddAttachmentFrom {
+	File = "File",
+	Url = "Url",
+}
+
+export interface AddAttachment {
+	name: string;
+	from: AddAttachmentFrom;
+	url?: string;
+}
+
 export interface ImportExportSettings {
 	password: string;
 	configurations: boolean;
@@ -116,9 +130,5 @@ export interface TauriResponse<T> {
 	success: boolean;
 	message?: string;
 	data?: T;
-}
-
-export interface ToSaveAttachment {
-	name: string;
 }
 

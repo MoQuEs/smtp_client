@@ -4,7 +4,6 @@ use crate::response::{AnyResult, Named};
 use crate::serialize::{decode, encode, Decode, Encode};
 use sled::Tree;
 use std::fmt::Debug;
-use std::ops::Deref;
 use std::path::Path;
 
 mod attachment;
@@ -45,6 +44,20 @@ impl AsRef<str> for Section {
             Self::Settings => "settings",
             Self::KeyValue => "key_value",
         }
+    }
+}
+
+impl Section {
+    pub fn get_all<'a>() -> &'a [Section] {
+        &[
+            Self::SMTPConfiguration,
+            Self::SMTPMessage,
+            Self::Attachment,
+            Self::Configuration,
+            Self::Message,
+            Self::Settings,
+            Self::KeyValue,
+        ]
     }
 }
 
@@ -94,6 +107,8 @@ pub trait DatabaseTrait:
         }
         Ok(())
     }
+
+    fn clear(&self, section: impl AsRef<str>) -> AnyResult<()>;
 
     fn get_all<T: Decode<()> + Debug>(&self, section: impl AsRef<str>) -> AnyResult<Vec<T>>;
 
@@ -146,14 +161,16 @@ impl DatabaseTrait for Database {
         log::debug!("section: {}", section.as_ref());
         log::debug!("key: {}", key.as_ref());
 
-        for (key, bytes) in self.section(section)?.iter().flatten() {
-            let key: String = decode(&bytes)?;
-            if key == key.deref() {
-                return Ok(Some(decode(&bytes)?));
-            }
-        }
-
-        Ok(None)
+        Ok(self
+            .section(section)?
+            .get(key.as_ref())
+            .map(|option| match option {
+                Some(bytes) => match decode(&bytes) {
+                    Ok(data) => Some(data),
+                    Err(e) => None,
+                },
+                None => None,
+            })?)
     }
 
     fn remove(&self, section: impl AsRef<str>, key: impl AsRef<str>) -> AnyResult<()> {
@@ -162,6 +179,14 @@ impl DatabaseTrait for Database {
         log::debug!("key: {}", key.as_ref());
 
         self.section(section)?.remove(key.as_ref())?;
+        Ok(())
+    }
+
+    fn clear(&self, section: impl AsRef<str>) -> AnyResult<()> {
+        log::trace!("clear");
+        log::debug!("section: {}", section.as_ref());
+
+        self.section(section)?.clear()?;
         Ok(())
     }
 

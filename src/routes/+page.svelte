@@ -29,21 +29,7 @@
 	import AttachmentPanel from '$lib/components/panels/attachment/AttachmentPanel.svelte';
 	import PersonalizationPanel from '$lib/components/panels/personalization/PersonalizationPanel.svelte';
 	import SMIMEPanel from '$lib/components/panels/smime/SMIMEPanel.svelte';
-	import { getTheme, theme } from '$lib/stores/theme';
-	import { SettingsTheme } from '$lib/../generated/tauri';
-
-	const getIconClass = (settingsTheme: SettingsTheme, light: string, dark: string): string => settingsTheme == SettingsTheme.Dark ? light : dark;
-
-	const getFillIconClass = (settingsTheme: SettingsTheme): string => getIconClass(settingsTheme, 'icon-fill-gray-200', 'icon-fill-gray-800');
-	const getStrokeIconClass = (settingsTheme: SettingsTheme): string => getIconClass(settingsTheme, 'icon-stroke-gray-200', 'icon-stroke-gray-800');
-
-	let fillIconClass = $state(getFillIconClass(getTheme()));
-	let strokeIconClass = $state(getStrokeIconClass(getTheme()));
-
-	$effect(() => {
-		fillIconClass = getFillIconClass($theme);
-		strokeIconClass = getStrokeIconClass($theme);
-	});
+	import { fillIconClass, strokeIconClass } from '$lib/stores/theme';
 </script>
 
 <Tabs>
@@ -53,43 +39,43 @@
 		<TabList>
 			<Tooltip title={$t('menu.send')}>
 				<Tab>
-					<Icon src={BsSend} size="26" className={fillIconClass} />
+					<Icon src={BsSend} size="26" className={$fillIconClass} />
 				</Tab>
 			</Tooltip>
 
 			<Tooltip title={$t('menu.configurations')}>
 				<Tab>
-					<Icon src={RiBusinessMailSettingsLine} size="26" className={fillIconClass} />
+					<Icon src={RiBusinessMailSettingsLine} size="26" className={$fillIconClass} />
 				</Tab>
 			</Tooltip>
 
 			<Tooltip title={$t('menu.messages')}>
 				<Tab>
-					<Icon src={RiBusinessMailAddLine} size="26" className={fillIconClass} />
+					<Icon src={RiBusinessMailAddLine} size="26" className={$fillIconClass} />
 				</Tab>
 			</Tooltip>
 
 			<Tooltip title={$t('menu.smime')}>
 				<Tab>
-					<Icon src={RiBusinessMailLockLine} size="26" className={fillIconClass} />
+					<Icon src={RiBusinessMailLockLine} size="26" className={$fillIconClass} />
 				</Tab>
 			</Tooltip>
 
 			<Tooltip title={$t('menu.attachments')}>
 				<Tab>
-					<Icon src={IoAttachOutline} size="26" className={strokeIconClass} />
+					<Icon src={IoAttachOutline} size="26" className={$strokeIconClass} />
 				</Tab>
 			</Tooltip>
 
 			<Tooltip title={$t('menu.personalizations')}>
 				<Tab>
-					<Icon src={ImTable} size="26" className={fillIconClass} />
+					<Icon src={ImTable} size="26" className={$fillIconClass} />
 				</Tab>
 			</Tooltip>
 
 			<Tooltip title={$t('menu.settings')}>
 				<Tab>
-					<Icon src={BiSolidCog} size="26" className={fillIconClass} />
+					<Icon src={BiSolidCog} size="26" className={$fillIconClass} />
 				</Tab>
 			</Tooltip>
 		</TabList>

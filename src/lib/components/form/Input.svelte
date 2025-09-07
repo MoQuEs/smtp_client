@@ -30,12 +30,12 @@
 	export let className = '';
 
 	export let iconBefore: any = undefined;
-	export let iconBeforeColor = 'white';
+	export let iconBeforeClass = 'icon-fill-gray-200';
 	export let iconBeforeTooltip = '';
 	export let iconBeforeInteractive = false;
 
 	export let iconAfter: any = undefined;
-	export let iconAfterColor = 'white';
+	export let iconAfterClass = 'icon-fill-gray-200';
 	export let iconAfterTooltip = '';
 	export let iconAfterInteractive = false;
 
@@ -86,10 +86,10 @@
 			>
 				{#if iconBeforeTooltip !== ''}
 					<Tooltip title={iconBeforeTooltip}>
-						<Icon src={iconBefore} size="22" color={iconBeforeColor} />
+						<Icon src={iconBefore} size="22" className={iconBeforeClass} />
 					</Tooltip>
 				{:else}
-					<Icon src={iconBefore} size="22" color={iconBeforeColor} />
+					<Icon src={iconBefore} size="22" className={iconBeforeClass} />
 				{/if}
 			</div>
 		{/if}
@@ -131,15 +131,15 @@
 						<Icon
 							src={passwordShowed ? AiOutlineEye : AiOutlineEyeInvisible}
 							size="22"
-							color={iconAfterColor}
+							className={iconAfterClass}
 						/>
 					</Tooltip>
 				{:else if iconAfterTooltip !== ''}
 					<Tooltip title={iconAfterTooltip}>
-						<Icon src={iconAfter} size="22" color={iconAfterColor} />
+						<Icon src={iconAfter} size="22" className={iconAfterClass} />
 					</Tooltip>
 				{:else}
-					<Icon src={iconAfter} size="22" color={iconAfterColor} />
+					<Icon src={iconAfter} size="22" className={iconAfterClass} />
 				{/if}
 			</div>
 		{/if}

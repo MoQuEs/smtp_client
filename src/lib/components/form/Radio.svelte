@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { RandomId } from '../../utils/random';
+	import type { SNEvent } from '$lib/utils/types';
 
 	export let name: string = RandomId();
 
@@ -8,10 +9,14 @@
 	export let disabled: boolean = false;
 	export let className: string = '';
 
+	export let change: (e: SNEvent<HTMLInputElement>) => void = () => {
+	};
+
 	const id = RandomId();
 
 	const handleChange = (e: Event & { currentTarget: EventTarget & HTMLInputElement }) => {
 		checked = e.currentTarget.checked;
+		change(e);
 	};
 </script>
 

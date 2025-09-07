@@ -1,4 +1,4 @@
-import type * as tauri from '$lib/../generated/tauri';
+import * as tauri from '$lib/../generated/tauri';
 
 export type TauriResponse<T> = tauri.TauriResponse<T>;
 
@@ -177,12 +177,18 @@ export type NamedAttachments = NamedAttachment[];
 
 export class Attachment implements tauri.Attachment {
 	public path: string;
+	public name: string;
+	public extension: string;
 	public mime: string;
+	public size: number;
 	public binary: number[];
 
-	constructor(path = '', mime = '', binary: number[] = []) {
+	constructor(path = '', name = '', extension = '', mime = '', binary: number[] = []) {
 		this.path = path;
+		this.name = name;
+		this.extension = extension;
 		this.mime = mime;
+		this.size = binary.length;
 		this.binary = binary;
 	}
 }
@@ -197,10 +203,28 @@ export class NamedAttachment implements tauri.NamedAttachment {
 	}
 }
 
-export class ToSaveAttachment implements tauri.ToSaveAttachment {
-	public name: string;
+export type AddAttachmentFrom = tauri.AddAttachmentFrom;
+export const AddAttachmentFrom = tauri.AddAttachmentFrom;
 
-	constructor(name: string) {
+export const addAttachmentFromFromString = (s: string): AddAttachmentFrom => {
+	switch (s) {
+		case tauri.AddAttachmentFrom.File:
+			return tauri.AddAttachmentFrom.File;
+		case tauri.AddAttachmentFrom.Url:
+			return tauri.AddAttachmentFrom.Url;
+		default:
+			throw new Error('Unrecognized Attachment type');
+	}
+};
+
+export class AddAttachment implements tauri.AddAttachment {
+	public name: string;
+	public from: AddAttachmentFrom;
+	public url?: string;
+
+	constructor(name: string, from: AddAttachmentFrom, url?: string) {
 		this.name = name;
+		this.from = from;
+		this.url = url;
 	}
 }

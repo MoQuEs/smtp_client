@@ -1,6 +1,7 @@
 import * as tauriApi from '$lib/api/tauri';
 import { get, writable, type Writable } from 'svelte/store';
 import {
+	AddAttachment, AddAttachmentFrom,
 	NamedAttachment, type NamedAttachments
 } from '$lib/api/tauri_classes';
 import { clone } from '$lib/utils/utils';
@@ -9,13 +10,14 @@ import { ToastType } from '$lib/components/toast/Toast.svelte';
 import { ts } from '$lib/i18n/translate';
 import { error } from '@tauri-apps/plugin-log';
 
-export const customAttachment: Writable<NamedAttachment> = writable(
-	new NamedAttachment('')
+export const filterAttachment: Writable<string> = writable('');
+export const newAttachment: Writable<AddAttachment> = writable(
+	new AddAttachment('', AddAttachmentFrom.File)
 );
 export const allAttachments: Writable<NamedAttachment[]> = writable([]);
 
-export const setCustomAttachment = (attachment: NamedAttachment) => {
-	customAttachment.set(attachment);
+export const setCustomAttachment = (attachment: string) => {
+	filterAttachment.set(attachment);
 };
 
 export const setAttachments = (attachments: NamedAttachments) => {
@@ -39,8 +41,8 @@ export const loadAttachments = async () => {
 	}
 };
 
-export const saveAttachment = () => {
-	const cloned = cloneCustomAttachment();
+export const addAttachment = () => {
+	const cloned = cloneNew();
 
 	if (cloned.name === '') {
 		return addToast({
@@ -61,10 +63,8 @@ export const saveAttachment = () => {
 	}
 
 	tauriApi
-		.saveAttachment(cloned)
-		.then(() => {
-			allAttachments.update((all) => [...all, cloned]);
-		})
+		.addAttachment(cloned)
+		.then(loadAttachments)
 		.catch(() => {
 			addToast({
 				title: ts('ERROR'),
@@ -72,31 +72,6 @@ export const saveAttachment = () => {
 				text: ts('attachment.save_error')
 			});
 			error('Error saving attachment');
-		});
-};
-
-export const replaceAttachment = (attachmentToReplace: NamedAttachment) => {
-	const cloned = cloneCustomAttachment();
-	cloned.name = attachmentToReplace.name;
-	tauriApi
-		.saveAttachment(cloned)
-		.then(() => {
-			allAttachments.update((all) =>
-				all.map((attachment) => {
-					if (attachment.name === attachmentToReplace.name) {
-						return cloned;
-					}
-					return attachment;
-				})
-			);
-		})
-		.catch(() => {
-			addToast({
-				title: ts('ERROR'),
-				type: ToastType.Error,
-				text: ts('attachment.replace_error')
-			});
-			error('Error replacing attachment');
 		});
 };
 
@@ -123,13 +98,6 @@ export const removeAttachment = (attachmentToRemove: NamedAttachment) => {
 		});
 };
 
-export const loadAttachment = (attachmentToLoad: NamedAttachment) => {
-	const cloned = clone(attachmentToLoad);
-	cloned.name = get(customAttachment).name;
-	customAttachment.set(cloned);
+const cloneNew = (): AddAttachment => {
+	return clone(get(newAttachment));
 };
-
-const cloneCustomAttachment = (): NamedAttachment => {
-	return clone(get(customAttachment));
-};
-

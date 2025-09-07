@@ -1,18 +1,18 @@
 import { invoke, type InvokeArgs } from '@tauri-apps/api/core';
-import type {
-	TauriResponse,
-	Configuration,
-	Message,
-	NamedConfiguration,
-	NamedConfigurations,
-	NamedMessages,
-	NamedMessage,
-	Settings,
-	Secret,
-	ImportExportSettings,
-	NamedAttachment,
-	NamedAttachments,
-	ToSaveAttachment
+import {
+	type TauriResponse,
+	type Configuration,
+	type Message,
+	type NamedConfiguration,
+	type NamedConfigurations,
+	type NamedMessages,
+	type NamedMessage,
+	type Settings,
+	type Secret,
+	type ImportExportSettings,
+	type NamedAttachment,
+	type NamedAttachments,
+	type AddAttachment
 } from '$lib/api/tauri_classes';
 
 export type Callback<T> = (response_data: TauriResponse<T>) => Promise<void>;
@@ -84,8 +84,8 @@ export const getAttachments = (): PTauriResponse<NamedAttachments> => {
 	return callTauri('get_attachments_command');
 };
 
-export const saveAttachment = (toSaveAttachment: ToSaveAttachment): PTauriResponse<null> => {
-	return callTauri('add_attachment_command', { to_save_attachment: toSaveAttachment });
+export const addAttachment = (attachment: AddAttachment): PTauriResponse<NamedAttachment> => {
+	return callTauri('add_attachment_command', { attachment: attachment });
 };
 
 export const removeAttachment = (attachment: NamedAttachment): PTauriResponse<null> => {

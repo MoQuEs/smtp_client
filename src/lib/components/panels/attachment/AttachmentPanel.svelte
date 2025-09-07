@@ -1,14 +1,13 @@
 <script lang="ts">
-	import SvelteTable from 'svelte-table';
-
-	type Row = {
-		id: number;
-		first_name: string;
-		last_name: string;
-		pet: string;
-	};
+	import AttachmentDropdown from '$lib/components/panels/attachment/AttachmentDropdown.svelte';
+	import AttachmentList from '$lib/components/panels/attachment/AttachmentList.svelte';
+	import Separator, { SeparatorSize } from '$lib/components/Separator.svelte';
 </script>
 
 <div class="flex flex-col">
-	<SvelteTable columns="{columns}" rows="{rows}"></SvelteTable>
+	<AttachmentDropdown />
+
+	<Separator size={SeparatorSize.XS} />
+
+	<AttachmentList />
 </div>

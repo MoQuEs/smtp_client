@@ -91,7 +91,7 @@
 	};
 </script>
 
-<div class="flex flex-row space-x-5">
+<div class="flex flex-row space-x-5 mb-0">
 	<div class="flex flex-col flex-grow space-y-5">
 		<Select
 			className="flex-grow"

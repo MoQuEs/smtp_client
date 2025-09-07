@@ -1,5 +1,5 @@
-use crate::database::{Database, KeyValueDatabase};
-use crate::migration::{MigrationVersion, MIGRATIONS};
+use crate::database::{Database, DatabaseTrait, KeyValueDatabase, Section};
+use crate::migration::{Migration, MigrationVersion, MIGRATIONS};
 use crate::response::AnyResult;
 use std::sync::Mutex;
 use tauri::{Manager, State, Wry};
@@ -15,28 +15,28 @@ pub trait ServiceAccess {
         log::trace!("setup");
         log::info!("start setup");
 
-        self.init(app);
-        self.init_db(app);
-        self.migrate();
+        self.init();
+        self.init_db();
+        #[cfg(debug_assertions)]
+        self.clear_db();
+        self.migrate_db();
 
         log::trace!("setup end");
     }
 
-    fn init(&self, app: &tauri::App<Wry>);
+    fn init(&self);
 
-    fn init_db(&self, app: &tauri::App<Wry>);
+    fn init_db(&self);
 
-    fn migrate(&self);
+    fn clear_db(&self);
 
-    fn run_migration<F>(
+    fn migrate_db(&self);
+
+    fn run_migration<'a>(
         &self,
-        current_version: MigrationVersion,
-        migration_version: &MigrationVersion,
-        callback: F,
-        undo: F,
-    ) -> AnyResult<MigrationVersion>
-    where
-        F: FnOnce(&AppHandle) -> AnyResult<MigrationVersion>;
+        current_version: &'a Migration,
+        migration: &'a Migration,
+    ) -> AnyResult<&'a Migration>;
 
     fn db<F, TResult>(&self, operation: F) -> TResult
     where
@@ -48,20 +48,19 @@ pub trait ServiceAccess {
 }
 
 impl ServiceAccess for AppHandle {
-    fn init(&self, app: &tauri::App<Wry>) {
+    fn init(&self) {
         log::trace!("init");
         log::trace!("init end")
     }
 
-    fn init_db(&self, app: &tauri::App<Wry>) {
+    fn init_db(&self) {
         log::trace!("init_db");
-
-        let app_state: State<AppState> = app.state();
 
         let db = Database::new()
             .inspect_err(|e| log::error!("Database initialize failed '{e:?}'"))
             .unwrap();
 
+        let app_state: State<AppState> = self.state();
         *app_state
             .db
             .lock()
@@ -71,10 +70,22 @@ impl ServiceAccess for AppHandle {
         log::trace!("init_db end");
     }
 
-    fn migrate(&self) {
+    fn clear_db(&self) {
+        log::trace!("clear_db");
+
+        self.db_mut(|db| {
+            for section in Section::get_all() {
+                db.clear(section).expect("Clear database section failed");
+            }
+        });
+
+        log::trace!("clear_db end");
+    }
+
+    fn migrate_db(&self) {
         log::trace!("migrate");
 
-        let mut current_version = self
+        let current_version = self
             .db(|db| db.get_value("version"))
             .inspect_err(|e| log::error!("Get database version failed '{e:?}'"))
             .unwrap()
@@ -82,9 +93,14 @@ impl ServiceAccess for AppHandle {
 
         log::debug!("migrate from version: {:?}", current_version);
 
-        for (migration_version, callback, undo) in MIGRATIONS {
+        let mut current_version = MIGRATIONS
+            .iter()
+            .find(|fv| fv.version == current_version)
+            .expect("Current migration version not found in migrations list");
+
+        for migration in MIGRATIONS {
             current_version = self
-                .run_migration(current_version, migration_version, callback, undo)
+                .run_migration(current_version, migration)
                 .inspect_err(|e| log::error!("Run migration failed '{e:?}'"))
                 .unwrap();
         }
@@ -92,46 +108,42 @@ impl ServiceAccess for AppHandle {
         log::trace!("migrate end")
     }
 
-    fn run_migration<F>(
+    fn run_migration<'a>(
         &self,
-        current_version: MigrationVersion,
-        migration_version: &MigrationVersion,
-        callback: F,
-        undo: F,
-    ) -> AnyResult<MigrationVersion>
-    where
-        F: FnOnce(&AppHandle) -> AnyResult<MigrationVersion>,
-    {
+        current: &'a Migration,
+        migration: &'a Migration,
+    ) -> AnyResult<&'a Migration> {
         log::trace!("run_migration");
 
         let mut err = None;
 
-        log::info!("Current version: {:?}", current_version);
-        if migration_version <= &current_version {
-            log::info!("Skip migration: {:?}", migration_version);
-        } else {
-            log::info!("Run migration: {:?}", migration_version);
-            if let Err(e) = callback(self) {
-                log::error!("Migration to {:?} failed: {:?}", migration_version, e);
-                err = Some(e);
-
-                log::warn!("Undo migration: {:?}", migration_version);
-                if let Err(e) = undo(self) {
-                    log::error!("Undo migration to {:?} failed: {:?}", migration_version, e);
-                }
-            }
-
-            self.db(|db| db.set_value("version", migration_version))
-                .inspect_err(|e| log::error!("Set database version failed '{e:?}'"))?;
-
-            if let Some(e) = err {
-                return Err(e);
-            }
-
-            log::info!("Migration done: {:?}", migration_version);
+        log::info!("Current version: {:?}", current.version);
+        if migration.idx <= current.idx {
+            log::info!("Skip migration: {:?}", migration.version);
+            return Ok(current);
         }
 
-        Ok(*migration_version)
+        log::info!("Run migration: {:?}", migration.idx);
+        if let Err(e) = (migration.run)(self) {
+            log::error!("Migration to {:?} failed: {:?}", migration.version, e);
+            err = Some(e);
+
+            log::warn!("Undo migration: {:?}", migration.version);
+            if let Err(e) = (migration.undo)(self) {
+                log::error!("Undo migration to {:?} failed: {:?}", migration.version, e);
+            }
+        }
+
+        self.db(|db| db.set_value("version", &migration.version))
+            .inspect_err(|e| log::error!("Set database version failed '{e:?}'"))?;
+
+        if let Some(e) = err {
+            return Err(e);
+        }
+
+        log::info!("Migration done: {:?}", migration.version);
+
+        Ok(migration)
     }
 
     fn db<F, TResult>(&self, operation: F) -> TResult

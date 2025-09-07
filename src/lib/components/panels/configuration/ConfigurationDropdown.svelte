@@ -20,16 +20,13 @@
 	} from '$lib/stores/configuration';
 	import Input from '$lib/components/form/Input.svelte';
 	import Button, { ButtonTheme, ButtonPaddingSize } from '$lib/components/form/Button.svelte';
-	import { theme } from '$lib/stores/theme';
-	import { SettingsTheme } from '../../../../generated/tauri';
 	import Dropdown from '$lib/components/dropdown/Dropdown.svelte';
 	import DropdownItem from '$lib/components/dropdown/DropdownItem.svelte';
 	import DropdownSeparator from '$lib/components/dropdown/DropdownSeparator.svelte';
 	import Tooltip from '$lib/components/tooltip/Tooltip.svelte';
 	import { getConfigurationLabelForSelect } from '$lib/utils/utils';
 	import OverflowText from '$lib/components/OverflowText.svelte';
-
-	let filterIconColor = $derived($theme == SettingsTheme.Dark ? 'white' : 'black');
+	import { fillIconClass } from '$lib/stores/theme';
 
 	let filter: boolean = $state(false);
 	let filtered = $derived($allConfigurations
@@ -52,7 +49,7 @@
 				bind:value={$customConfiguration.name}
 				iconAfter={filter ? RiSystemFilter2Fill : RiSystemFilter2Line}
 				iconAfterInteractive={true}
-				iconAfterColor={filterIconColor}
+				iconAfterClass={$fillIconClass}
 				on:click_after={() => (filter = !filter)}
 				iconAfterTooltip={filter ? $t('turn_off_filter') : $t('turn_on_filter')}
 			/>

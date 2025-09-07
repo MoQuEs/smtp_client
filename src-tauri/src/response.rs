@@ -235,16 +235,25 @@ impl Debug for ImportExportSettings {
 }
 
 #[typeshare]
+#[derive(Deserialize, Serialize, Encode, Decode, Debug, Clone)]
+pub struct AddAttachment {
+    pub name: String,
+    pub from: AddAttachmentFrom,
+    pub url: Option<String>,
+}
+
+#[typeshare]
+#[derive(Deserialize, Serialize, Encode, Decode, Debug, Clone)]
+pub enum AddAttachmentFrom {
+    File,
+    Url,
+}
+
+#[typeshare]
 pub type MaybeAttachment = Option<NamedAttachment>;
 
 #[typeshare]
 pub type NamedAttachments = Vec<NamedAttachment>;
-
-#[typeshare]
-#[derive(Deserialize, Serialize, Encode, Decode, Debug, Clone)]
-pub struct ToSaveAttachment {
-    pub name: String,
-}
 
 #[typeshare]
 #[derive(Deserialize, Serialize, Encode, Decode, Debug, Clone)]
@@ -263,7 +272,10 @@ impl Named for NamedAttachment {
 #[derive(Deserialize, Serialize, Encode, Decode, Clone)]
 pub struct Attachment {
     pub path: String,
+    pub name: String,
+    pub extension: String,
     pub mime: String,
+    pub size: u32,
     pub binary: Vec<u8>,
 }
 
@@ -271,11 +283,11 @@ impl Debug for Attachment {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         f.debug_struct("Attachment")
             .field("path", &self.path)
+            .field("name", &self.name)
+            .field("extension", &self.extension)
             .field("mime", &self.mime)
-            .field(
-                "binary",
-                &format!("***OMITTED*** ({} bytes)", self.binary.len()),
-            )
+            .field("size", &self.size)
+            .field("binary", &"***OMITTED***".to_string())
             .finish()
     }
 }
