@@ -239,13 +239,15 @@ impl Debug for ImportExportSettings {
 pub struct AddAttachment {
     pub name: String,
     pub from: AddAttachmentFrom,
-    pub url: Option<String>,
+    pub url: String,
 }
 
 #[typeshare]
 #[derive(Deserialize, Serialize, Encode, Decode, Debug, Clone)]
 pub enum AddAttachmentFrom {
+    #[serde(rename = "File", alias = "File")]
     File,
+    #[serde(rename = "Url", alias = "Url")]
     Url,
 }
 
@@ -259,6 +261,7 @@ pub type NamedAttachments = Vec<NamedAttachment>;
 #[derive(Deserialize, Serialize, Encode, Decode, Debug, Clone)]
 pub struct NamedAttachment {
     pub name: String,
+    pub from: AddAttachmentFrom,
     pub attachment: Attachment,
 }
 
@@ -288,6 +291,63 @@ impl Debug for Attachment {
             .field("mime", &self.mime)
             .field("size", &self.size)
             .field("binary", &"***OMITTED***".to_string())
+            .finish()
+    }
+}
+
+#[typeshare]
+#[derive(Deserialize, Serialize, Encode, Decode, Debug, Clone)]
+pub struct AddSmime {
+    pub name: String,
+    pub from: AddSmimeFrom,
+    pub email: String,
+    pub password: String,
+}
+
+#[typeshare]
+#[derive(Deserialize, Serialize, Encode, Decode, Debug, Clone)]
+pub enum AddSmimeFrom {
+    #[serde(rename = "PKCS12", alias = "PKCS12")]
+    PKCS12,
+    #[serde(rename = "Separate", alias = "Separate")]
+    Separate,
+}
+
+#[typeshare]
+pub type MaybeSmime = Option<NamedSmime>;
+
+#[typeshare]
+pub type NamedSmimes = Vec<NamedSmime>;
+
+#[typeshare]
+#[derive(Deserialize, Serialize, Encode, Decode, Debug, Clone)]
+pub struct NamedSmime {
+    pub name: String,
+    pub from: AddSmimeFrom,
+    pub smime: Smime,
+}
+
+impl Named for NamedSmime {
+    fn name(&self) -> &str {
+        &self.name
+    }
+}
+
+#[typeshare]
+#[derive(Deserialize, Serialize, Encode, Decode, Clone)]
+pub struct Smime {
+    pub email: String,
+    pub key_data: Vec<u8>,
+    pub cert_data: Vec<u8>,
+    pub additional_certs_data: Vec<Vec<u8>>,
+}
+
+impl Debug for Smime {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.debug_struct("Attachment")
+            .field("key_data", &"***OMITTED***".to_string())
+            .field("cert_data", &"***OMITTED***".to_string())
+            .field("additional_certs_data", &"***OMITTED***".to_string())
             .finish()
     }
 }

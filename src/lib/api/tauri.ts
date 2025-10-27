@@ -14,6 +14,7 @@ import {
 	type NamedAttachments,
 	type AddAttachment
 } from '$lib/api/tauri_classes';
+import type { AddSmime, NamedSmime, NamedSmimes } from '../../generated/tauri';
 
 export type Callback<T> = (response_data: TauriResponse<T>) => Promise<void>;
 export type PTauriResponse<T> = Promise<TauriResponse<T>>;
@@ -84,18 +85,34 @@ export const getAttachments = (): PTauriResponse<NamedAttachments> => {
 	return callTauri('get_attachments_command');
 };
 
-export const addAttachment = (attachment: AddAttachment): PTauriResponse<NamedAttachment> => {
-	return callTauri('add_attachment_command', { attachment: attachment });
+export const addAttachment = (addAttachment: AddAttachment): PTauriResponse<NamedAttachment> => {
+	return callTauri('add_attachment_command', { addAttachment });
 };
 
 export const removeAttachment = (attachment: NamedAttachment): PTauriResponse<null> => {
 	return callTauri('remove_attachment_command', { attachment });
 };
 
+export const getSmimes = (): PTauriResponse<NamedSmimes> => {
+	return callTauri('get_smime_command');
+};
+
+export const addSmime = (addSmime: AddSmime): PTauriResponse<NamedSmime> => {
+	return callTauri('add_smime_command', { addSmime });
+};
+
+export const removeSmime = (smime: NamedSmime): PTauriResponse<null> => {
+	return callTauri('remove_smime_command', { smime });
+};
+
 export async function callTauri<T>(
 	function_name: string,
 	data: InvokeArgs = {}
 ): PTauriResponse<T> {
-	let ret = await invoke<TauriResponse<T>>(function_name, data);
-	return ret as TauriResponse<T>;
+	try {
+		let ret = await invoke<TauriResponse<T>>(function_name, data);
+		return ret as TauriResponse<T>;
+	} catch (e) {
+		return { success: false, message: (e as Error).toString() };
+	}
 }

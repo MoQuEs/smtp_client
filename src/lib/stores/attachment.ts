@@ -16,10 +16,6 @@ export const newAttachment: Writable<AddAttachment> = writable(
 );
 export const allAttachments: Writable<NamedAttachment[]> = writable([]);
 
-export const setCustomAttachment = (attachment: string) => {
-	filterAttachment.set(attachment);
-};
-
 export const setAttachments = (attachments: NamedAttachments) => {
 	allAttachments.set([...attachments]);
 };
@@ -81,10 +77,7 @@ export const removeAttachment = (attachmentToRemove: NamedAttachment) => {
 		.then(() => {
 			allAttachments.update((all) =>
 				all.filter((attachment) => {
-					if (attachment.name !== attachmentToRemove.name) {
-						return true;
-					}
-					return false;
+					return attachment.name !== attachmentToRemove.name;
 				})
 			);
 		})

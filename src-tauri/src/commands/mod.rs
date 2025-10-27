@@ -5,6 +5,7 @@ mod import;
 mod message;
 mod send_mail;
 mod settings;
+mod smime;
 
 use crate::database::Database;
 use crate::dialogs::simple_error_dialog;
@@ -18,6 +19,7 @@ pub use import::*;
 pub use message::*;
 pub use send_mail::*;
 pub use settings::*;
+pub use smime::*;
 
 pub fn db_to_response<F, R>(app_handle: &AppHandle, db_fn: F) -> TauriResponse<R>
 where

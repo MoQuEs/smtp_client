@@ -42,7 +42,7 @@
 	import { createEventDispatcher } from 'svelte';
 	import { Icon } from 'svelte-icons-pack';
 	import { CgSpinnerTwoAlt } from 'svelte-icons-pack/cg';
-	import { RandomId } from '../../utils/random';
+	import { RandomId } from '$lib/utils/random';
 
 	export let text: string;
 	export let name: string = RandomId();

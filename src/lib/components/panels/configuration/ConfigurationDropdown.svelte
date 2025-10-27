@@ -33,8 +33,8 @@
 		.filter((configuration) => {
 			return (
 				!filter ||
-				configuration.name.indexOf($customConfiguration.name) !== -1 ||
-				configuration.configuration.address.address.indexOf($customConfiguration.name) !== -1
+				configuration.name.toLowerCase().indexOf($customConfiguration.name.toLowerCase()) !== -1 ||
+				configuration.configuration.address.address.toLowerCase().indexOf($customConfiguration.name.toLowerCase()) !== -1
 			);
 		})
 		.sort((c1, c2) => c1.name.localeCompare(c2.name)));

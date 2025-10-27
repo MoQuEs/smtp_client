@@ -183,7 +183,13 @@ export class Attachment implements tauri.Attachment {
 	public size: number;
 	public binary: number[];
 
-	constructor(path = '', name = '', extension = '', mime = '', binary: number[] = []) {
+	constructor(
+		path = '',
+		name = '',
+		extension = '',
+		mime = '',
+		binary: number[] = []
+	) {
 		this.path = path;
 		this.name = name;
 		this.extension = extension;
@@ -195,10 +201,12 @@ export class Attachment implements tauri.Attachment {
 
 export class NamedAttachment implements tauri.NamedAttachment {
 	public name: string;
+	public from: AddAttachmentFrom;
 	public attachment: Attachment;
 
-	constructor(name: string, attachment: Attachment = new Attachment()) {
+	constructor(name: string, from: AddAttachmentFrom, attachment: Attachment) {
 		this.name = name;
+		this.from = from;
 		this.attachment = attachment;
 	}
 }
@@ -220,11 +228,89 @@ export const addAttachmentFromFromString = (s: string): AddAttachmentFrom => {
 export class AddAttachment implements tauri.AddAttachment {
 	public name: string;
 	public from: AddAttachmentFrom;
-	public url?: string;
+	public url: string;
 
-	constructor(name: string, from: AddAttachmentFrom, url?: string) {
+	constructor(name: string, from: AddAttachmentFrom, url: string = '') {
 		this.name = name;
 		this.from = from;
 		this.url = url;
+	}
+}
+
+export type NamedSmimes = NamedSmime[];
+
+export class Smime implements tauri.Smime {
+	public email: string;
+	public key_name: string;
+	public key_data: number[];
+	public cert_name: string;
+	public cert_data: number[];
+	public has_ca_cert: boolean;
+	public ca_cert_name?: string;
+	public ca_cert_data?: number[];
+
+	constructor(
+		email = '',
+		key_name = '',
+		key_data: number[] = [],
+		cert_name = '',
+		cert_data: number[] = [],
+		has_ca_cert = false,
+		ca_cert_name?: string,
+		ca_cert_data?: number[]
+	) {
+		this.email = email;
+		this.key_name = key_name;
+		this.key_data = key_data;
+		this.cert_name = cert_name;
+		this.cert_data = cert_data;
+		this.has_ca_cert = has_ca_cert;
+		this.ca_cert_name = ca_cert_name;
+		this.ca_cert_data = ca_cert_data;
+	}
+}
+
+export class NamedSmime implements tauri.NamedSmime {
+	public name: string;
+	public from: AddSmimeFrom;
+	public smime: Smime;
+
+	constructor(name: string, from: AddSmimeFrom, smime: Smime) {
+		this.name = name;
+		this.from = from;
+		this.smime = smime;
+	}
+}
+
+export type AddSmimeFrom = tauri.AddSmimeFrom;
+export const AddSmimeFrom = tauri.AddSmimeFrom;
+
+export const addSmimeFromFromString = (s: string): AddSmimeFrom => {
+	switch (s) {
+		case tauri.AddSmimeFrom.PKCS12:
+			return tauri.AddSmimeFrom.PKCS12;
+		case tauri.AddSmimeFrom.Separate:
+			return tauri.AddSmimeFrom.Separate;
+		default:
+			throw new Error('Unrecognized Smime type');
+	}
+};
+
+export class AddSmime implements tauri.AddSmime {
+	public name: string;
+	public from: AddSmimeFrom;
+	public email: string;
+	public password: string;
+
+	constructor(
+		name: string,
+		from: AddSmimeFrom,
+		email: string,
+		password: string
+	) {
+		this.name = name;
+		this.from = from;
+		this.email = email;
+		this.password = password;
 	}
 }

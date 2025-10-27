@@ -16,7 +16,7 @@
 	import { AiOutlineEyeInvisible } from 'svelte-icons-pack/ai';
 	import { AiOutlineEye } from 'svelte-icons-pack/ai';
 	import t from '../../i18n/translate';
-	import { RandomId } from '../../utils/random';
+	import { RandomId } from '$lib/utils/random';
 	import Tooltip from '../../components/tooltip/Tooltip.svelte';
 
 	export let name: string = RandomId();

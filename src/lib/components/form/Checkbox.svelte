@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { RandomId } from '../../utils/random';
+	import { RandomId } from '$lib/utils/random';
 	import type { SNEvent } from '$lib/utils/types';
 
 	export let name = RandomId();
@@ -8,6 +8,7 @@
 	export let value = '';
 	export let disabled = false;
 	export let className = '';
+	export let group: any = '';
 
 	export let change: (e: SNEvent<HTMLInputElement>) => void = () => {
 	};
@@ -33,6 +34,7 @@
 		{disabled ? 'cursor-not-allowed' : ''}"
 		on:change={handleChange}
 		{checked}
+		bind:group={group}
 	/>
 	<label
 		for={id}

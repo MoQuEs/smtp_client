@@ -11,12 +11,14 @@ mod configuration;
 mod key_value;
 mod message;
 mod settings;
+mod smime;
 
 pub use attachment::AttachmentDatabase;
 pub use configuration::ConfigurationDatabase;
 pub use key_value::KeyValueDatabase;
 pub use message::MessageDatabase;
 pub use settings::SettingsDatabase;
+pub use smime::SmimeDatabase;
 
 #[derive(Debug, Clone, Copy)]
 pub enum Section {
@@ -26,6 +28,7 @@ pub enum Section {
 
     // Current
     Attachment,
+    Smime,
     Configuration,
     Message,
     Settings,
@@ -39,6 +42,7 @@ impl AsRef<str> for Section {
             Self::SMTPMessage => "smtp_message",
 
             Self::Attachment => "attachment",
+            Self::Smime => "smime",
             Self::Configuration => "configuration",
             Self::Message => "message",
             Self::Settings => "settings",

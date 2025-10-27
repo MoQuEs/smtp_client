@@ -34,9 +34,9 @@
 		.filter((message) => {
 			return (
 				!filter ||
-				message.name.indexOf($customMessage.name) !== -1 ||
-				message.message.to.name?.indexOf($customMessage.name) !== -1 ||
-				message.message.to.email.indexOf($customMessage.name) !== -1
+				message.name.toLowerCase().indexOf($customMessage.name.toLowerCase()) !== -1 ||
+				message.message.to.name?.toLowerCase().indexOf($customMessage.name.toLowerCase()) !== -1 ||
+				message.message.to.email.toLowerCase().indexOf($customMessage.name.toLowerCase()) !== -1
 			);
 		})
 		.sort((c1, c2) => c1.name.localeCompare(c2.name)));

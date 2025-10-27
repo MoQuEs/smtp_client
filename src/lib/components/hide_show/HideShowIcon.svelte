@@ -2,6 +2,7 @@
 	import { Icon } from 'svelte-icons-pack';
 	import { RiArrowsArrowUpSLine } from 'svelte-icons-pack/ri';
 	import { RiArrowsArrowDownSLine } from 'svelte-icons-pack/ri';
+	import { fillIconClass } from '$lib/stores/theme';
 
 	export let hidden = false;
 
@@ -10,7 +11,7 @@
 </script>
 
 <Icon
-	className="cursor-pointer"
+	className="cursor-pointer {$fillIconClass}"
 	src={hidden ? RiArrowsArrowDownSLine : RiArrowsArrowUpSLine}
 	{color}
 	{size}

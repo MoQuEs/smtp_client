@@ -8,23 +8,33 @@ pub struct SMIME {
     pub her_cert: String,
 }
 
-pub async fn encrypt_and_sign<'a, 'b, R: AsyncRead + Unpin + 'a, W: AsyncWrite + Unpin + 'b>(
+pub async fn smime_encrypt_and_sign<
+    'a,
+    'b,
+    R: AsyncRead + Unpin + 'a,
+    W: AsyncWrite + Unpin + 'b,
+>(
     input: R,
     output: W,
     smime: &SMIME,
 ) -> Result<(), Box<dyn std::error::Error>> {
-    both(input, output, smime, false).await
+    smime(input, output, smime, false).await
 }
 
-pub async fn sign_and_encrypt<'a, 'b, R: AsyncRead + Unpin + 'a, W: AsyncWrite + Unpin + 'b>(
+pub async fn smime_sign_and_encrypt<
+    'a,
+    'b,
+    R: AsyncRead + Unpin + 'a,
+    W: AsyncWrite + Unpin + 'b,
+>(
     input: R,
     output: W,
     smime: &SMIME,
 ) -> Result<(), Box<dyn std::error::Error>> {
-    both(input, output, smime, true).await
+    smime(input, output, smime, true).await
 }
 
-async fn both<'a, 'b, R: AsyncRead + Unpin + 'a, W: AsyncWrite + Unpin + 'b>(
+async fn smime<'a, 'b, R: AsyncRead + Unpin + 'a, W: AsyncWrite + Unpin + 'b>(
     input: R,
     output: W,
     smime: &SMIME,

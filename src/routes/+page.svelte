@@ -28,7 +28,7 @@
 	import SendMailPanel from '$lib/components/panels/send_mail/SendMailPanel.svelte';
 	import AttachmentPanel from '$lib/components/panels/attachment/AttachmentPanel.svelte';
 	import PersonalizationPanel from '$lib/components/panels/personalization/PersonalizationPanel.svelte';
-	import SMIMEPanel from '$lib/components/panels/smime/SMIMEPanel.svelte';
+	import SmimePanel from '$lib/components/panels/smime/SmimePanel.svelte';
 	import { fillIconClass, strokeIconClass } from '$lib/stores/theme';
 </script>
 
@@ -102,7 +102,7 @@
 	</TabPanel>
 
 	<TabPanel>
-		<SMIMEPanel />
+		<SmimePanel />
 	</TabPanel>
 
 	<TabPanel>
